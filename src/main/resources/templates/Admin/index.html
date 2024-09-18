@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,300i,400,400i,600,600i,700" />
+
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            cursor: none;
+        }
+
+        body {
+            overflow-x: hidden;
+            -webkit-text-stroke: rgba(255, 255, 255, 0.01) 0.1px;
+            -webkit-font-smoothing: antialiased !important;
+        }
+
+        * {
+            outline: none;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        p,
+        span {
+            margin: 0;
+            padding: 0;
+            border: 0;
+            outline: 0;
+            font-size: 100%;
+            background: transparent;
+            font-weight: normal;
+        }
+
+        a,
+        a:active,
+        a:focus,
+        a:hover {
+            text-decoration: none;
+            outline: none;
+            cursor: none;
+        }
+
+        a {
+            -webkit-transition: all 0.4s ease-in-out;
+            /* สำหรับเบราว์เซอร์ที่ใช้ WebKit (Chrome, Safari) */
+            -moz-transition: all 0.4s ease-in-out;
+            /* สำหรับเบราว์เซอร์ Firefox รุ่นเก่า */
+            -ms-transition: all 0.4s ease-in-out;
+            /* สำหรับเบราว์เซอร์ Microsoft รุ่นเก่า */
+            -o-transition: all 0.4s ease-in-out;
+            /* สำหรับ Opera รุ่นเก่า */
+            transition: all 0.4s ease-in-out;
+            /* มาตรฐานสำหรับเบราว์เซอร์สมัยใหม่ */
+        }
+
+
+        input,
+        select,
+        textarea,
+        button {
+            font-weight: normal;
+            cursor: none;
+        }
+
+        label {
+            cursor: none;
+        }
+
+        * {
+            outline: none;
+        }
+
+        * {
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        body {
+            -webkit-text-stroke: rgba(255, 255, 255, 0.01) 0.1px;
+        }
+
+        select::-ms-expand {
+            display: none;
+        }
+
+        ::-moz-selection {
+            background: #d85043;
+            color: #fff;
+        }
+
+        ::selection {
+            background: #d85043;
+            color: #fff;
+        }
+
+        input,
+        select,
+        textarea {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+        }
+
+        .clearfix {
+            clear: both;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        figure {
+            margin: 0;
+        }
+
+        body.login {
+            background: url("https://img.freepik.com/free-photo/modern-styled-entryway_23-2150695841.jpg?t=st=1726581438~exp=1726585038~hmac=4d48b43505ccf484449f7c26d4b70a7562c11670c88102dfbd4340813be1e369&w=2000");
+            background-position: center bottom;
+            background-size: cover;
+            background-repeat: no-repeat;
+            min-height: 100vh;
+        }
+
+        body.login .materialContainer {
+            width: 100%;
+            max-width: 460px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            -webkit-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+        }
+
+        .box {
+            position: relative;
+            top: 0;
+            opacity: 1;
+            float: left;
+            padding: 60px 50px 40px;
+            width: 100%;
+            background: #fff;
+            border-radius: 10px;
+            transform: scale(1);
+            -webkit-transform: scale(1);
+            -ms-transform: scale(1);
+            z-index: 5;
+        }
+
+        .box.back {
+            transform: scale(0.95);
+            -webkit-transform: scale(0.95);
+            -ms-transform: scale(0.95);
+            top: -20px;
+            opacity: 0.8;
+            z-index: -1;
+        }
+
+        .box:before {
+            content: "";
+            width: 100%;
+            height: 30px;
+            border-radius: 10px;
+            position: absolute;
+            top: -10px;
+            background: rgba(255, 255, 255, 0.6);
+            left: 0;
+            transform: scale(0.95);
+            -webkit-transform: scale(0.95);
+            -ms-transform: scale(0.95);
+            z-index: -1;
+        }
+
+        .materialContainer .input .spin,
+        .materialContainer .material-button .shape:after,
+        .materialContainer .material-button .shape:before {
+            -o-transition: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+            transition: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+            -webkit-transition: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+            -ms-transition: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .materialContainer .alt-2,
+        .materialContainer .alt-2 .shape,
+        .materialContainer .box,
+        .materialContainer .material-button,
+        .materialContainer .material-button .shape {
+            -o-transition: 400ms cubic-bezier(0.4, 0, 0.2, 1);
+            transition: 400ms cubic-bezier(0.4, 0, 0.2, 1);
+            -webkit-transition: 400ms cubic-bezier(0.4, 0, 0.2, 1);
+            -ms-transition: 400ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .materialContainer .button,
+        .materialContainer .button button,
+        .materialContainer .input,
+        .materialContainer .input .spin,
+        .materialContainer .input label {
+            width: 100%;
+            float: left;
+        }
+
+        .materialContainer .button,
+        .materialContainer .input {
+            margin-top: 30px;
+            height: 70px;
+        }
+
+        .materialContainer .button,
+        .materialContainer .button button,
+        .materialContainer .input,
+        .materialContainer .input input {
+            position: relative;
+        }
+
+        .materialContainer .input input {
+            height: 60px;
+            top: 10px;
+            border: none;
+            background: transparent;
+        }
+
+        .materialContainer .button button,
+        .materialContainer .input input,
+        .materialContainer .input label {
+            font-size: 24px;
+            color: rgba(0, 0, 0, 0.8);
+            font-weight: 300;
+        }
+
+        .materialContainer .input .spin,
+        .materialContainer .input:before {
+            width: 100%;
+            height: 1px;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+
+        .materialContainer .input:before {
+            content: "";
+            background: rgba(0, 0, 0, 0.1);
+            z-index: 3;
+        }
+
+        .materialContainer .input .spin {
+            background: #3e65d3;
+            z-index: 4;
+            width: 0;
+        }
+
+        .materialContainer .overbox .input .spin {
+            background: white;
+        }
+
+        .materialContainer .overbox .input:before {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .materialContainer .input label {
+            position: absolute;
+            top: 10px;
+            left: 0;
+            z-index: 2;
+            line-height: 60px;
+        }
+
+        .materialContainer .button.login {
+            width: 60%;
+            left: 20%;
+        }
+
+        .materialContainer .button.login button,
+        .materialContainer .button button {
+            width: 100%;
+            line-height: 60px;
+            left: 0;
+            background-color: transparent;
+            border: 3px solid rgba(0, 0, 0, 0.5);
+            font-weight: 900;
+            font-size: 18px;
+            color: rgba(0, 0, 0, 0.5);
+            outline: none;
+            text-transform: uppercase;
+        }
+
+        .materialContainer .button.login {
+            margin-top: 30px;
+        }
+
+        .materialContainer .button {
+            margin-top: 20px;
+        }
+
+        .materialContainer .button button {
+            background-color: #fff;
+            color: #3e65d3;
+            border: none;
+        }
+
+        .materialContainer .button.login button.active {
+            border: 3px solid transparent;
+            color: #fff !important;
+        }
+
+        .materialContainer .button.login button.active span {
+            opacity: 0;
+            transform: scale(0);
+            -webkit-transform: scale(0);
+            -ms-transform: scale(0);
+        }
+
+        .materialContainer .button.login button.active i.fa {
+            opacity: 1;
+            transform: scale(1) rotate(0deg);
+            -webkit-transform: scale(1) rotate(0deg);
+            -ms-transform: scale(1) rotate(0deg);
+        }
+
+        .materialContainer .button.login button i.fa {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            line-height: 60px;
+            transform: scale(0) rotate(-45deg);
+            -webkit-transform: scale(0) rotate(-45deg);
+            -ms-transform: scale(0) rotate(-45deg);
+        }
+
+        .materialContainer .button.login button:focus,
+        .materialContainer .button.login button:hover {
+            color: #3e65d3;
+            border-color: #3e65d3;
+            outline: none;
+        }
+
+        .materialContainer .button {
+            margin: 40px 0;
+            overflow: hidden;
+            z-index: 2;
+        }
+
+        .materialContainer .button button {
+            position: relative;
+            z-index: 2;
+        }
+
+        .materialContainer .pass-forgot {
+            width: 100%;
+            float: left;
+            text-align: center;
+            color: rgba(0, 0, 0, 0.4);
+            font-size: 18px;
+        }
+
+        .materialContainer .click-efect {
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: #3e65d3;
+            border-radius: 50%;
+        }
+
+        .materialContainer .overbox .click-efect {
+            background: #17ec64;
+        }
+
+        .materialContainer .overbox {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            overflow: inherit;
+            border-radius: 10px;
+            padding: 60px 50px 40px;
+        }
+
+        .materialContainer .overbox .button,
+        .materialContainer .overbox .input,
+        .materialContainer .overbox .title {
+            z-index: 111;
+            position: relative;
+            color: #fff !important;
+            display: none;
+        }
+
+        .materialContainer .overbox .title {
+            width: 80%;
+        }
+
+        .materialContainer .overbox .input {
+            margin-top: 5px;
+        }
+
+        .materialContainer .overbox .input input,
+        .materialContainer .overbox .input label {
+            color: #fff;
+            font-size: 16px;
+        }
+
+        .materialContainer .overbox .material-button,
+        .materialContainer .overbox .material-button .shape {
+            display: block;
+        }
+
+        .materialContainer .alt-2,
+        .materialContainer .material-button {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: -webkit-linear-gradient(top, #3d64d2 0%, #a8eaf1 100%);
+            background: linear-gradient(to bottom, #3d64d2 0%, #a8eaf1 100%);
+            position: absolute;
+            top: 40px;
+            right: -70px;
+            z-index: 100;
+            transform: translate(0%, 0%);
+            -webkit-transform: translate(0%, 0%);
+        }
+
+        .materialContainer .alt-2 .shape,
+        .materialContainer .material-button .shape {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .materialContainer .alt-2 .shape:after,
+        .materialContainer .alt-2 .shape:before,
+        .materialContainer .material-button .shape:after,
+        .materialContainer .material-button .shape:before {
+            content: "";
+            background: #fff;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(360deg);
+            -webkit-transform: translate(-50%, -50%) rotate(360deg);
+        }
+
+        .materialContainer .alt-2 .shape:before,
+        .materialContainer .material-button .shape:before {
+            width: 25px;
+            height: 4px;
+        }
+
+        .materialContainer .alt-2 .shape:after,
+        .materialContainer .material-button .shape:after {
+            height: 25px;
+            width: 4px;
+        }
+
+        .materialContainer .alt-2.active,
+        .materialContainer .material-button.active {
+            top: 50%;
+            right: 50%;
+            transform: translate(50%, -50%) rotate(0deg);
+            -webkit-transform: translate(50%, -50%) rotate(0deg);
+        }
+
+        .overbox .title {
+            color: #fff;
+        }
+
+        .overbox .title:before {
+            background: #fff;
+        }
+
+        .title {
+            width: 100%;
+            float: left;
+            line-height: 46px;
+            font-size: 34px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #193688;
+            position: relative;
+        }
+
+        .title:before {
+            content: "";
+            width: 5px;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: -50px;
+            background: #193688;
+        }
+
+        .cursor {
+            width: 20px;
+            height: 20px;
+            position: absolute;
+            background: transparent;
+            top: 2px;
+            left: 2px;
+            border-radius: 50%;
+            transition: box-shadow 0.2s;
+        }
+
+        .cursor.moving {
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        .cursor.clicked {
+            box-shadow: 0px 0px 0px 20px rgba(0, 0, 0, 0.6);
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        .cursor.linkClicked {
+            box-shadow: 0px 0px 0px 20px rgba(0, 0, 0, 0.6);
+            background: rgba(0, 0, 0, 0.6);
+        }
+    </style>
+
+</head>
+<body class="login">
+    <div class="materialContainer">
+        <div class="box">
+            <div class="title">Admin Login</div>
+            <form method="post" th:action="@{/login}" role="form" id="userlogin">
+                <div class="input">
+                    <label for="name">Email ID</label>
+                    <input type="text" name="email" id="name" class="valid">
+                    <span class="spin"></span>
+                </div>
+                <div class="input">
+                    <label for="pass">Password</label>
+                    <input type="password" name="password" id="pass" class="valid">
+                    <span class="spin" style="width: 0px;"></span>
+                </div>
+                <input type="hidden" value="user" name="logintype">
+                <div class="button login">
+                    <button type="submit">
+                        <span>Login</span> <i class="fa fa-check"></i>
+                    </button>
+                </div>
+            </form>
+            <a href="#" class="pass-forgot">Forgot your password?</a>
+        </div>
+
+        <div class="overbox">
+            <div class="material-button alt-2">
+                <span class="shape"></span>
+            </div>
+
+            <div class="title">Register</div>
+            <form method="post" th:action="@{/register}" role="form" id="adminRegister">
+                <div class="input">
+                    <label for="user_name">Username</label>
+                    <input type="text" name="user_name" id="user_name" class="valid" required>
+                    <span class="spin"></span>
+                </div>
+                <div class="input">
+                    <label for="regemail">Email</label>
+                    <input type="email" name="email" id="regemail" class="valid" required>
+                    <span class="spin"></span>
+                </div>
+                <div class="input">
+                    <label for="reregpass">Password</label>
+                    <input type="password" name="password" id="reregpass" class="valid" required>
+                    <span class="spin"></span>
+                </div>
+                <div class="input">
+                    <label for="confirm_pass">Confirm Password</label>
+                    <input type="password" name="password_confirm" id="confirm_pass" class="valid" required>
+                    <span class="spin"></span>
+                </div>
+
+                <input type="hidden" value="admin" name="logintype">
+
+                <div style="margin-top: 15px;" class="button">
+                    <button type="submit" class="test">
+                        <span>Register</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="cursor"></div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="http://clientstagingdev.com/salesadmin//static/js/wow.min.js"></script>
+</body>
+
+<script>
+    $(function () {
+        $(".input input")
+            .focus(function () {
+                $(this)
+                    .parent(".input")
+                    .each(function () {
+                        $("label", this).css({
+                            "line-height": "18px",
+                            "font-size": "18px",
+                            "font-weight": "100",
+                            top: "0px"
+                        });
+                        $(".spin", this).css({
+                            width: "100%"
+                        });
+                    });
+            })
+            .blur(function () {
+                $(".spin").css({
+                    width: "0px"
+                });
+                if ($(this).val() == "") {
+                    $(this)
+                        .parent(".input")
+                        .each(function () {
+                            $("label", this).css({
+                                "line-height": "60px",
+                                "font-size": "24px",
+                                "font-weight": "300",
+                                top: "10px"
+                            });
+                        });
+                }
+            });
+
+        $(".alt-2").click(function () {
+            if (!$(this).hasClass("material-button")) {
+                $(".shape").css({
+                    width: "100%",
+                    height: "100%",
+                    transform: "rotate(0deg)"
+                });
+
+                setTimeout(function () {
+                    $(".overbox").css({
+                        overflow: "initial"
+                    });
+                }, 600);
+
+                $(this).animate(
+                    {
+                        width: "140px",
+                        height: "140px"
+                    },
+                    500,
+                    function () {
+                        $(".box").removeClass("back");
+
+                        $(this).removeClass("active");
+                    }
+                );
+
+                $(".overbox .title").fadeOut(300);
+                $(".overbox .input").fadeOut(300);
+                $(".overbox .button").fadeOut(300);
+
+                $(".alt-2").addClass("material-buton");
+            }
+        });
+
+        $(".material-button").click(function () {
+            if ($(this).hasClass("material-button")) {
+                setTimeout(function () {
+                    $(".overbox").css({
+                        overflow: "hidden"
+                    });
+                    $(".box").addClass("back");
+                }, 200);
+                $(this)
+                    .addClass("active")
+                    .animate({
+                        width: "700px",
+                        height: "700px"
+                    });
+
+                setTimeout(function () {
+                    $(".shape").css({
+                        width: "50%",
+                        height: "50%",
+                        transform: "rotate(45deg)"
+                    });
+
+                    $(".overbox .title").fadeIn(300);
+                    $(".overbox .input").fadeIn(300);
+                    $(".overbox .button").fadeIn(300);
+                }, 700);
+
+                $(this).removeClass("material-button");
+            }
+
+            if ($(".alt-2").hasClass("material-buton")) {
+                $(".alt-2").removeClass("material-buton");
+                $(".alt-2").addClass("material-button");
+            }
+        });
+    });
+
+    $("body").mousemove(function (e) {
+        var cursorXpos = e.pageX;
+        var cursorYpos = e.pageY;
+        var xposToString = String(cursorXpos);
+
+        var lastDigit = xposToString.slice(-1);
+
+        $(".cursor")
+            .addClass("moving")
+            .css({
+                transform: "translate(" + cursorXpos + "px ," + cursorYpos + "px)"
+            });
+    });
+
+    $("a, input[type='submit'], button, .shape").hover(function () {
+        $(".cursor").toggleClass("linkClicked");
+    });
+
+</script>
+
+<!-- JavaScript สำหรับตรวจสอบฟอร์ม -->
+<script>
+    document.getElementById('userlogin').addEventListener('submit', function(e) {
+        var email = document.getElementById('name').value;
+        var password = document.getElementById('pass').value;
+
+        if (email === '' || password === '') {
+            e.preventDefault(); // ป้องกันการส่งฟอร์มถ้าข้อมูลไม่ครบ
+            alert('Please enter both email and password.');
+        }
+    });
+</script>
+
+<!-- JavaScript สำหรับตรวจสอบฟอร์ม -->
+<script>
+    document.getElementById('adminRegister').addEventListener('submit', function(e) {
+        var password = document.getElementById('reregpass').value;
+        var confirmPassword = document.getElementById('confirm_pass').value;
+        
+        if (password !== confirmPassword) {
+            e.preventDefault(); // ป้องกันการส่งฟอร์ม
+            alert('Passwords do not match!');
+        }
+    });
+</script>
+
+</html>

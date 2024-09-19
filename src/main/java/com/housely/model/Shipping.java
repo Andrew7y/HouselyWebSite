@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -21,6 +22,4 @@ public class Shipping {
     private String shippingMethod;
     private String trackingNumber;
     private Order order;
-}
-    
 }

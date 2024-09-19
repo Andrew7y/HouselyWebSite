@@ -22,7 +22,7 @@ public class AdminController {
         // if ("admin".equals(username) && "password".equals(password)) {
         if ("admin".equals(username) && "password".equals(password)) {
             // ล็อกอินสำเร็จ ไปหน้า dashboard
-            return new ModelAndView("redirect:/dashboard");
+            return new ModelAndView("redirect:Admin/dashboard");
         } else {
             // ล็อกอินล้มเหลว กลับไปที่หน้า login พร้อมข้อความผิดพลาด
             ModelAndView mav = new ModelAndView("Admin/login");
@@ -31,16 +31,39 @@ public class AdminController {
         }
     }
 
-    @GetMapping("/dashboard")
-    public String getDashboard() {
-        return "Admin/dashboard";
+    @GetMapping("/admin/customers")
+    public String getCustomerPage() {
+        return "Admin/customer";
     }
 
-    @GetMapping("/")
-    public String Homepage() {
-        return new String();
+    @GetMapping("/admin/categories")
+    public String getCategoryPage() {
+        return "Admin/categories";
     }
-    
 
-    
+    @GetMapping("/admin/products")
+    public String getProductsPage() {
+        return "Admin/products";
+    }
+
+    @GetMapping("/admin/orders")
+    public String getOrdersPage() {
+        return "Admin/orders";
+    }
+
+    @GetMapping("/admin/promotions")
+    public String getPromotionsPage() {
+        return "Admin/promotions";
+    }
+
+    @GetMapping("/admin/users")
+    public String getUsersPage() {
+        return "Admin/users";
+    }
+
+    @GetMapping("/admin/reports")
+    public String getReportsPage() {
+        return "Admin/reports";
+    }
+
 }

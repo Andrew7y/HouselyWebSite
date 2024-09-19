@@ -13,7 +13,7 @@ public class AdminController {
     
     @GetMapping("/")
     public String getLoginPage() {
-        return "Admin/login";
+        return "User/Home";
     }
 
     @PostMapping("/login")
@@ -36,10 +36,6 @@ public class AdminController {
         return "Admin/dashboard";
     }
 
-    @GetMapping("/")
-    public String Homepage() {
-        return new String();
-    }
     
 
     

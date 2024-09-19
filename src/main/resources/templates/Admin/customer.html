@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>จัดการข้อมูลลูกค้า</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Aboreto&family=Anuphan:wght@100..700&display=swap"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.3/dist/tailwind.min.css"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"/>
+    <style>
+        body {
+            font-family: 'Anuphan', sans-serif;
+        }
+        .container {
+            max-width: 1200px;
+        }
+        .w-full{
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        .table-header {
+            background-color: #007bff;
+        }
+        .table-row:nth-child(even) {
+            background-color: #f8fafc;
+        }
+        .table-row:hover {
+            background-color: #e2e8f0;
+            transition: background-color 0.3s ease;
+        }
+        .search-filter-container {
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            margin-right: 10px;
+        }
+
+        .user-icon {
+            position: fixed;
+            bottom: 16px;
+            right: 55px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 35px;
+            /* Rounded corners */
+            padding: 12px;
+            width: 150px;
+            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+            /* Similar shadow */
+        }
+
+        .user-icon-content {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-icon-content .role-label {
+            margin-left: 10px;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .user-icon i {
+            margin-left: 20px;
+            font-size: 48px;
+            /* Increase icon size */
+        }
+    </style>
+</head>
+<body>
+    <div class="container mx-auto p-6">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-3xl font-bold" style="margin-top: 30px; font-size: 1.8rem; font-weight: bold;">ข้อมูลลูกค้า</h1>
+            <a href="/admin" class="text-blue-500 hover:text-blue-700 font-semibold">
+                <i class="fas fa-arrow-left h-5 w-5"></i> กลับสู่หน้าแดชบอร์ด
+            </a>
+        </div>
+
+        <div class="row search-filter-container">
+            <div class="col-md-6">
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="fas fa-search"></i>
+                    </span>
+                    <input type="text" id="searchInput" class="form-control search-input" placeholder="ค้นหาชื่อลูกค้า..."
+                        onkeyup="filterTable()">
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+            <table class="w-full">
+                <thead class="table-header">
+                    <tr>
+                        <th class="sortable px-6 py-3 text-left text-l font-medium text-white uppercase tracking-wider">ชื่อ</th>
+                        <th class="sortable px-6 py-3 text-left text-l font-medium text-white uppercase tracking-wider">วันเกิด</th>
+                        <th class="sortable px-6 py-3 text-left text-l font-medium text-white uppercase tracking-wider">อีเมล</th>
+                        <th class="sortable px-6 py-3 text-left text-l font-medium text-white uppercase tracking-wider">เบอร์โทรศัพท์</th>
+                        <th class="sortable px-6 py-3 text-left text-l font-medium text-white uppercase tracking-wider">ที่อยู่สำหรับการจัดส่ง</th>
+                        <th class="sortable px-6 py-3 text-left text-l font-medium text-white uppercase tracking-wider">ประวัติการสั่งสินค้า</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    <tr th:each="customer : ${customers}">
+                        <td class="px-6 py-4 whitespace-nowrap" th:text="${customer.name}">John Doe</td>
+                        <td class="px-6 py-4 whitespace-nowrap" th:text="${#dates.format(customer.dateOfBirth, 'dd MMMM yyyy')}">01 มกราคม 1990</td>
+                        <td class="px-6 py-4 whitespace-nowrap" th:text="${customer.email}">john.doe@example.com</td>
+                        <td class="px-6 py-4 whitespace-nowrap" th:text="${customer.phone}">123-456-7890</td>
+                        <td class="px-6 py-4 whitespace-nowrap" th:text="${customer.address}">1234 Elm Street, Cityville, USA</td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <a href="#" data-modal-target="orderHistoryModal" 
+                               th:data-customer-id="${customer.id}"
+                               class="text-blue-600 hover:text-blue-800 flex items-center">
+                                <i class="fas fa-eye mr-2"></i> รายละเอียด
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Order History Modal -->
+    <div id="orderHistoryModal" class="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center hidden">
+        <div class="bg-white p-8 rounded-lg shadow-lg w-3/4 max-w-4xl">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-semibold text-gray-800" id="modalTitle">ประวัติการสั่งสินค้า</h2>
+                <button type="button" class="text-gray-400 hover:text-gray-600" data-modal-close="orderHistoryModal">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <table class="w-full bg-white border border-gray-200 rounded-lg shadow-md">
+                <thead class="bg-gray-100">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">เลขที่ใบกำกับการสั่งซื้อ</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">วันที่สั่งซื้อ</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">สถานะการสั่งซื้อ</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ยอดรวมการสั่งซื้อ</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200" id="orderHistoryBody">
+                    <!-- Order history rows will be dynamically populated -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- User Icon and Role Label -->
+    <div class="user-icon">
+        <div class="user-icon-content">
+            <div class="role-label" style="font-weight: bold;">Admin</div>
+            <i class="fas fa-user-circle fa-3x text-gray-700"></i>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('[data-modal-target]').forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                const target = document.getElementById(button.dataset.modalTarget);
+                target.classList.remove('hidden');
+                
+                // Fetch and populate order history based on the customer ID
+                const customerId = button.dataset.customerId;
+                fetch(`/api/customers/${customerId}/orders`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const orderHistoryBody = document.getElementById('orderHistoryBody');
+                        orderHistoryBody.innerHTML = '';
+                        data.forEach(order => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                                <td class="px-6 py-4 whitespace-nowrap">${order.orderNumber}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">${order.orderDate}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getOrderStatusClass(order.status)}">
+                                        ${order.status}
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">${order.total}</td>
+                            `;
+                            orderHistoryBody.appendChild(row);
+                        });
+                        // Update modal title
+                        const modalTitle = document.getElementById('modalTitle');
+                        modalTitle.textContent = `ประวัติการสั่งสินค้า ${data[0].customerName}`;
+                    });
+            });
+        });
+
+        document.querySelectorAll('[data-modal-close]').forEach(button => {
+            button.addEventListener('click', () => {
+                const target = document.getElementById(button.dataset.modalClose);
+                target.classList.add('hidden');
+            });
+        });
+
+        function getOrderStatusClass(status) {
+            switch (status) {
+                case 'Pending':
+                    return 'bg-yellow-100 text-yellow-800';
+                case 'Shipping':
+                    return 'bg-blue-100 text-blue-800';
+                case 'Delivered':
+                    return 'bg-green-100 text-green-800';
+                default:
+                    return 'bg-gray-100 text-gray-800';
+            }
+        }
+
+        function filterTable() {
+            const input = document.getElementById('searchInput');
+            const filter = input.value.toLowerCase();
+            const rows = document.querySelectorAll('.table-row');
+            rows.forEach(row => {
+                const name = row.querySelector('td').textContent.toLowerCase();
+                row.style.display = name.includes(filter) ? '' : 'none';
+            });
+        }
+    </script>
+</body>
+
+</html>

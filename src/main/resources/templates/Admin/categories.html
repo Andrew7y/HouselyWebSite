@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>จัดการหมวดหมู่สินค้า</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Aboreto&family=Anuphan:wght@100..700&display=swap" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.3/dist/tailwind.min.css"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"/>
+    <style>
+        body {
+            font-family: 'Anuphan', sans-serif;
+        }
+        .container {
+            max-width: 1200px;
+        }
+
+        .w-full{
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .table-header {
+            background-color: #007bff;
+
+        }
+        .table-row:nth-child(even) {
+            background-color: #f8fafc;
+        }
+        .table-row:hover {
+            background-color: #e2e8f0;
+            transition: background-color 0.3s ease;
+        }
+        .modal-content {
+            background-color: #ffffff;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 16px;
+        }
+        .user-icon {
+            position: fixed;
+            bottom: 16px;
+            right: 55px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 35px;
+            /* Rounded corners */
+            padding: 12px;
+            width: 150px;
+            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+            /* Similar shadow */
+        }
+
+        .user-icon-content {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-icon-content .role-label {
+            margin-left: 10px;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .user-icon i {
+            margin-left: 20px;
+            font-size: 48px;
+            /* Increase icon size */
+        }
+    </style>
+</head>
+<body>
+    <div class="container mx-auto p-4">
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-3xl font-bold" style="margin-top: 30px; font-size: 1.8rem; font-weight: bold;">หมวดหมู่สินค้า</h1>
+            <a href="/admin" class="text-blue-500 hover:text-blue-700 font-semibold">
+                <i class="fas fa-arrow-left h-5 w-5"></i> กลับสู่หน้าแดชบอร์ด
+            </a>
+        </div>
+        <div class="flex justify-end mb-4">
+            <a href="#addCategoryModal" data-modal-target="addCategoryModal" class="bg-green-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-green-600 transition-colors">
+                <i class="fas fa-plus h-5 w-5 mr-2"></i> เพิ่มหมวดหมู่สินค้า
+            </a>
+        </div>
+        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+            <table class="w-full">
+                <thead class="table-header">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-l font-medium text-white uppercase tracking-wider">ชื่อหมวดหมู่สินค้า</th>
+                        <th class="px-6 py-3 text-left text-l font-medium text-white uppercase tracking-wider">จำนวนสินค้า</th>
+                        <th class="px-6 py-3 text-left text-l font-medium text-white uppercase tracking-wider">การดำเนินการ</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    <tr th:each="category : ${categories}" class="table-row">
+                        <td class="px-6 py-4 whitespace-nowrap" th:text="${category.name}">Electronics</td>
+                        <td class="px-6 py-4 whitespace-nowrap" th:text="${category.productCount}">50</td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <a th:href="@{'/admin/categories/edit/' + ${category.id}}" class="bg-yellow-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-yellow-600 transition-colors">แก้ไข</a>
+                            <a th:href="@{'/admin/categories/delete/' + ${category.id}}" class="bg-red-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-red-600 transition-colors" onclick="return confirmDelete()">ลบ</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Add Category Modal -->
+    <div id="addCategoryModal" class="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center hidden">
+        <div class="modal-content w-1/3 bg-white p-6 rounded-lg shadow-lg">
+            <h2 class="text-2xl font-semibold mb-4">เพิ่มหมวดหมู่สินค้า</h2>
+            <form action="/admin/categories/add" method="POST">
+                <div class="mb-4">
+                    <label for="categoryName" class="block text-sm font-medium mb-2">ชื่อหมวดหมู่สินค้า</label>
+                    <input type="text" id="categoryName" name="categoryName" class="w-full px-3 py-2 border border-gray-300 rounded-lg" required>
+                </div>
+                <div class="flex justify-end">
+                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-600 transition-colors mr-2">เพิ่ม</button>
+                    <button type="button" class="bg-gray-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-gray-600 transition-colors" data-modal-close="addCategoryModal">ยกเลิก</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Category Modal -->
+    <div id="editCategoryModal" class="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center hidden">
+        <div class="modal-content w-1/3 bg-white p-6 rounded-lg shadow-lg">
+            <h2 class="text-2xl font-semibold mb-4">แก้ไขหมวดหมู่สินค้า</h2>
+            <form th:action="@{'/admin/categories/edit/' + ${category.id}}" method="POST">
+                <div class="mb-4">
+                    <label for="editCategoryName" class="block text-sm font-medium mb-2">ชื่อหมวดหมู่สินค้า</label>
+                    <input type="text" id="editCategoryName" name="categoryName" class="w-full px-3 py-2 border border-gray-300 rounded-lg" th:value="${category.name}" required>
+                </div>
+                <div class="flex justify-end">
+                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-600 transition-colors mr-2">บันทึก</button>
+                    <button type="button" class="bg-gray-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-gray-600 transition-colors" data-modal-close="editCategoryModal">ยกเลิก</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- User Icon and Role Label -->
+    <div class="user-icon">
+        <div class="user-icon-content">
+            <div class="role-label" style="font-weight: bold;">Admin</div>
+            <i class="fas fa-user-circle fa-3x text-gray-700"></i>
+        </div>
+    </div>
+
+    <script>
+        function confirmDelete() {
+            return confirm('คุณแน่ใจว่าต้องการลบหมวดหมู่นี้?'); // กล่องข้อความยืนยัน
+        }
+    </script>
+
+    <script>
+        document.querySelectorAll('[data-modal-target]').forEach(button => {
+            button.addEventListener('click', () => {
+                const target = document.getElementById(button.dataset.modalTarget);
+                target.classList.remove('hidden');
+            });
+        });
+
+        document.querySelectorAll('[data-modal-close]').forEach(button => {
+            button.addEventListener('click', () => {
+                const target = document.getElementById(button.dataset.modalClose);
+                target.classList.add('hidden');
+            });
+        });
+    </script>
+</body>
+
+</html>

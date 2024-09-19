@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>การจัดการสินค้า</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Aboreto&family=Anuphan:wght@100..700&display=swap" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.3/dist/tailwind.min.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+    <style>
+        body {
+            font-family: "Anuphan", sans-serif;
+            font-size: 16px;
+            color: #333;
+            background-color: #ffffff;
+        }
+
+        th.sortable {
+            cursor: pointer;
+        }
+
+        th.sortable:after {
+            content: ' \25B2';
+            /* default up arrow */
+            font-size: 0.7em;
+            /* reduce the size of the arrow */
+        }
+
+        th.sortable.desc:after {
+            content: ' \25BC';
+            /* down arrow */
+        }
+
+        .search-filter-container {
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            margin-right: 10px;
+        }
+
+        .user-icon {
+            position: fixed;
+            bottom: 16px;
+            right: 55px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 35px;
+            /* Rounded corners */
+            padding: 12px;
+            width: 150px;
+            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+            /* Similar shadow */
+        }
+
+        .user-icon-content {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-icon-content .role-label {
+            margin-left: 10px;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .user-icon i {
+            margin-left: 20px;
+            font-size: 48px;
+            /* Increase icon size */
+        }
+
+        table.table-striped {
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        table.table-striped thead {
+            background-color: #007bff;
+        }
+
+        table.table-striped thead th {
+            padding: 12px;
+        }
+
+        table.table-striped tbody tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        table.table-striped tbody tr.table-row{
+            background-color: #ffffff;
+        }
+        
+        table.table-striped tbody tr:hover {
+            background-color: #e2e8f0;
+            transition: background-color 0.3s ease;
+        }
+        
+    </style>
+</head>
+
+<body>
+    <div class="container mx-auto p-4">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-3xl font-bold" style="margin-top: 30px; font-size: 1.8rem; font-weight: bold;">รายการสินค้า</h1>
+            <a href="/admin" class="text-blue-500 hover:text-blue-700 font-semibold">
+                <i class="fas fa-arrow-left h-5 w-5"></i> กลับสู่หน้าแดชบอร์ด
+            </a>
+        </div>
+
+        <div class="flex justify-end mb-4">
+            <a href="#addProductModal" data-modal-target="addProductModal"
+                class="bg-green-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-green-600 transition-colors">
+                <i class="fas fa-plus h-5 w-5 mr-2"></i> เพิ่มสินค้าใหม่
+            </a>
+        </div>
+
+        <div class="row search-filter-container">
+            <div class="col-md-6">
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="fas fa-search"></i>
+                    </span>
+                    <input type="text" id="searchInput" class="form-control search-input" placeholder="ค้นหาสินค้า..."
+                        onkeyup="filterTable()">
+                </div>
+            </div>
+        </div>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th class="sortable px-6 py-3 text-left text-l font-medium text-white uppercase tracking-wider"
+                        onclick="sortTable(0)">รหัสสินค้า</th>
+                    <th class="sortable px-6 py-3 text-left text-l font-medium text-white uppercase tracking-wider"
+                        onclick="sortTable(1)">ชื่อสินค้า</th>
+                    <th class="sortable px-6 py-3 text-left text-l font-medium text-white uppercase tracking-wider"
+                        onclick="sortTable(2)">ราคา</th>
+                    <th class="sortable px-6 py-3 text-left text-l font-medium text-white uppercase tracking-wider"
+                        onclick="sortTable(3)">จำนวนสต็อก</th>
+                    <th class="sortable px-6 py-3 text-left text-l font-medium text-white uppercase tracking-wider"
+                        onclick="sortTable(4)">ประเภท</th>
+                    <th class="sortable px-6 py-3 text-left text-l font-medium text-white uppercase tracking-wider"
+                        onclick="sortTable(5)">โปรโมชัน</th>
+                    <th class="px-6 py-3 text-left text-l font-medium text-white uppercase tracking-wider">รูปภาพ</th>
+                    <th class="sortable px-6 py-3 text-left text-l font-medium text-white uppercase tracking-wider"
+                        onclick="sortTable(7)">สถานะ</th>
+                    <th class="px-6 py-3 text-left text-l font-medium text-white uppercase tracking-wider">การดำเนินการ
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200" id="productTable">
+                <tr class="table-row" th:each="product : ${products}">
+                    <td th:text="${product.code}">รหัสสินค้า</td>
+                    <td th:text="${product.name}">ชื่อสินค้า</td>
+                    <td th:text="${product.price}">ราคา</td>
+                    <td th:text="${product.stockQuantity}">จำนวนสต็อก</td>
+                    <td th:text="${product.category.name}">ประเภท</td>
+                    <td th:text="${product.promotion.name}">โปรโมชัน</td>
+                    <td><img th:src="@{${product.imageUrl}}" alt="รูปภาพสินค้า" style="width: 50px; height: 50px;" /></td>
+                    <td th:text="${product.status}">สถานะ</td>
+                    <td>
+                        <a th:href="@{'/admin/products/edit/' + ${product.id}}" class="btn btn-warning">แก้ไข</a>
+                        <a th:href="@{'/admin/products/delete/' + ${product.id}}" class="btn btn-danger" onclick="return confirmDelete()">ลบ</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- User Icon and Role Label -->
+    <div class="user-icon">
+        <div class="user-icon-content">
+            <div class="role-label" style="font-weight: bold;">Admin</div>
+            <i class="fas fa-user-circle fa-3x text-gray-700"></i>
+        </div>
+    </div>
+
+    <script>
+        function confirmDelete() {
+            return confirm('คุณแน่ใจว่าต้องการลบสินค้านี้?'); // กล่องข้อความยืนยัน
+        }
+
+        let sortDirection = {};
+
+        function sortTable(columnIndex) {
+            const table = document.getElementById('productTable');
+            const rows = Array.from(table.querySelectorAll('tr'));
+            const isNumeric = columnIndex === 2 || columnIndex === 3; // ราคาและจำนวนสต็อกเป็นตัวเลข
+
+            if (!sortDirection[columnIndex]) {
+                sortDirection[columnIndex] = 'asc'; // ทิศทางเริ่มต้น
+            } else {
+                sortDirection[columnIndex] = sortDirection[columnIndex] === 'asc' ? 'desc' : 'asc';
+            }
+
+            rows.sort((a, b) => {
+                const aText = a.cells[columnIndex].innerText || a.cells[columnIndex].textContent;
+                const bText = b.cells[columnIndex].innerText || b.cells[columnIndex].textContent;
+
+                if (isNumeric) {
+                    return sortDirection[columnIndex] === 'asc'
+                        ? parseFloat(aText) - parseFloat(bText)
+                        : parseFloat(bText) - parseFloat(aText);
+                } else {
+                    return sortDirection[columnIndex] === 'asc'
+                        ? aText.localeCompare(bText)
+                        : bText.localeCompare(aText);
+                }
+            });
+
+            table.innerHTML = '';
+            rows.forEach(row => table.appendChild(row));
+
+            updateSortIcons(columnIndex);
+        }
+
+        function updateSortIcons(columnIndex) {
+            const headers = document.querySelectorAll('th.sortable');
+            headers.forEach((header, index) => {
+                if (index === columnIndex) {
+                    header.classList.toggle('desc', sortDirection[columnIndex] === 'desc');
+                } else {
+                    header.classList.remove('desc');
+                }
+            });
+        }
+
+        function filterTable() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const table = document.getElementById('productTable');
+            const rows = table.querySelectorAll('tr');
+
+            rows.forEach(row => {
+                const cells = row.getElementsByTagName('td');
+                let rowVisible = false;
+
+                for (let i = 0; i < cells.length; i++) {
+                    const cell = cells[i];
+                    if (cell.innerText.toLowerCase().includes(searchTerm)) {
+                        rowVisible = true;
+                        break;
+                    }
+                }
+
+                row.style.display = rowVisible ? '' : 'none';
+            });
+        }
+    </script>
+</body>
+
+</html>

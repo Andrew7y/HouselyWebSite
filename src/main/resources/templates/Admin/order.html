@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>จัดการข้อมูลการสั่งซื้อ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Aboreto&family=Anuphan:wght@100..700&display=swap" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.3/dist/tailwind.min.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+</head>
+<style>
+    body{
+        font-family: 'Anuphan', sans-serif;
+    }
+    table.w-full{
+        border-collapse: separate;
+        border-spacing: 0;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    table thead {
+        background-color: #007bff;
+    }
+    table tbody tr:hover{
+        background-color: #e2e8f0;
+            transition: background-color 0.3s ease;
+    }
+    table tbody tr:nth-child(even){
+        background-color: #f8fafc;
+    }
+    .user-icon {
+            position: fixed;
+            bottom: 16px;
+            right: 55px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 35px;
+            /* Rounded corners */
+            padding: 12px;
+            width: 150px;
+            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+            /* Similar shadow */
+        }
+
+        .user-icon-content {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-icon-content .role-label {
+            margin-left: 10px;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .user-icon i {
+            margin-left: 20px;
+            font-size: 48px;
+            /* Increase icon size */
+        }
+</style>
+
+<body>
+    <div class="container mx-auto p-4">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-3xl font-bold" style="margin-top: 30px; font-size: 1.8rem; font-weight: bold;">ข้อมูลการสั่งซื้อ</h1>
+            <a href="/admin" class="text-blue-500 hover:text-blue-700 font-semibold">
+                <i class="fas fa-arrow-left h-5 w-5"></i> กลับสู่หน้าแดชบอร์ด
+            </a>
+        </div>
+        <table class="w-full">
+            <thead>
+                <tr>
+                    <th class="sortable px-6 py-3 text-left text-l font-medium text-white uppercase tracking-wider">เลขที่ใบกำกับการสั่งซื้อ</th>
+                    <th class="sortable px-6 py-3 text-left text-l font-medium text-white uppercase tracking-wider">ชื่อลูกค้า</th>
+                    <th class="sortable px-6 py-3 text-left text-l font-medium text-white uppercase tracking-wider">วันที่สั่งซื้อ</th>
+                    <th class="sortable px-6 py-3 text-left text-l font-medium text-white uppercase tracking-wider">สถานะการสั่งซื้อ</th>
+                    <th class="sortable px-6 py-3 text-left text-l font-medium text-white uppercase tracking-wider">ยอดรวมการสั่งซื้อ</th>
+                    <th class="sortable px-6 py-3 text-left text-l font-medium text-white uppercase tracking-wider">รายละเอียดการสั่งซื้อ</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Example row -->
+                <tr th:each="order : ${orders}">
+                    <td class="px-4 py-2" th:text="${order.orderNumber}">1001</td>
+                    <td class="px-4 py-2" th:text="${order.customerName}">John Doe</td>
+                    <td class="px-4 py-2" th:text="${#dates.format(order.orderDate, 'yyyy-MM-dd')}">2024-09-15</td>
+                    <td class="px-4 py-2" th:text="${order.status}">Pending</td>
+                    <td class="px-4 py-2" th:text="${order.total}">$120.00</td>
+                    <td class="px-4 py-2">
+                        <a href="#orderDetailsModal" data-modal-target="orderDetailsModal" 
+                           data-order-number="${order.orderNumber}" 
+                           data-customer-name="${order.customerName}"
+                           data-order-date="${#dates.format(order.orderDate, 'yyyy-MM-dd')}"
+                           data-order-status="${order.status}"
+                           data-order-total="${order.total}"
+                           data-order-items="${order.items}"
+                           class="text-blue-500 hover:text-blue-700">
+                            <i class="fas fa-eye h-5 w-5"></i> รายละเอียด
+                        </a>
+                    </td>
+                </tr>
+                <!-- Repeat rows for other orders -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Order Details Modal -->
+    <div id="orderDetailsModal" class="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center hidden">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-1/2">
+            <h2 class="text-2xl font-semibold mb-4">รายละเอียดการสั่งซื้อ</h2>
+            <div class="mb-4">
+                <p class="text-lg font-medium" style="margin-top: 5px;">เลขที่ใบกำกับการสั่งซื้อ: <span id="orderNumber"></span></p>
+                <p class="text-lg font-medium" style="margin-top: 5px;">ชื่อลูกค้า: <span id="customerName"></span></p>
+                <p class="text-lg font-medium" style="margin-top: 5px;">วันที่สั่งซื้อ: <span id="orderDate"></span></p>
+                <div class="mb-4">
+                    <label for="orderStatus" class="block text-sm font-medium mb-2" style="margin-top: 10px;">สถานะการสั่งซื้อ</label>
+                    <select id="orderStatus" name="orderStatus" class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                        <option value="Pending">อยู่ระหว่างการดำเนินการ</option>
+                        <option value="Shipping">อยู่ระหว่างการจัดส่ง</option>
+                        <option value="Delivered">จัดส่งเสร็จสมบูรณ์</option>
+                    </select>
+                </div>
+                <p class="text-lg font-medium">ยอดรวมการสั่งซื้อ: <span id="orderTotal"></span></p>
+            </div>
+            <h3 class="text-xl font-semibold mb-2">รายการสินค้าที่สั่งซื้อ</h3>
+            <ul class="list-disc pl-5 mb-4" id="orderItemsList">
+                <!-- Example product -->
+                <!-- Products will be injected by JavaScript -->
+            </ul>
+            <div class="flex justify-end">
+                <button type="button" class="bg-blue-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-600 transition-colors mr-2" id="saveOrderStatusButton">บันทึก</button>
+                <button type="button" class="bg-gray-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-gray-600 transition-colors" data-modal-close="orderDetailsModal">ปิด</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Icon and Role Label -->
+    <div class="user-icon">
+        <div class="user-icon-content">
+            <div class="role-label" style="font-weight: bold;">Admin</div>
+            <i class="fas fa-user-circle fa-3x text-gray-700"></i>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('[data-modal-target]').forEach(button => {
+            button.addEventListener('click', () => {
+                const target = document.getElementById(button.dataset.modalTarget);
+                target.classList.remove('hidden');
+
+                // Populate modal with order details
+                document.getElementById('orderNumber').textContent = button.dataset.orderNumber;
+                document.getElementById('customerName').textContent = button.dataset.customerName;
+                document.getElementById('orderDate').textContent = button.dataset.orderDate;
+                document.getElementById('orderTotal').textContent = button.dataset.orderTotal;
+                document.getElementById('orderStatus').value = button.dataset.orderStatus;
+
+                // Populate order items list
+                const items = JSON.parse(button.dataset.orderItems);
+                const orderItemsList = document.getElementById('orderItemsList');
+                orderItemsList.innerHTML = '';
+                items.forEach(item => {
+                    const li = document.createElement('li');
+                    li.textContent = `${item.name} - ${item.price} x ${item.quantity}`;
+                    orderItemsList.appendChild(li);
+                });
+            });
+        });
+
+        document.querySelectorAll('[data-modal-close]').forEach(button => {
+            button.addEventListener('click', () => {
+                const target = document.getElementById(button.dataset.modalClose);
+                target.classList.add('hidden');
+            });
+        });
+
+        document.getElementById('saveOrderStatusButton').addEventListener('click', () => {
+            const status = document.getElementById('orderStatus').value;
+            // Implement AJAX call or form submission to update the order status
+            console.log('Saving order status:', status);
+        });
+    </script>
+</body>
+
+</html>

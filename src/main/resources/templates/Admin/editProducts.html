@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>แก้ไขสินค้า</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Aboreto&family=Anuphan:wght@100..700&display=swap" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.3/dist/tailwind.min.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+    <style>
+        body {
+            font-family: "Anuphan", sans-serif;
+            background-color: #f8f8f8;
+            font-size: 16px;
+            color: #333;
+        }
+        .form-container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .form-control, .form-control-file {
+            border-radius: 5px;
+        }
+        .btn-custom {
+            background-color: #007bff;
+            color: white;
+        }
+        .btn-custom:hover {
+            background-color: #0056b3;
+        }
+        .user-icon {
+            position: fixed;
+            bottom: 16px;
+            right: 55px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 35px;
+            /* Rounded corners */
+            padding: 12px;
+            width: 150px;
+            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+            /* Similar shadow */
+        }
+
+        .user-icon-content {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-icon-content .role-label {
+            margin-left: 10px;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .user-icon i {
+            margin-left: 20px;
+            font-size: 48px;
+            /* Increase icon size */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container form-container">
+        <h1 class="text-center">แก้ไขสินค้า</h1>
+
+        <form th:action="@{/admin/products}" th:object="${product}" method="post" enctype="multipart/form-data">
+            <!-- Hidden field for the product ID -->
+            <input type="hidden" th:field="*{id}"/>
+
+            <!-- New field for Product Code -->
+            <div class="form-group">
+                <label for="productCode">รหัสสินค้า:</label>
+                <input type="text" id="productCode" th:field="*{productCode}" class="form-control" required/>
+            </div>
+
+            <div class="form-group">
+                <label for="name">ชื่อสินค้า:</label>
+                <input type="text" id="name" th:field="*{name}" class="form-control" required/>
+            </div>
+
+            <div class="form-group">
+                <label for="description">รายละเอียดสินค้า:</label>
+                <textarea id="description" th:field="*{description}" class="form-control" rows="4" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="price">ราคา:</label>
+                <input type="number" id="price" th:field="*{price}" class="form-control" step="0.01" required/>
+            </div>
+
+            <div class="form-group">
+                <label for="stockQuantity">สินค้าคงเหลือ:</label>
+                <input type="number" id="stockQuantity" th:field="*{stockQuantity}" class="form-control" required/>
+            </div>
+
+            <div class="form-group">
+                <label for="category">ประเภทสินค้า:</label>
+                <select id="category" th:field="*{category.id}" class="form-control" required>
+                    <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="promotion">โปรโมชัน:</label>
+                <select id="promotion" th:field="*{promotion.id}" class="form-control">
+                    <option value="" th:text="'ไม่มีโปรโมชัน'">ไม่มีโปรโมชัน</option>
+                    <option th:each="promotion : ${promotions}" th:value="${promotion.id}" th:text="${promotion.name}"></option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="image">รูปภาพสินค้า:</label>
+                <input type="file" id="image" th:field="*{image}" class="form-control-file"/>
+                <div th:if="${product.imageUrl}" class="mt-2">
+                    <img th:src="@{${product.imageUrl}}" alt="Product Image" style="width: 150px; height: auto;"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="status">สถานะสินค้า:</label>
+                <select id="status" th:field="*{status}" class="form-control" required>
+                    <option value="AVAILABLE" th:selected="${product.status == 'AVAILABLE'}">พร้อมขาย</option>
+                    <option value="OUT_OF_STOCK" th:selected="${product.status == 'OUT_OF_STOCK'}">หมดสต็อก</option>
+                    <option value="NOT_AVAILABLE" th:selected="${product.status == 'NOT_AVAILABLE'}">ไม่พร้อมขาย</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-custom">บันทึกการเปลี่ยนแปลง</button>
+            <a href="/admin/products" class="btn btn-secondary">ยกเลิก</a>
+        </form>
+    </div>
+
+    <!-- User Icon and Role Label -->
+    <div class="user-icon">
+        <div class="user-icon-content">
+            <div class="role-label" style="font-weight: bold;">Admin</div>
+            <i class="fas fa-user-circle fa-3x text-gray-700"></i>
+        </div>
+    </div>
+
+    <!-- Include necessary scripts for Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>

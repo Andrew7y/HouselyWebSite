@@ -1,21 +1,22 @@
 package com.housely.model;
-import java.util.List;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
+
+import java.util.List;
+
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-@ToString
-public class Cart {
-    private Long cartId;
+@NoArgsConstructor
+public class FavoriteList {
+   
+    private Long favoriteListId;
+    private String favoriteListName;
     private Customer customer;
-    private List<CartItem> cartItems;
-
+    private List<Product> productInFavoriteList;
 }
-

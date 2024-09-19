@@ -36,38 +36,6 @@ public class AdminController {
         return "Admin/customer";
     }
 
-<<<<<<< HEAD
-    @GetMapping("/admin/categories")
-    public String getCategoryPage() {
-        return "Admin/categories";
-    }
-
-    @GetMapping("/admin/products")
-    public String getProductsPage() {
-        return "Admin/products";
-    }
-
-    @GetMapping("/admin/orders")
-    public String getOrdersPage() {
-        return "Admin/orders";
-    }
-
-    @GetMapping("/admin/promotions")
-    public String getPromotionsPage() {
-        return "Admin/promotions";
-    }
-
-    @GetMapping("/admin/users")
-    public String getUsersPage() {
-        return "Admin/users";
-    }
-
-    @GetMapping("/admin/reports")
-    public String getReportsPage() {
-        return "Admin/reports";
-    }
-=======
     
->>>>>>> e62ba8229a7c36f9018919bcdd50cb06ade26ea4
 
 }

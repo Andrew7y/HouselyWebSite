@@ -11,7 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class AdminController {
     
-    @GetMapping("/")
+    @GetMapping("/Home")
     public String getLoginPage() {
         return "User/Home";
     }

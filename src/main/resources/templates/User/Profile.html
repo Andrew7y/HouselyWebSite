@@ -1,19 +1,17 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="th" xmlns:th="http://www.thymeleaf.org">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ข้อมูลส่วนตัว - Housely</title>
-  <!-- icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <!-- header -->
-  <link rel="stylesheet" href="nav_styles.css" />
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Aboreto&family=Anuphan:wght@100..700&display=swap" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-  <!-- footer -->
-  <link rel="stylesheet" href="footer.css" />
+  <link rel="stylesheet" href="@{/nav_styles.css}" />
+  <link rel="stylesheet" th:href="@{/footer.css}" />
+
   <style>
     body{
       user-select: none;
@@ -80,60 +78,63 @@
 
   <header>
     <div class="navbar">
-      <a href="#" class="logo">HOUSELY</a>
-      <nav>
-        <ul>
-          <li>
-            <a href="#" class="dropdown-toggle">ค้นหาจากห้อง <i class="fas fa-caret-down"></i></a>
-            <div class="dropdown-content">
-              <div class="row" id="search-room-row">
-                <!-- คอลัมน์จะถูกสร้างและแสดงที่นี่โดย JavaScript -->
-              </div>
-            </div>
-          </li>
-          <li>
-            <a href="#" class="dropdown-toggle">หมวดสินค้ายอดฮิต <i class="fas fa-caret-down"></i></a>
-            <div class="dropdown-content">
-              <div class="row" id="popular-category-row">
-                <!-- คอลัมน์จะถูกสร้างและแสดงที่นี่โดย JavaScript -->
-              </div>
-            </div>
-          </li>
-          <li>
-            <a href="#" class="dropdown-toggle">โปรโมชั่น <i class="fas fa-caret-down"></i></a>
-            <div class="dropdown-content">
-              <div class="row" id="promotion-row">
-                <!-- คอลัมน์จะถูกสร้างและแสดงที่นี่โดย JavaScript -->
-              </div>
-            </div>
-          </li>
-        </ul>
-      </nav>
-      <div class="search-bar">
-        <input type="text" placeholder="ค้นหาสินค้าที่คุณต้องการ..." />
-        <button type="submit"><i class="fas fa-search"></i></button>
-      </div>
-      <div class="icons">
-        <a href="#"><i class="fas fa-heart"></i></a>
-        <a href="#"><i class="fas fa-shopping-cart"></i></a>
-        <a href="#"><i class="fas fa-user"></i></a>
-      </div>
+        <a href="#" class="logo">HOUSELY</a>
+        <nav>
+            <ul>
+                <li>
+                    <a href="#" class="dropdown-toggle">ค้นหาจากห้อง <i class="fas fa-caret-down"></i></a>
+                    <div class="dropdown-content">
+                        <div class="row" id="search-room-row">
+                            <!-- คอลัมน์จะถูกสร้างและแสดงที่นี่โดย JavaScript -->
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-toggle">หมวดสินค้ายอดฮิต <i class="fas fa-caret-down"></i></a>
+                    <div class="dropdown-content">
+                        <div class="row" id="popular-category-row">
+                            <!-- คอลัมน์จะถูกสร้างและแสดงที่นี่โดย JavaScript -->
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-toggle">โปรโมชั่น <i class="fas fa-caret-down"></i></a>
+                    <div class="dropdown-content">
+                        <div class="row" id="promotion-row">
+                            <!-- คอลัมน์จะถูกสร้างและแสดงที่นี่โดย JavaScript -->
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+        <div class="search-bar">
+            <input type="text" placeholder="ค้นหาสินค้าที่คุณต้องการ..." />
+            <button type="submit"><i class="fas fa-search"></i></button>
+        </div>
+        <div class="icons">
+            <a href="#"><i class="fas fa-heart"></i></a>
+            <a href="#"><i class="fas fa-shopping-cart"></i></a>
+            <a href="#"><i class="fas fa-user"></i></a>
+        </div>
     </div>
-  </header>
+</header>
 
-  <main>
-    <section class="profile">
-      <a href="#" class="edit-icon">✏️</a>
+<main>
+  <section class="profile">
+      <a href="#" class="edit-icon">
+          <i class="fas fa-pencil-alt"></i> <!-- Font Awesome pencil icon -->
+      </a>
       <h1>สวัสดี, Papika</h1>
       <div class="info">
-        <p>ชื่อ : <span>Papika</span></p>
-        <p>วันเกิด : <span>01/12/1998</span></p>
-        <p>E-MAIL : <span>Papika@gmail.com</span></p>
-        <p>เบอร์โทร : <span>098-1225555</span></p>
-        <p>ที่อยู่สำหรับการจัดส่ง : <span>อ.เมืองขอนแก่น จ.ขอนแก่น 40000</span></p>
+          <p>ชื่อ : <span th:text="${user.name}">Papika</span></p>
+          <p>วันเกิด : <span th:text="${user.birthdate}">01/12/1998</span></p>
+          <p>E-MAIL : <span th:text="${user.email}">Papika@gmail.com</span></p>
+          <p>เบอร์โทร : <span th:text="${user.phone}">098-1225555</span></p>
+          <p>ที่อยู่สำหรับการจัดส่ง : <span th:text="${user.address}">อ.เมืองขอนแก่น จ.ขอนแก่น 40000</span></p>
       </div>
-    </section>
-  </main>
+  </section>
+</main>
+
 
   <footer class="footer">
     <p>ติดต่อเรา</p>

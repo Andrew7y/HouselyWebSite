@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="th" xmlns:th="http://www.thymeleaf.org">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ค้นหาจากห้อง - Housely</title>
-  <link rel="stylesheet" href="nav_styles.css" />
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Aboreto&family=Anuphan:wght@100..700&display=swap" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-  <link rel="stylesheet" href="footer.css" />
+  <link rel="stylesheet" href="@{/nav_styles.css}" />
+  <link rel="stylesheet" th:href="@{/footer.css}" />
   <style>
     .all-product {
       margin: 30px 30px 30px 30px;
@@ -424,138 +424,121 @@
 <body>
   <header>
     <div class="navbar">
-      <a href="#" class="logo">HOUSELY</a>
-      <nav>
-        <ul>
-          <li>
-            <a href="#" class="dropdown-toggle">ค้นหาจากห้อง <i class="fas fa-caret-down"></i></a>
-            <div class="dropdown-content">
-              <div class="row" id="search-room-row">
-                <!-- คอลัมน์จะถูกสร้างและแสดงที่นี่โดย JavaScript -->
-              </div>
-            </div>
-          </li>
-          <li>
-            <a href="#" class="dropdown-toggle">หมวดสินค้ายอดฮิต <i class="fas fa-caret-down"></i></a>
-            <div class="dropdown-content">
-              <div class="row" id="popular-category-row">
-                <!-- คอลัมน์จะถูกสร้างและแสดงที่นี่โดย JavaScript -->
-              </div>
-            </div>
-          </li>
-          <li>
-            <a href="#" class="dropdown-toggle">โปรโมชั่น <i class="fas fa-caret-down"></i></a>
-            <div class="dropdown-content">
-              <div class="row" id="promotion-row">
-                <!-- คอลัมน์จะถูกสร้างและแสดงที่นี่โดย JavaScript -->
-              </div>
-            </div>
-          </li>
-        </ul>
-      </nav>
-      <div class="search-bar">
-        <input type="text" placeholder="ค้นหาสินค้าที่คุณต้องการ..." />
-        <button type="submit"><i class="fas fa-search"></i></button>
-      </div>
-      <div class="icons">
-        <a href="#"><i class="fas fa-heart"></i></a>
-        <a href="#"><i class="fas fa-shopping-cart"></i></a>
-        <a href="#"><i class="fas fa-user"></i></a>
-      </div>
+        <a href="#" class="logo">HOUSELY</a>
+        <nav>
+            <ul>
+                <li>
+                    <a href="#" class="dropdown-toggle">ค้นหาจากห้อง <i class="fas fa-caret-down"></i></a>
+                    <div class="dropdown-content">
+                        <div class="row" id="search-room-row">
+                            <!-- คอลัมน์จะถูกสร้างและแสดงที่นี่โดย JavaScript -->
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-toggle">หมวดสินค้ายอดฮิต <i class="fas fa-caret-down"></i></a>
+                    <div class="dropdown-content">
+                        <div class="row" id="popular-category-row">
+                            <!-- คอลัมน์จะถูกสร้างและแสดงที่นี่โดย JavaScript -->
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-toggle">โปรโมชั่น <i class="fas fa-caret-down"></i></a>
+                    <div class="dropdown-content">
+                        <div class="row" id="promotion-row">
+                            <!-- คอลัมน์จะถูกสร้างและแสดงที่นี่โดย JavaScript -->
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+        <div class="search-bar">
+            <input type="text" placeholder="ค้นหาสินค้าที่คุณต้องการ..." />
+            <button type="submit"><i class="fas fa-search"></i></button>
+        </div>
+        <div class="icons">
+            <a href="#"><i class="fas fa-heart"></i></a>
+            <a href="#"><i class="fas fa-shopping-cart"></i></a>
+            <a href="#"><i class="fas fa-user"></i></a>
+        </div>
     </div>
-  </header>
+</header>
 
-  <main>
-    <section class="all-product">
+<main>
+  <section class="all-product">
       <div class="header-room">
-        <div class="slideshow-container">
-          <div class="mySlides">
-            <img src="https://www.ikea.com/ext/ingkadam/m/b188de628d74f5b/original/PH199271.jpg" alt="room-photo1">
-          </div>
-          <div class="mySlides">
-            <img
-              src="https://cdn.apartmenttherapy.info/image/upload/v1603122773/at/style/2020-10/IKEA%20Small%20Bedroom%20Update/PH170532.jpg"
-              alt="room-photo2">
-          </div>
-          <div class="mySlides">
-            <img src="https://www.ikea.com/ext/ingkadam/m/38106c80d39875ab/original/PH199467.jpg" alt="room-photo3">
-          </div>
-          <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-          <a class="next" onclick="plusSlides(1)">&#10095;</a>
-        </div>
-        <div class="rightHead">
-          <div class="room-detail-container">
-            <p class="room-detail">
-              Wake up, it's time to sleep! There's always so much you want to
-              do. Yet switching off and sleeping helps you feel happier,
-              healthier and more productive. Dive into a bed that lets you feel
-              recharged and ready to power your dreams.
-            </p>
-          </div>
-          <hr class="custom-hr1" />
-          <div class="filter-box">
-            <h3>Filter by category</h3>
-            <div class="chips-container">
-              <input type="checkbox" onClick="toggle(this)" id="myCheckbox" />
-              <label for="myCheckbox" class="md-chip md-chip-clickable md-chip-hover">Select All</label>
-
-              <input type="checkbox" class="item-checkbox" name="foo" value="bar1" id="1" />
-              <label for="1" class="md-chip md-chip-clickable md-chip-hover">Table</label>
-
-              <input type="checkbox" class="item-checkbox" name="foo" value="bar2" id="2" />
-              <label for="2" class="md-chip md-chip-clickable md-chip-hover">Bed</label>
-
-              <input type="checkbox" class="item-checkbox" name="foo" value="bar3" id="3" />
-              <label for="3" class="md-chip md-chip-clickable md-chip-hover">Wardrobes</label>
-
-              <input type="checkbox" class="item-checkbox" name="foo" value="bar4" id="4" />
-              <label for="4" class="md-chip md-chip-clickable md-chip-hover">Cabinet</label>
-            </div>
-
-            <div class="price-range">
-              <h3>Price Range</h3>
-              <div class="price">
-                <span id="from">100฿</span>-
-                <span id="to">100,000฿</span>
+          <div class="slideshow-container">
+              <div class="mySlides" th:each="image : ${sliderImages}">
+                  <img th:src="${image.url}" alt="room-photo"/>
               </div>
-              <div class="multi-range">
-                <input id="min" type="range" min="0" max="100" value="0" step="0.0001" />
-                <input id="max" type="range" min="0" max="100" value="100" step="0.0001" />
-              </div>
-            </div>
-            <button class="find-btn">Find!</button>
+              <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+              <a class="next" onclick="plusSlides(1)">&#10095;</a>
           </div>
-        </div>
+          <div class="rightHead">
+              <div class="room-detail-container">
+                  <p class="room-detail" th:text="${roomDetailText}">
+                      Wake up, it's time to sleep! There's always so much you want to
+                      do. Yet switching off and sleeping helps you feel happier,
+                      healthier and more productive. Dive into a bed that lets you feel
+                      recharged and ready to power your dreams.
+                  </p>
+              </div>
+              <hr class="custom-hr1" />
+              <div class="filter-box">
+                  <h3>Filter by category</h3>
+                  <div class="chips-container">
+                      <input type="checkbox" onClick="toggle(this)" id="myCheckbox"/>
+                      <label for="myCheckbox" class="md-chip md-chip-clickable md-chip-hover">Select All</label>
+
+                      <div th:each="category : ${categories}">
+                          <input type="checkbox" class="item-checkbox" th:id="${category.id}" th:value="${category.value}" />
+                          <label th:for="${category.id}" class="md-chip md-chip-clickable md-chip-hover" th:text="${category.name}"></label>
+                      </div>
+                  </div>
+
+                  <div class="price-range">
+                      <h3>Price Range</h3>
+                      <div class="price">
+                          <span th:id="from" th:text="${priceRange.from}">100฿</span>-
+                          <span th:id="to" th:text="${priceRange.to}">100,000฿</span>
+                      </div>
+                      <div class="multi-range">
+                          <input id="min" type="range" min="0" max="100" th:value="${priceRange.min}" step="0.0001"/>
+                          <input id="max" type="range" min="0" max="100" th:value="${priceRange.max}" step="0.0001"/>
+                      </div>
+                  </div>
+                  <button class="find-btn">Find!</button>
+              </div>
+          </div>
       </div>
 
       <h2>ห้องนอน</h2>
       <hr class="custom-hr2" />
       <div class="sort-container">
-        <div class="item-count">12 รายการ</div>
-        <div class="sort-dropdown">
-          <button class="sort-button">Sort by <i class="fas fa-caret-down"></i></button>
-          <div class="sort-dropdown-content">
-            <a href="#">Option 1</a>
-            <a href="#">Option 2</a>
-            <a href="#">Option 3</a>
+          <div class="item-count" th:text="${'รายการทั้งหมด ' + ${productCount} + ' รายการ'}">12 รายการ</div>
+          <div class="sort-dropdown">
+              <button class="sort-button">Sort by <i class="fas fa-caret-down"></i></button>
+              <div class="sort-dropdown-content">
+                  <a href="#" th:each="option : ${sortOptions}" th:text="${option}"></a>
+              </div>
           </div>
-        </div>
       </div>
       <div class="product-list">
-        <!-- Repeat this block for each product -->
-        <div class="product">
-          <div class="product-image"></div>
-          <h3>ชื่อสินค้า</h3>
-          <p>20,000฿</p>
-          <div class="product-icons">
-            <a href="#"><i class="fas fa-heart"></i></a>
-            <a href="#">➤</a>
+          <div class="product" th:each="product : ${products}">
+              <div class="product-image">
+                  <img th:src="${product.imageUrl}" alt="Product Image"/>
+              </div>
+              <h3 th:text="${product.name}">ชื่อสินค้า</h3>
+              <p th:text="${product.price}">20,000฿</p>
+              <div class="product-icons">
+                  <a href="#" th:href="@{${product.wishlistUrl}}"><i class="fas fa-heart"></i></a>
+                  <a href="#" th:href="@{${product.detailsUrl}}"><i class="fas fa-arrow-right"></i></a>
+              </div>
           </div>
-        </div>
-        <!-- Repeat ends -->
       </div>
-    </section>
-  </main>
+  </section>
+</main>
 
   <footer class="footer">
     <p>ติดต่อเรา</p>

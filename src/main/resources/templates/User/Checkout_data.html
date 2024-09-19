@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="th" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,11 +8,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Aboreto&family=Anuphan:wght@100..700&display=swap"
-        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Aboreto&family=Anuphan:wght@100..700&display=swap" rel="stylesheet" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="nav_styles.css" />
+    <link rel="stylesheet" href="@{/nav_styles.css}" />
+
     <style>
         * {
             box-sizing: border-box;
@@ -363,7 +363,7 @@
     <div class="container">
         <div class="main-content">
             <div class="left-section">
-                <div class = "head">
+                <div class="head">
                     <a href="#" class="logo">HOUSELY</a>
                     <div class="icon-container">
                         <div class="icon-item">
@@ -386,28 +386,27 @@
                             </div>
                             <span class="icon-text">การชำระเงิน</span>
                         </div>
+                    </div>
                 </div>
-            </div>
                 <div class="address-section">
                     <h2>โปรดยืนยันหรือแก้ไขรายละเอียด</h2>
-                    <p class = "detail" style="margin-bottom: 25px;">ที่อยู่ในการจัดส่งสินค้าจะถูกใช้ในขั้นตอนต่อไป เพื่อหาตัวเลือกการจัดส่งและการรับสินค้าที่ดีที่สุด</p>
-                    <div class = "address">
+                    <p class="detail" style="margin-bottom: 25px;">ที่อยู่ในการจัดส่งสินค้าจะถูกใช้ในขั้นตอนต่อไป เพื่อหาตัวเลือกการจัดส่งและการรับสินค้าที่ดีที่สุด</p>
+                    <div class="address">
                         <p style="font-weight: bold;">ที่อยู่สำหรับจัดส่งสินค้า 
-                            <button class="edit-btn">
+                            <button class="edit-btn" th:onclick="'showPopup(\'edit-popup\')'">
                                 <i class="fas fa-edit"></i><span class="text">แก้ไข</span>
                             </button>          
                         </p>
-                        <p>นางสาวภรณ์ทิพย์ แก้วกลม</p>
-                        <p>1/45 ม.6 ต.วังเหนือ อ.บางซ้าย จ.พระนครศรีอยุธยา</p>
-                        <p>33140</p>
-                        <p>+66 88 603 4580</p>
-                        <button class="other-add-btn"><span class="text">เลือกที่อยู่อื่น</span></button>
+                        <p th:text="${address.name}">นางสาวภรณ์ทิพย์ แก้วกลม</p>
+                        <p th:text="${address.line1}">1/45 ม.6 ต.วังเหนือ อ.บางซ้าย จ.พระนครศรีอยุธยา</p>
+                        <p th:text="${address.postalCode}">33140</p>
+                        <p th:text="${address.phone}">+66 88 603 4580</p>
+                        <button class="other-add-btn" th:onclick="'showPopup(\'address-popup\')'"><span class="text">เลือกที่อยู่อื่น</span></button>
                         <hr width="100%" style="margin-top: 70px; margin-bottom: 30px;"/>
-                            <p style="font-weight: bold;">อีเมลยืนยันคำสั่งซื้อสินค้า</p>
-                            <p>taksakhim@gmail.com</p>
-                        
-                            <button class="continue-btn"><span class = "text">ไปขั้นตอนถัดไป ></span></button>
-                            <a href="#" class="back-link">< กลับไปที่ตะกร้า</a>
+                        <p style="font-weight: bold;">อีเมลยืนยันคำสั่งซื้อสินค้า</p>
+                        <p th:text="${email}">taksakhim@gmail.com</p>
+                        <button class="continue-btn" th:onclick="'nextStep()'"><span class="text">ไปขั้นตอนถัดไป ></span></button>
+                        <a href="#" class="back-link">< กลับไปที่ตะกร้า</a>
                     </div>
                 </div>
             </div>
@@ -415,25 +414,25 @@
             <div class="right-section">
                 <div class="order-summary">
                     <p style="font-weight: bold;">รายละเอียดการจัดส่ง</p>
-                    <p>นางสาวภรณ์ทิพย์ แก้วกลม</p>
-                    <p>1/45 ม.6 ต.วังเหนือ อ.บางซ้าย จ.พระนครศรีอยุธยา</p>
-                    <p>33140</p>
-                    <p>+66 88 603 4580</p>
+                    <p th:text="${address.name}">นางสาวภรณ์ทิพย์ แก้วกลม</p>
+                    <p th:text="${address.line1}">1/45 ม.6 ต.วังเหนือ อ.บางซ้าย จ.พระนครศรีอยุธยา</p>
+                    <p th:text="${address.postalCode}">33140</p>
+                    <p th:text="${address.phone}">+66 88 603 4580</p>
                     <hr width="100%" style="margin-top: 30px; margin-bottom: 30px;"/>
                     
                     <p style="font-weight: bold;">วิธีการจัดส่ง</p>
-                    <p>จัดส่งแบบพัสดุ</p>
-                    <p>ระยะเวลาการจัดส่งโดยประมาณ</p>
+                    <p th:text="${shippingMethod}">จัดส่งแบบพัสดุ</p>
+                    <p th:text="${deliveryTime}">ระยะเวลาการจัดส่งโดยประมาณ</p>
                     <hr width="100%" style="margin-top: 30px; margin-bottom: 30px;"/>
 
                     <p style="font-weight: bold;">สินค้า</p>
                     <div class="product-container">
-                        <img src="https://www.ikea.com/th/th/images/products/hildegun-tea-towel-blue__0956028_pe804439_s3.jpg" alt="HILDEGUN Tea Towel" class="product-image">
+                        <img th:src="@{${product.imageUrl}}" alt="HILDEGUN Tea Towel" class="product-image">
                         <div class="product-details">
-                            <h2>HILDEGUN ฮิลเดกุน</h2>
-                            <p>ผ้าเช็ดจาน, น้ำเงิน, 45x60 ซม.</p>
-                            <p>จำนวน: 1 รายการ</p>
-                            <span>19 บาท</span>
+                            <h2 th:text="${product.name}">HILDEGUN ฮิลเดกุน</h2>
+                            <p th:text="${product.description}">ผ้าเช็ดจาน, น้ำเงิน, 45x60 ซม.</p>
+                            <p th:text="'จำนวน: ' + ${product.quantity} + ' รายการ'">จำนวน: 1 รายการ</p>
+                            <span th:text="${product.price}">19 บาท</span>
                         </div>
                     </div>
                     <hr width="100%" style="margin-top: 30px; margin-bottom: 30px;"/>
@@ -443,18 +442,17 @@
             <!-- Popup HTML -->
             <div id="edit-popup" class="popup">
                 <div class="popup-content">
-                    <span class="close-btn">&times;</span>
+                    <span class="close-btn" th:onclick="'hidePopup(\'edit-popup\')'">&times;</span>
                     <h2>แก้ไขรายละเอียด</h2>
-                    <!-- Your form or content for editing goes here -->
-                    <form>
+                    <form th:action="@{/updateAddress}" method="post">
                         <label for="name">ชื่อ:</label>
-                        <input type="text" id="name" name="name" value="นางสาวภรณ์ทิพย์ แก้วกลม"><br><br>
+                        <input type="text" id="name" name="name" th:value="${address.name}"><br><br>
                         <label for="address">ที่อยู่:</label>
-                        <textarea id="address" name="address">1/45 ม.6 ต.วังเหนือ อ.บางซ้าย จ.พระนครศรีอยุธยา</textarea><br><br>
+                        <textarea id="address" name="address" th:text="${address.line1}"></textarea><br><br>
                         <label for="postal-code">รหัสไปรษณีย์:</label>
-                        <input type="text" id="postal-code" name="postal-code" value="33140"><br><br>
+                        <input type="text" id="postal-code" name="postal-code" th:value="${address.postalCode}"><br><br>
                         <label for="phone">เบอร์โทรศัพท์:</label>
-                        <input type="text" id="phone" name="phone" value="+66 88 603 4580"><br><br>
+                        <input type="text" id="phone" name="phone" th:value="${address.phone}"><br><br>
                         <button type="submit" class="submit-btn">บันทึก</button>
                     </form>
                 </div>
@@ -463,15 +461,15 @@
             <!-- Address List Popup HTML -->
             <div id="address-popup" class="popup">
                 <div class="popup-content">
-                    <span class="close-btn">&times;</span>
+                    <span class="close-btn" th:onclick="'hidePopup(\'address-popup\')'">&times;</span>
                     <h2>เลือกที่อยู่</h2>
                     <div class="address-list">
-                        <div class="address-item">
+                        <div class="address-item" th:each="address : ${addresses}">
                             <p>ที่อยู่ที่เคยกรอก</p>
-                            <p>นางสาวภรณ์ทิพย์ แก้วกลม</p>
-                            <p>1/45 ม.6 ต.วังเหนือ อ.บางซ้าย จ.พระนครศรีอยุธยา</p>
-                            <p>33140</p>
-                            <p>+66 88 603 4580</p>
+                            <p th:text="${address.name}">นางสาวภรณ์ทิพย์ แก้วกลม</p>
+                            <p th:text="${address.line1}">1/45 ม.6 ต.วังเหนือ อ.บางซ้าย จ.พระนครศรีอยุธยา</p>
+                            <p th:text="${address.postalCode}">33140</p>
+                            <p th:text="${address.phone}">+66 88 603 4580</p>
                         </div>
                         <!-- Add more address items here as needed -->
                     </div>
@@ -482,25 +480,23 @@
             <!-- Add Address Popup HTML -->
             <div id="add-address-popup" class="popup">
                 <div class="popup-content">
-                    <span class="close-btn">&times;</span>
+                    <span class="close-btn" th:onclick="'hidePopup(\'add-address-popup\')'">&times;</span>
                     <h2>เพิ่มที่อยู่ใหม่</h2>
-                    <form id="add-address-form">
-                        <label for="new-address-name">ชื่อ:</label>
-                        <input type="text" id="new-address-name" name="new-address-name"><br><br>
+                    <form th:action="@{/addAddress}" method="post">
+                        <label for="new-name">ชื่อ:</label>
+                        <input type="text" id="new-name" name="name"><br><br>
                         <label for="new-address">ที่อยู่:</label>
-                        <textarea id="new-address" name="new-address"></textarea><br><br>
+                        <textarea id="new-address" name="line1"></textarea><br><br>
                         <label for="new-postal-code">รหัสไปรษณีย์:</label>
-                        <input type="text" id="new-postal-code" name="new-postal-code"><br><br>
+                        <input type="text" id="new-postal-code" name="postalCode"><br><br>
                         <label for="new-phone">เบอร์โทรศัพท์:</label>
-                        <input type="text" id="new-phone" name="new-phone"><br><br>
-                        <button type="submit" class="submit-btn">เพิ่มที่อยู่</button>
+                        <input type="text" id="new-phone" name="phone"><br><br>
+                        <button type="submit" class="submit-btn">บันทึก</button>
                     </form>
                 </div>
             </div>
-
         </div>
     </div>
-
     <script>
         // Get the elements for both popups
         const editPopup = document.getElementById('edit-popup');

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="th" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8" />
@@ -7,12 +7,10 @@
     <title>Home - Housely</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Aboreto&family=Anuphan:wght@100..700&display=swap"
-        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Aboreto&family=Anuphan:wght@100..700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-    <link rel="stylesheet" href="nav_styles.css" />
-    <!-- footer -->
-    <link rel="stylesheet" href="footer.css" />
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/nav_styles.css}" />
+    <link rel="stylesheet" th:href="@{/footer.css}" />
     <style>
         html,
         body {
@@ -452,13 +450,13 @@
             </div>
             <div class="show-img">
                 <div class="circle"></div>
-                <img src="image/chair.png" alt="Product 1" class="product-image" />
-                <img src="image/lamp.png" alt="Product 2" class="product-image" />
-                <img src="image/tableflower.png" alt="Product 3" class="product-image" />
+                <img th:src="@{/image/chair.png}" alt="Product 1" class="product-image" />
+                <img th:src="@{/image/lamp.png}" alt="Product 2" class="product-image" />
+                <img th:src="@{/image/tableflower.png}" alt="Product 3" class="product-image" />
             </div>
         </div>
         <div class="introduce-box">
-            <img src="https://visualalloy.com/cdn/shop/files/large-outdoor-metal-wall-art.webp?v=1715958471&width=1000"
+            <img th:src="@{'https://visualalloy.com/cdn/shop/files/large-outdoor-metal-wall-art.webp?v=1715958471&width=1000'}"
                 alt="image 1" class="introduce-image" />
             <div class="text-and-gallery">
                 <p class="introduce-text">
@@ -467,16 +465,14 @@
                     เรามีสินค้าให้คุณเลือกหลากหลายรูปแบบทั้งสินค้าสมาร์ทโฮม
                     เฟอร์นิเจอร์แต่งห้องนอน โซฟา โต๊ะทานอาหาร เก้าอี้
                     ตู้เสื้อผ้าผ้าและสิ่งทอ อุปกรณ์ครัวและเครื่องใช้บนโต๊ะอาหาร
-                    ตลอดจนของตกแต่ง
-                    และสารพัดสินค้าเพื่อบ้านอีกมากมายพร้อมให้คุณเลือกสรรไปแต่งบ้านในฝันได้แล้ววันนี้ที่
-                    HOUSELY!
+                    ตลอดจนของตกแต่ง และสารพัดสินค้าเพื่อบ้านอีกมากมายพร้อมให้คุณเลือกสรรไปแต่งบ้านในฝันได้แล้ววันนี้ที่ HOUSELY!
                 </p>
                 <div class="image-gallery">
-                    <img src="https://visualalloy.com/cdn/shop/files/ocean-wall-decor.webp?v=1713648331&width=1000"
+                    <img th:src="@{'https://visualalloy.com/cdn/shop/files/ocean-wall-decor.webp?v=1713648331&width=1000'}"
                         alt="image 1" class="gallery-image" />
-                    <img src="https://visualalloy.com/cdn/shop/files/coastal-metal-wall-art.webp?v=1712148616&width=800"
+                    <img th:src="@{'https://visualalloy.com/cdn/shop/files/coastal-metal-wall-art.webp?v=1712148616&width=800'}"
                         alt="image 2" class="gallery-image" />
-                    <img src="https://visualalloy.com/cdn/shop/files/metal-butterfly-wall-art.webp?v=1713646307&width=1000"
+                    <img th:src="@{'https://visualalloy.com/cdn/shop/files/metal-butterfly-wall-art.webp?v=1713646307&width=1000'}"
                         alt="image 3" class="gallery-image" />
                 </div>
                 <a href="#" class="shopnow-btn">ช้อปเลย <i class="fas fa-arrow-right"></i></a>
@@ -484,92 +480,28 @@
         </div>
         <div class="hotproduct-box">
             <h2 class="hottitle">Hot Product</h2>
-            <button class="pre-btn"><img src="image/arrow.png" alt=""></button>
-            <button class="nxt-btn"><img src="image/arrow.png" alt=""></button>
+            <button class="pre-btn"><img th:src="@{/image/arrow.png}" alt=""></button>
+            <button class="nxt-btn"><img th:src="@{/image/arrow.png}" alt=""></button>
             <div class="hotpd-gallery">
-                <!-- สินค้าตัวอย่าง -->
-                <div class="product-card">
+                <!-- Loop through products using Thymeleaf -->
+                <div th:each="product : ${products}" class="product-card">
                     <div class="hotpd-img">
-                        <span class="HOT-tag">HOT</span>
-                        <img src="https://www.ikea.com/th/th/images/products/linnmon-adils-table-white__0737165_pe740925_s5.jpg?f=xl"
-                            alt="hot-image1" class="hot-pdimage">
+                        <span class="HOT-tag" th:text="${product.tag}">HOT</span>
+                        <img th:src="${product.imageUrl}" alt="hot-image" class="hot-pdimage">
                         <button class="next-btn">
                             <i class="fas fa-chevron-right"></i>
                         </button>
                     </div>
                     <div class="hotpd-info">
-                        <h2 class="pd-name">Name</h2>
+                        <h2 class="pd-name" th:text="${product.name}">Name</h2>
                         <button class="heart-btn"><i class="fas fa-heart"></i></button>
-                        <p class="product-category">category</p>
-                        <span class="price-old">$20</span><span class="price-new">$10</span>
+                        <p class="product-category" th:text="${product.category}">category</p>
+                        <span class="price-old" th:text="'$' + ${product.oldPrice}">$20</span>
+                        <span class="price-new" th:text="'$' + ${product.newPrice}">$10</span>
                     </div>
                 </div>
-                <div class="product-card">
-                    <div class="hotpd-img">
-                        <span class="HOT-tag">HOT</span>
-                        <img src="https://www.ikea.com/th/th/images/products/linnmon-adils-table-white__0737165_pe740925_s5.jpg?f=xl"
-                            alt="hot-image1" class="hot-pdimage">
-                        <button class="next-btn">
-                            <i class="fas fa-chevron-right"></i>
-                        </button>
-                    </div>
-                    <div class="hotpd-info">
-                        <h2 class="pd-name">Name</h2>
-                        <button class="heart-btn"><i class="fas fa-heart"></i></button>
-                        <p class="product-category">category</p>
-                        <span class="price-old">$20</span><span class="price-new">$10</span>
-                    </div>
-                </div>
-                <div class="product-card">
-                    <div class="hotpd-img">
-                        <span class="HOT-tag">HOT</span>
-                        <img src="https://www.ikea.com/th/th/images/products/linnmon-adils-table-white__0737165_pe740925_s5.jpg?f=xl"
-                            alt="hot-image1" class="hot-pdimage">
-                        <button class="next-btn">
-                            <i class="fas fa-chevron-right"></i>
-                        </button>
-                    </div>
-                    <div class="hotpd-info">
-                        <h2 class="pd-name">Name</h2>
-                        <button class="heart-btn"><i class="fas fa-heart"></i></button>
-                        <p class="product-category">category</p>
-                        <span class="price-old">$20</span><span class="price-new">$10</span>
-                    </div>
-                </div>
-                <div class="product-card">
-                    <div class="hotpd-img">
-                        <span class="HOT-tag">HOT</span>
-                        <img src="https://www.ikea.com/th/th/images/products/linnmon-adils-table-white__0737165_pe740925_s5.jpg?f=xl"
-                            alt="hot-image1" class="hot-pdimage">
-                        <button class="next-btn">
-                            <i class="fas fa-chevron-right"></i>
-                        </button>
-                    </div>
-                    <div class="hotpd-info">
-                        <h2 class="pd-name">Name</h2>
-                        <button class="heart-btn"><i class="fas fa-heart"></i></button>
-                        <p class="product-category">category</p>
-                        <span class="price-old">$20</span><span class="price-new">$10</span>
-                    </div>
-                </div>
-                <div class="product-card">
-                    <div class="hotpd-img">
-                        <span class="HOT-tag">HOT</span>
-                        <img src="https://www.ikea.com/th/th/images/products/linnmon-adils-table-white__0737165_pe740925_s5.jpg?f=xl"
-                            alt="hot-image1" class="hot-pdimage">
-                        <button class="next-btn">
-                            <i class="fas fa-chevron-right"></i>
-                        </button>
-                    </div>
-                    <div class="hotpd-info">
-                        <h2 class="pd-name">Name</h2>
-                        <button class="heart-btn"><i class="fas fa-heart"></i></button>
-                        <p class="product-category">category</p>
-                        <span class="price-old">20ฺ฿</span><span class="price-new">10฿</span>
-                    </div>
-                </div>
-
             </div>
+        </div>
     </body>
     <main></main>
 </body>

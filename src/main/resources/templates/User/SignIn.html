@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,8 +17,7 @@
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="home_styles.css"/>
-    <link rel="stylesheet" href="nav_styles.css" />
+    <link rel="stylesheet" href="@{/nav_styles.css}" />
     <style>
         body {
             user-select: none;
@@ -191,38 +190,41 @@
 </head>
 <body>
 
-<div class="container">
-    <div class="left">
-        <a href="#" class="logo">HOUSELY</a>
-        <h2>SIGN IN</h2>
-        <p>Sign In to Continue Your Journey</p>
+    <div class="container">
+        <div class="left">
+            <a href="#" class="logo">HOUSELY</a>
+            <h2>SIGN IN</h2>
+            <p>Sign In to Continue Your Journey</p>
 
-        <div class="input-group">
-            <i class="fa fa-envelope"></i>
-            <input type="email" id="email" placeholder="Email">
+            <form th:action="@{/signin}" method="post">
+                <div class="input-group">
+                    <i class="fa fa-envelope"></i>
+                    <input type="email" id="email" name="email" placeholder="Email" required>
+                </div>
+
+                <div class="input-group">
+                    <i class="fa fa-lock"></i>
+                    <input type="password" id="password" name="password" placeholder="Password" required>
+                </div>
+
+                <div class="forgot-password">
+                    <a class="pass" href="#" th:href="@{/forgot-password}">Forgot your password?</a>
+                </div>
+                <button type="submit" class="btn-signin">SIGN IN</button>
+            </form>
         </div>
 
-        <div class="input-group">
-            <i class="fa fa-lock"></i>
-            <input type="password" id="password" placeholder="Password">
+        <div class="right">
+            <div class="container-right">
+                <p>Doesn't Have an Account</p>
+                <h2>WELCOME<br>NEWBIE!</h2>
+                <p class="discover">Begin<br>Your<br>Home<br>Makeover<br>Journey!</p>
+                <a href="#" th:href="@{/signup}">
+                    <button class="btn-signup">SIGN UP</button>
+                </a>
+            </div>
         </div>
-
-        <div class="forgot-password">
-            <a class = "pass" href="#">Forgot your password?</a>
-        </div>
-        <button class="btn-signin">SIGN IN</button>
     </div>
-
-    <div class="right">
-        <div class="container-right">
-            <p>Doesn't Have an Account</p>
-            <h2>WELCOME<br>NEWBIE!</h2>
-            <p class = "discover">Begin<br>Your<br>Home<br>Makeover<br>Journey!</p>
-            <button class="btn-signup">SIGN UP</button>
-        </div>
-
-    </div>
-</div>
 
 </body>
 </html>

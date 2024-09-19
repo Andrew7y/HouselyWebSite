@@ -1,16 +1,15 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="th" xmlns:th="http://www.thymeleaf.org">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ค้นหาจากหมวดหมู่ - Housely</title>
-  <link rel="stylesheet" href="nav_styles.css" />
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Aboreto&family=Anuphan:wght@100..700&display=swap" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-  <!-- footer -->
-  <link rel="stylesheet" href="footer.css" />
+  <link rel="stylesheet" href="@{/nav_styles.css}" />
+  <link rel="stylesheet" th:href="@{/footer.css}" />
   <style>
     body {
       user-select: none;
@@ -207,107 +206,85 @@
 <body>
   <header>
     <div class="navbar">
-      <a href="#" class="logo">HOUSELY</a>
-      <nav>
-        <ul>
-          <li>
-            <a href="#" class="dropdown-toggle">ค้นหาจากห้อง <i class="fas fa-caret-down"></i></a>
-            <div class="dropdown-content">
-              <div class="row" id="search-room-row">
-                <!-- คอลัมน์จะถูกสร้างและแสดงที่นี่โดย JavaScript -->
-              </div>
-            </div>
-          </li>
-          <li>
-            <a href="#" class="dropdown-toggle">หมวดสินค้ายอดฮิต <i class="fas fa-caret-down"></i></a>
-            <div class="dropdown-content">
-              <div class="row" id="popular-category-row">
-                <!-- คอลัมน์จะถูกสร้างและแสดงที่นี่โดย JavaScript -->
-              </div>
-            </div>
-          </li>
-          <li>
-            <a href="#" class="dropdown-toggle">โปรโมชั่น <i class="fas fa-caret-down"></i></a>
-            <div class="dropdown-content">
-              <div class="row" id="promotion-row">
-                <!-- คอลัมน์จะถูกสร้างและแสดงที่นี่โดย JavaScript -->
-              </div>
-            </div>
-          </li>
-        </ul>
-      </nav>
-      <div class="search-bar">
-        <input type="text" placeholder="ค้นหาสินค้าที่คุณต้องการ..." />
-        <button type="submit"><i class="fas fa-search"></i></button>
-      </div>
-      <div class="icons">
-        <a href="#"><i class="fas fa-heart"></i></a>
-        <a href="#"><i class="fas fa-shopping-cart"></i></a>
-        <a href="#"><i class="fas fa-user"></i></a>
-      </div>
-    </div>
-  </header>
-
-  <main>
-    <section class="category-head">
-      <section class="slider-section">
-        <div class="slider-section__slider-containter">
-          <div class="slider-section__slider-containter--slide photo-slide-container">
-            <img class="photo-slide-container__photo"
-              src="https://www.orangetree.in/cdn/shop/files/Gallery-1ChiyoL-ShapedSofaBuyOnline.jpg?v=1722852692"
-              alt="">
-          </div>
-          <div class="slider-section__slider-containter--slide photo-slide-container">
-            <img class="photo-slide-container__photo"
-              src="https://derwenthouseliving.co.uk/wp-content/uploads/2023/05/Fifth_Soho_Corner_Sofa_OsborneLittle_Crowlin_Landscape.jpg"
-              alt="">
-          </div>
-          <div class="slider-section__slider-containter--slide photo-slide-container">
-            <img class="photo-slide-container__photo"
-              src="https://media1.popsugar-assets.com/files/thumbor/DEW1QMBpCgZXlJNIbZm-2OoAbn8=/1x639:1616x1447/fit-in/1618x1456/top/filters:format_auto():quality(85):upscale()/2022/04/21/876/n/1922794/71142b6f6261b82e85fa29.19013201_.jpg"
-              alt="">
-          </div>
-          <div class="slider-section__slider-containter--slide photo-slide-container">
-            <img class="photo-slide-container__photo"
-              src="https://cdn.thewirecutter.com/wp-content/media/2023/05/sofabuyingguide-2048px-benchmademoderncream.jpg"
-              alt="">
-          </div>
+        <a href="#" class="logo">HOUSELY</a>
+        <nav>
+            <ul>
+                <li>
+                    <a href="#" class="dropdown-toggle">ค้นหาจากห้อง <i class="fas fa-caret-down"></i></a>
+                    <div class="dropdown-content">
+                        <div class="row" id="search-room-row">
+                            <!-- คอลัมน์จะถูกสร้างและแสดงที่นี่โดย JavaScript -->
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-toggle">หมวดสินค้ายอดฮิต <i class="fas fa-caret-down"></i></a>
+                    <div class="dropdown-content">
+                        <div class="row" id="popular-category-row">
+                            <!-- คอลัมน์จะถูกสร้างและแสดงที่นี่โดย JavaScript -->
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-toggle">โปรโมชั่น <i class="fas fa-caret-down"></i></a>
+                    <div class="dropdown-content">
+                        <div class="row" id="promotion-row">
+                            <!-- คอลัมน์จะถูกสร้างและแสดงที่นี่โดย JavaScript -->
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+        <div class="search-bar">
+            <input type="text" placeholder="ค้นหาสินค้าที่คุณต้องการ..." />
+            <button type="submit"><i class="fas fa-search"></i></button>
         </div>
-
-        <button class="slider-section__button slider-section__button--left">&#10094;</button>
-        <button class="slider-section__button slider-section__button--right">&#10095;</button>
+        <div class="icons">
+            <a href="#"><i class="fas fa-heart"></i></a>
+            <a href="#"><i class="fas fa-shopping-cart"></i></a>
+            <a href="#"><i class="fas fa-user"></i></a>
+        </div>
+    </div>
+</header>
+<main>
+  <section class="category-head">
+      <section class="slider-section">
+          <div class="slider-section__slider-container">
+              <div class="slider-section__slider-container--slide photo-slide-container" th:each="image : ${sliderImages}">
+                  <img class="photo-slide-container__photo" th:src="${image.url}" alt="Slide Image"/>
+              </div>
+          </div>
+          <button class="slider-section__button slider-section__button--left">&#10094;</button>
+          <button class="slider-section__button slider-section__button--right">&#10095;</button>
       </section>
-    </section>
-    <section class="all-product">
+  </section>
+  <section class="all-product">
       <h2>โซฟา</h2>
       <hr class="custom-hr">
       <div class="sort-container">
-        <div class="item-count">12 รายการ</div>
-        <div class="sort-dropdown">
-          <button class="sort-button">Sort by <i class="fas fa-caret-down"></i></button>
-          <div class="sort-dropdown-content">
-            <a href="#">Option 1</a>
-            <a href="#">Option 2</a>
-            <a href="#">Option 3</a>
+          <div class="item-count" th:text="${'รายการทั้งหมด ' + ${productCount} + ' รายการ'}">12 รายการ</div>
+          <div class="sort-dropdown">
+              <button class="sort-button">Sort by <i class="fas fa-caret-down"></i></button>
+              <div class="sort-dropdown-content">
+                  <a href="#" th:each="option : ${sortOptions}" th:text="${option}"></a>
+              </div>
           </div>
-        </div>
-
       </div>
       <div class="product-list">
-        <!-- Repeat this block for each product -->
-        <div class="product">
-          <div class="product-image"></div>
-          <h3>ชื่อสินค้า</h3>
-          <p>20,000฿</p>
-          <div class="product-icons">
-            <a href="#"><i class="fas fa-heart"></i></a>
-            <a href="#">➤</a>
+          <div class="product" th:each="product : ${products}">
+              <div class="product-image">
+                  <img th:src="${product.imageUrl}" alt="Product Image"/>
+              </div>
+              <h3 th:text="${product.name}">ชื่อสินค้า</h3>
+              <p th:text="${product.price}">20,000฿</p>
+              <div class="product-icons">
+                  <a href="#" th:href="@{${product.wishlistUrl}}"><i class="fas fa-heart"></i></a>
+                  <a href="#" th:href="@{${product.detailsUrl}}">➤</a>
+              </div>
           </div>
-        </div>
-        <!-- Repeat ends -->
       </div>
-    </section>
-  </main>
+  </section>
+</main>
 
   <footer class="footer">
     <p>ติดต่อเรา</p>

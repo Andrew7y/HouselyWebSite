@@ -13,7 +13,7 @@ public class AdminController {
     
     @GetMapping("/")
     public String getLoginPage() {
-        return "Admin/login";
+        return "User/Home";
     }
 
     @PostMapping("/login")
@@ -36,6 +36,7 @@ public class AdminController {
         return "Admin/customer";
     }
 
+<<<<<<< HEAD
     @GetMapping("/admin/categories")
     public String getCategoryPage() {
         return "Admin/categories";
@@ -65,5 +66,8 @@ public class AdminController {
     public String getReportsPage() {
         return "Admin/reports";
     }
+=======
+    
+>>>>>>> e62ba8229a7c36f9018919bcdd50cb06ade26ea4
 
 }

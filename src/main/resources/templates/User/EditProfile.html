@@ -1,19 +1,16 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="th" xmlns:th="http://www.thymeleaf.org">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>แก้ไขข้อมูลส่วนตัว - Housely</title>
-  <!-- icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <!-- header -->
-  <link rel="stylesheet" href="nav_styles.css" />
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Aboreto&family=Anuphan:wght@100..700&display=swap" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-  <!-- footer -->
-  <link rel="stylesheet" href="footer.css" />
+  <link rel="stylesheet" type="text/css" media="all" th:href="@{/nav_styles.css}" />
+  <link rel="stylesheet" th:href="@{/footer.css}" />
   <style>
     body{
       user-select: none;
@@ -114,62 +111,91 @@
 <body>
   <header>
     <div class="navbar">
-      <a href="#" class="logo">HOUSELY</a>
-      <nav>
-        <ul>
-          <li>
-            <a href="#" class="dropdown-toggle">ค้นหาจากห้อง <i class="fas fa-caret-down"></i></a>
-            <div class="dropdown-content">
-              <div class="row" id="search-room-row">
-                <!-- คอลัมน์จะถูกสร้างและแสดงที่นี่โดย JavaScript -->
-              </div>
-            </div>
-          </li>
-          <li>
-            <a href="#" class="dropdown-toggle">หมวดสินค้ายอดฮิต <i class="fas fa-caret-down"></i></a>
-            <div class="dropdown-content">
-              <div class="row" id="popular-category-row">
-                <!-- คอลัมน์จะถูกสร้างและแสดงที่นี่โดย JavaScript -->
-              </div>
-            </div>
-          </li>
-          <li>
-            <a href="#" class="dropdown-toggle">โปรโมชั่น <i class="fas fa-caret-down"></i></a>
-            <div class="dropdown-content">
-              <div class="row" id="promotion-row">
-                <!-- คอลัมน์จะถูกสร้างและแสดงที่นี่โดย JavaScript -->
-              </div>
-            </div>
-          </li>
-        </ul>
-      </nav>
-      <div class="search-bar">
-        <input type="text" placeholder="ค้นหาสินค้าที่คุณต้องการ..." />
-        <button type="submit"><i class="fas fa-search"></i></button>
-      </div>
-      <div class="icons">
-        <a href="#"><i class="fas fa-heart"></i></a>
-        <a href="#"><i class="fas fa-shopping-cart"></i></a>
-        <a href="#"><i class="fas fa-user"></i></a>
-      </div>
-    </div>
-  </header>
-
-  <main>
-    <section class="profile">
-      <h1>แก้ไขข้อมูล</h1>
-      <form action="/update-info" method="post">
-        <div class="info">
-          <p>ชื่อ : <span><input type="text" name="name" value="Papika"></span></p>
-          <p>วันเกิด : <span><input type="date" name="dob" value="1998-12-01"></span></p>
-          <p>E-MAIL : <span><input type="email" name="email" value="Papika@gmail.com"></span></p>
-          <p>เบอร์โทร : <span><input type="tel" name="phone" value="098-1225555"></span></p>
-          <p>ที่อยู่สำหรับการจัดส่ง : <span><textarea name="address"
-                rows="4">อ.เมืองขอนแก่น จ.ขอนแก่น 40000</textarea></span></p>
+        <a href="#" class="logo">HOUSELY</a>
+        <nav>
+            <ul>
+                <li>
+                    <a href="#" class="dropdown-toggle">ค้นหาจากห้อง <i class="fas fa-caret-down"></i></a>
+                    <div class="dropdown-content">
+                        <div class="row" id="search-room-row" th:each="room : ${rooms}">
+                            <!-- คอลัมน์จะถูกสร้างและแสดงที่นี่โดย Thymeleaf -->
+                            <div class="col">
+                                <a href="#" th:text="${room.name}"></a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-toggle">หมวดสินค้ายอดฮิต <i class="fas fa-caret-down"></i></a>
+                    <div class="dropdown-content">
+                        <div class="row" id="popular-category-row" th:each="category : ${categories}">
+                            <!-- คอลัมน์จะถูกสร้างและแสดงที่นี่โดย Thymeleaf -->
+                            <div class="col">
+                                <a href="#" th:text="${category.name}"></a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-toggle">โปรโมชั่น <i class="fas fa-caret-down"></i></a>
+                    <div class="dropdown-content">
+                        <div class="row" id="promotion-row" th:each="promotion : ${promotions}">
+                            <!-- คอลัมน์จะถูกสร้างและแสดงที่นี่โดย Thymeleaf -->
+                            <div class="col">
+                                <a href="#" th:text="${promotion.name}"></a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+        <div class="search-bar">
+            <input type="text" placeholder="ค้นหาสินค้าที่คุณต้องการ..." />
+            <button type="submit"><i class="fas fa-search"></i></button>
         </div>
-        <button type="button">บันทึก</button>
-    </section>
-  </main>
+        <div class="icons">
+            <a href="#"><i class="fas fa-heart"></i></a>
+            <a href="#"><i class="fas fa-shopping-cart"></i></a>
+            <a href="#"><i class="fas fa-user"></i></a>
+        </div>
+    </div>
+</header>
+
+<main>
+  <section class="profile">
+      <h1>แก้ไขข้อมูล</h1>
+      <form action="#" th:action="@{/update-info}" method="post" th:object="${user}">
+          <div class="info">
+              <p>ชื่อ : 
+                  <span>
+                      <input type="text" name="name" th:value="${user.name}" />
+                  </span>
+              </p>
+              <p>วันเกิด : 
+                  <span>
+                      <input type="date" name="dob" th:value="${#dates.format(user.dob, 'yyyy-MM-dd')}" />
+                  </span>
+              </p>
+              <p>E-MAIL : 
+                  <span>
+                      <input type="email" name="email" th:value="${user.email}" />
+                  </span>
+              </p>
+              <p>เบอร์โทร : 
+                  <span>
+                      <input type="tel" name="phone" th:value="${user.phone}" />
+                  </span>
+              </p>
+              <p>ที่อยู่สำหรับการจัดส่ง : 
+                  <span>
+                      <textarea name="address" rows="4" th:text="${user.address}"></textarea>
+                  </span>
+              </p>
+          </div>
+          <button type="submit">บันทึก</button>
+      </form>
+  </section>
+</main>
 
   <footer class="footer">
     <p>ติดต่อเรา</p>

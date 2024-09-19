@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ค้นหาจากหมวดหมู่ - Housely</title>
+  <link rel="stylesheet" href="nav_styles.css" />
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Aboreto&family=Anuphan:wght@100..700&display=swap" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <!-- footer -->
+  <link rel="stylesheet" href="footer.css" />
+  <style>
+    body {
+      user-select: none;
+    }
+
+    .all-product {
+      margin: 30px 30px 30px 30px;
+      padding: 30px;
+      text-align: left;
+    }
+
+    .all-product h2 {
+      font-size: 36px;
+      margin-top: -50px;
+    }
+
+    .custom-hr {
+      border: 0;
+      height: 4px;
+      background: #ccc;
+      margin: 10px 0 20px 0;
+    }
+
+    .product-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .product {
+      background-color: white;
+      border-radius: 10px;
+      padding: 15px;
+      width: 300px;
+      height: 400px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      text-align: left;
+    }
+
+    .product-image {
+      width: 100%;
+      height: 300px;
+      background-color: #eaeaea;
+      margin-bottom: 10px;
+    }
+
+    .product h3 {
+      font-size: 16px;
+      margin-bottom: 5px;
+      text-align: left;
+    }
+
+    .product p {
+      font-size: 16px;
+      color: #333;
+    }
+
+    .product-icons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+    }
+
+    .product-icons a {
+      text-decoration: none;
+      font-size: 18px;
+      color: #333;
+    }
+
+    .slider-section {
+      position: relative;
+      width: 100%;
+      height: 600px;
+      overflow: hidden;
+    }
+
+    .slider-section__slider-containter {
+      position: absolute;
+      display: flex;
+      width: 400%;
+      height: 100%;
+      left: 0;
+      transition: left 1s ease-in-out;
+    }
+
+    .slider-section__slider-containter--slide {
+      width: 25%;
+      height: 100%;
+    }
+
+    .photo-slide-container__photo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .slider-section__button {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 50px;
+      width: 50px;
+      background-color: rgba(0, 0, 0, 0);
+      border: none;
+      font-size: 40px;
+      color: #bfc3cf;
+      cursor: pointer;
+    }
+
+    .slider-section__button--left {
+      left: 20px;
+    }
+
+    .slider-section__button--right {
+      right: 20px;
+    }
+
+    .slider-section__height-keeper {
+      display: none;
+    }
+
+    .sort-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      text-align: right;
+      margin-bottom: 20px;
+    }
+
+    .item-count {
+      font-size: 16px;
+      color: #322D29;
+      /* Adjust color as needed */
+    }
+
+    .sort-dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .sort-button {
+      background-color: #e6f8f3;
+      border: none;
+      border-radius: 5px;
+      color: black;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .sort-button i {
+      margin-left: 5px;
+    }
+
+    .sort-dropdown-content {
+      display: none;
+      position: absolute;
+      right: 0;
+      background-color: #e6f8f3;
+      box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+      z-index: 1;
+      border-radius: 5px;
+      overflow: hidden;
+      /* Ensures that no content spills out */
+    }
+
+    .sort-dropdown-content a {
+      color: #322D29;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+      white-space: nowrap;
+      /* Prevents text from wrapping */
+    }
+
+    .sort-dropdown-content a:hover {
+      background-color: #bdd1c7;
+    }
+
+
+    .sort-dropdown:hover .sort-dropdown-content {
+      display: block;
+    }
+
+    .sort-dropdown:hover .sort-button i {
+
+      transition: transform 0.3s;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="navbar">
+      <a href="#" class="logo">HOUSELY</a>
+      <nav>
+        <ul>
+          <li>
+            <a href="#" class="dropdown-toggle">ค้นหาจากห้อง <i class="fas fa-caret-down"></i></a>
+            <div class="dropdown-content">
+              <div class="row" id="search-room-row">
+                <!-- คอลัมน์จะถูกสร้างและแสดงที่นี่โดย JavaScript -->
+              </div>
+            </div>
+          </li>
+          <li>
+            <a href="#" class="dropdown-toggle">หมวดสินค้ายอดฮิต <i class="fas fa-caret-down"></i></a>
+            <div class="dropdown-content">
+              <div class="row" id="popular-category-row">
+                <!-- คอลัมน์จะถูกสร้างและแสดงที่นี่โดย JavaScript -->
+              </div>
+            </div>
+          </li>
+          <li>
+            <a href="#" class="dropdown-toggle">โปรโมชั่น <i class="fas fa-caret-down"></i></a>
+            <div class="dropdown-content">
+              <div class="row" id="promotion-row">
+                <!-- คอลัมน์จะถูกสร้างและแสดงที่นี่โดย JavaScript -->
+              </div>
+            </div>
+          </li>
+        </ul>
+      </nav>
+      <div class="search-bar">
+        <input type="text" placeholder="ค้นหาสินค้าที่คุณต้องการ..." />
+        <button type="submit"><i class="fas fa-search"></i></button>
+      </div>
+      <div class="icons">
+        <a href="#"><i class="fas fa-heart"></i></a>
+        <a href="#"><i class="fas fa-shopping-cart"></i></a>
+        <a href="#"><i class="fas fa-user"></i></a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="category-head">
+      <section class="slider-section">
+        <div class="slider-section__slider-containter">
+          <div class="slider-section__slider-containter--slide photo-slide-container">
+            <img class="photo-slide-container__photo"
+              src="https://www.orangetree.in/cdn/shop/files/Gallery-1ChiyoL-ShapedSofaBuyOnline.jpg?v=1722852692"
+              alt="">
+          </div>
+          <div class="slider-section__slider-containter--slide photo-slide-container">
+            <img class="photo-slide-container__photo"
+              src="https://derwenthouseliving.co.uk/wp-content/uploads/2023/05/Fifth_Soho_Corner_Sofa_OsborneLittle_Crowlin_Landscape.jpg"
+              alt="">
+          </div>
+          <div class="slider-section__slider-containter--slide photo-slide-container">
+            <img class="photo-slide-container__photo"
+              src="https://media1.popsugar-assets.com/files/thumbor/DEW1QMBpCgZXlJNIbZm-2OoAbn8=/1x639:1616x1447/fit-in/1618x1456/top/filters:format_auto():quality(85):upscale()/2022/04/21/876/n/1922794/71142b6f6261b82e85fa29.19013201_.jpg"
+              alt="">
+          </div>
+          <div class="slider-section__slider-containter--slide photo-slide-container">
+            <img class="photo-slide-container__photo"
+              src="https://cdn.thewirecutter.com/wp-content/media/2023/05/sofabuyingguide-2048px-benchmademoderncream.jpg"
+              alt="">
+          </div>
+        </div>
+
+        <button class="slider-section__button slider-section__button--left">&#10094;</button>
+        <button class="slider-section__button slider-section__button--right">&#10095;</button>
+      </section>
+    </section>
+    <section class="all-product">
+      <h2>โซฟา</h2>
+      <hr class="custom-hr">
+      <div class="sort-container">
+        <div class="item-count">12 รายการ</div>
+        <div class="sort-dropdown">
+          <button class="sort-button">Sort by <i class="fas fa-caret-down"></i></button>
+          <div class="sort-dropdown-content">
+            <a href="#">Option 1</a>
+            <a href="#">Option 2</a>
+            <a href="#">Option 3</a>
+          </div>
+        </div>
+
+      </div>
+      <div class="product-list">
+        <!-- Repeat this block for each product -->
+        <div class="product">
+          <div class="product-image"></div>
+          <h3>ชื่อสินค้า</h3>
+          <p>20,000฿</p>
+          <div class="product-icons">
+            <a href="#"><i class="fas fa-heart"></i></a>
+            <a href="#">➤</a>
+          </div>
+        </div>
+        <!-- Repeat ends -->
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>ติดต่อเรา</p>
+    <p>Line: @housely</p>
+    <p>Customer Contact Center: 1112</p>
+    <div class="social-icons">
+      <a href="#"><i class="fab fa-line"></i></a>
+      <a href="#"><i class="fab fa-instagram"></i></a>
+      <a href="#"><i class="fab fa-facebook-f"></i></a>
+    </div>
+  </footer>
+
+</body>
+<script>
+  document.querySelectorAll('.dropdown-toggle').forEach(function (toggle) {
+    toggle.addEventListener('click', function (e) {
+
+
+      const dropdownContent = this.nextElementSibling;
+      dropdownContent.style.display = dropdownContent.style.display === 'block' ? 'none' : 'block';
+
+      const icon = this.querySelector('i');
+      if (dropdownContent.style.display === 'block') {
+        icon.classList.remove('fa-caret-down');
+        icon.classList.add('fa-caret-up');
+      } else {
+        icon.classList.remove('fa-caret-up');
+        icon.classList.add('fa-caret-down');
+      }
+    });
+  });
+
+  // Close the dropdown when clicking outside of it
+  document.addEventListener('click', function (e) {
+    if (!e.target.closest('.navbar')) {
+      document.querySelectorAll('.dropdown-content').forEach(function (dropdown) {
+        dropdown.style.display = 'none';
+      });
+
+      document.querySelectorAll('.dropdown-toggle i').forEach(function (icon) {
+        icon.classList.remove('fa-caret-up');
+        icon.classList.add('fa-caret-down');
+      });
+    }
+  });
+</script>
+<script>
+  const searchRoomItems = [
+    { title: 'ห้องนอน', items: ['เตียงนอน', 'ตู้เสื้อผ้า', 'โต๊ะเครื่องแป้ง', 'โต๊ะข้างเตียง', 'ตู้เสื้อผ้าใหญ่', 'เตียงเด็ก', 'โต๊ะทำงาน', 'เก้าอี้นั่งเล่น', 'ตู้เสื้อผ้าสี', 'โต๊ะเครื่องแป้งไม้', 'เตียงนอนเด็ก', 'ตู้เก็บของ'] },
+    { title: 'ห้องนั่งเล่น', items: ['โซฟา', 'โต๊ะกลาง', 'ตู้วางทีวี', 'เก้าอี้นั่งเล่น', 'โต๊ะข้างโซฟา', 'พรม', 'ตู้โชว์', 'เก้าอี้ทานอาหาร', 'โต๊ะทำงาน', 'โต๊ะรับประทานอาหาร', 'เก้าอี้บาร์', 'โต๊ะกาแฟ'] },
+    { title: 'ห้องครัว', items: ['ตู้เย็น', 'เตาอบ', 'ไมโครเวฟ', 'เตาแก๊ส', 'ตู้เก็บของ', 'เตาแม่เหล็กไฟฟ้า', 'อ่างล้างจาน', 'ตู้วางจาน', 'เครื่องล้างจาน', 'โต๊ะเตรียมอาหาร', 'ตู้กับข้าว', 'เก้าอี้บาร์'] }
+  ];
+
+  // ข้อมูลหมวดหมู่ยอดฮิต
+  const popularItems = [
+    'หมวดสินค้ายอดฮิต 1', 'หมวดสินค้ายอดฮิต 2', 'หมวดสินค้ายอดฮิต 3', 'หมวดสินค้ายอดฮิต 4', 'หมวดสินค้ายอดฮิต 5', 'หมวดสินค้ายอดฮิต 6', 'หมวดสินค้ายอดฮิต 7', 'หมวดสินค้ายอดฮิต 8', 'หมวดสินค้ายอดฮิต 9', 'หมวดสินค้ายอดฮิต 10', 'หมวดสินค้ายอดฮิต 11', 'หมวดสินค้ายอดฮิต 12', 'หมวดสินค้ายอดฮิต 13', 'หมวดสินค้ายอดฮิต 14'
+  ];
+
+  // ข้อมูลโปรโมชั่น
+  const promotionItems = [
+    'ส่วนลด 50%', 'ซื้อ 1 แถม 1', 'ส่งฟรี', 'ลดราคาเพิ่ม 20%', 'โปรโมชั่นพิเศษ', 'ลดราคา 10%', 'ซื้อสินค้าครบ 1000 บาท ลด 100 บาท', 'โปรแกรมสะสมคะแนน', 'ลด 5% สำหรับสมาชิก', 'รับบัตรกำนัล 200 บาท', 'ลด 30% สินค้าคุณภาพสูง', 'ซื้อ 2 แถม 1', 'คูปองส่วนลด 100 บาท', 'ลดราคา 15% สำหรับสมาชิกใหม่'
+  ];
+
+  const maxItemsPerColumn = 11;
+
+  // ฟังก์ชันสร้างคอลัมน์ใหม่
+  function createColumn() {
+    const column = document.createElement('div');
+    column.classList.add('column');
+    return column;
+  }
+
+  // ฟังก์ชันสร้างหมวดหมู่และรายการสินค้า
+  function createItems(containerId, items, isCategory = false) {
+    const row = document.getElementById(containerId);
+    let currentColumn = createColumn();
+    let itemCount = 0;
+
+    items.forEach((item, index) => {
+      if (itemCount >= maxItemsPerColumn) {
+
+        row.appendChild(currentColumn);
+        currentColumn = createColumn();
+        itemCount = 0;
+      }
+
+      const itemLink = document.createElement('a');
+      itemLink.href = '#';
+      itemLink.innerText = item;
+      if (isCategory && itemCount === 0) {
+        const h3 = document.createElement('h3');
+        const titleLink = document.createElement('a');
+        titleLink.href = '#';
+        titleLink.innerText = item;
+        h3.appendChild(titleLink);
+        currentColumn.appendChild(h3);
+      } else {
+        currentColumn.appendChild(itemLink);
+      }
+      itemCount++;
+    });
+
+
+    row.appendChild(currentColumn);
+  }
+
+  // เรียกใช้ฟังก์ชันเพื่อสร้างหมวดหมู่ทั้งหมด
+  searchRoomItems.forEach(category => {
+    createItems('search-room-row', [category.title, ...category.items], true);
+  });
+
+  createItems('popular-category-row', popularItems);
+  createItems('promotion-row', promotionItems);
+</script>
+<script>
+
+  const leftButton = document.querySelector('.slider-section__button--left');
+  const rightButton = document.querySelector('.slider-section__button--right');
+  const sliderContainer = document.querySelector('.slider-section__slider-containter');
+  const slides = sliderContainer.children;
+
+  let currentSlide = 0;
+
+  function moveSlider(direction) {
+    slides[currentSlide].style.display = 'none';
+
+    if (direction === 'left') {
+      currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+    } else {
+      currentSlide = (currentSlide + 1) % slides.length;
+    }
+
+    slides[currentSlide].style.display = 'block';
+  }
+
+  leftButton.addEventListener('click', function () {
+    moveSlider('left');
+  });
+
+  rightButton.addEventListener('click', function () {
+    moveSlider('right');
+  });
+
+  // Auto-slide function
+  function autoSlide() {
+    moveSlider('right');
+  }
+
+  // Set interval for auto-sliding (5 seconds)
+  let slideInterval = setInterval(autoSlide, 5000);
+
+  // Pause auto-sliding when mouse is over the slider
+  sliderContainer.addEventListener('mouseenter', function () {
+    clearInterval(slideInterval);
+  });
+
+  // Resume auto-sliding when mouse leaves the slider
+  sliderContainer.addEventListener('mouseleave', function () {
+    clearInterval(slideInterval); // Clear any existing interval
+    slideInterval = setInterval(autoSlide, 5000);
+  });
+
+  // Initialize: hide all slides except the first one
+  for (let i = 1; i < slides.length; i++) {
+    slides[i].style.display = 'none';
+  }
+</script>
+<script>
+  document.querySelector('.sort-button').addEventListener('click', function () {
+    const dropdownContent = document.querySelector('.sort-dropdown-content');
+    const icon = this.querySelector('i');
+
+    if (dropdownContent.style.display === 'block') {
+      dropdownContent.style.display = 'none';
+      icon.classList.remove('fa-caret-up');
+      icon.classList.add('fa-caret-down');
+    } else {
+      dropdownContent.style.display = 'block';
+      icon.classList.remove('fa-caret-down');
+      icon.classList.add('fa-caret-up');
+    }
+  });
+</script>
+
+</html>

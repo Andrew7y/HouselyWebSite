@@ -1,0 +1,21 @@
+/* 
+<link rel="stylesheet" href="footer.css" />  
+*/
+
+.footer {
+    background-color: #d4efe0;
+    padding: 20px;
+    text-align: center;
+}
+
+.footer p {
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.footer .social-icons a {
+    margin: 0 10px;
+    text-decoration: none;
+    font-size: 18px;
+    color: #333;
+}

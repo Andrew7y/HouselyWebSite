@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>แก้ไขข้อมูลส่วนตัว - Housely</title>
+  <!-- icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- header -->
+  <link rel="stylesheet" href="nav_styles.css" />
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Aboreto&family=Anuphan:wght@100..700&display=swap" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <!-- footer -->
+  <link rel="stylesheet" href="footer.css" />
+  <style>
+    body{
+      user-select: none;
+    }
+    .profile {
+      padding: 30px;
+      text-align: left;
+      background-color: #fff;
+      margin: 20px auto;
+      width: 60%;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .profile h1 {
+      text-align: center;
+    }
+
+    .profile .info {
+      margin-bottom: 20px;
+    }
+
+    .profile .info p {
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+
+    .profile .edit-icon {
+      float: right;
+      font-size: 18px;
+      text-decoration: none;
+      color: #333;
+      background-color: #f2f7f0;
+      padding: 5px;
+      border-radius: 50%;
+    }
+
+    .profile button {
+      display: block;
+      padding: 10px 20px;
+      margin: 20px auto;
+      background-color: #d4efe0;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .profile button:hover {
+      background-color: #c3e6d6;
+    }
+
+    .profile p span {
+      display: block;
+      /* ทำให้ span เป็น block-level element */
+      text-align: right;
+      /* จัดตำแหน่งข้อความภายใน span ไปทางขวา */
+    }
+
+    .info p {
+      margin: 10px 0;
+      font-size: 16px;
+      /* ขนาดของฟอนต์ */
+      line-height: 1.5;
+      /* ความสูงของบรรทัด */
+    }
+
+    .info input,
+    .info textarea {
+      display: block;
+      margin-top: 5px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      width: calc(100% - 22px);
+      /* ความกว้างที่ลดลงจากการ padding และ border */
+      box-sizing: border-box;
+      /* คำนวณ padding และ border ใน width */
+      font-size: 14px;
+      /* ขนาดของฟอนต์ใน input และ textarea */
+    }
+
+    .info input:focus,
+    .info textarea:focus {
+      border-color: #007bff;
+      /* เปลี่ยนสีเส้นขอบเมื่อมีการโฟกัส */
+      outline: none;
+      /* ลบเส้นขอบพื้นฐานที่เกิดจากการโฟกัส */
+    }
+
+    .info textarea {
+      resize: vertical;
+      /* อนุญาตให้ปรับขนาดแนวตั้ง */
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="navbar">
+      <a href="#" class="logo">HOUSELY</a>
+      <nav>
+        <ul>
+          <li>
+            <a href="#" class="dropdown-toggle">ค้นหาจากห้อง <i class="fas fa-caret-down"></i></a>
+            <div class="dropdown-content">
+              <div class="row" id="search-room-row">
+                <!-- คอลัมน์จะถูกสร้างและแสดงที่นี่โดย JavaScript -->
+              </div>
+            </div>
+          </li>
+          <li>
+            <a href="#" class="dropdown-toggle">หมวดสินค้ายอดฮิต <i class="fas fa-caret-down"></i></a>
+            <div class="dropdown-content">
+              <div class="row" id="popular-category-row">
+                <!-- คอลัมน์จะถูกสร้างและแสดงที่นี่โดย JavaScript -->
+              </div>
+            </div>
+          </li>
+          <li>
+            <a href="#" class="dropdown-toggle">โปรโมชั่น <i class="fas fa-caret-down"></i></a>
+            <div class="dropdown-content">
+              <div class="row" id="promotion-row">
+                <!-- คอลัมน์จะถูกสร้างและแสดงที่นี่โดย JavaScript -->
+              </div>
+            </div>
+          </li>
+        </ul>
+      </nav>
+      <div class="search-bar">
+        <input type="text" placeholder="ค้นหาสินค้าที่คุณต้องการ..." />
+        <button type="submit"><i class="fas fa-search"></i></button>
+      </div>
+      <div class="icons">
+        <a href="#"><i class="fas fa-heart"></i></a>
+        <a href="#"><i class="fas fa-shopping-cart"></i></a>
+        <a href="#"><i class="fas fa-user"></i></a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="profile">
+      <h1>แก้ไขข้อมูล</h1>
+      <form action="/update-info" method="post">
+        <div class="info">
+          <p>ชื่อ : <span><input type="text" name="name" value="Papika"></span></p>
+          <p>วันเกิด : <span><input type="date" name="dob" value="1998-12-01"></span></p>
+          <p>E-MAIL : <span><input type="email" name="email" value="Papika@gmail.com"></span></p>
+          <p>เบอร์โทร : <span><input type="tel" name="phone" value="098-1225555"></span></p>
+          <p>ที่อยู่สำหรับการจัดส่ง : <span><textarea name="address"
+                rows="4">อ.เมืองขอนแก่น จ.ขอนแก่น 40000</textarea></span></p>
+        </div>
+        <button type="button">บันทึก</button>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>ติดต่อเรา</p>
+    <p>Line: @housely</p>
+    <p>Customer Contact Center: 1112</p>
+    <div class="social-icons">
+      <a href="#"><i class="fab fa-line"></i></a>
+      <a href="#"><i class="fab fa-instagram"></i></a>
+      <a href="#"><i class="fab fa-facebook-f"></i></a>
+    </div>
+  </footer>
+
+</body>
+<script>
+  document.querySelectorAll('.dropdown-toggle').forEach(function (toggle) {
+    toggle.addEventListener('click', function (e) {
+
+
+      const dropdownContent = this.nextElementSibling;
+      dropdownContent.style.display = dropdownContent.style.display === 'block' ? 'none' : 'block';
+
+      const icon = this.querySelector('i');
+      if (dropdownContent.style.display === 'block') {
+        icon.classList.remove('fa-caret-down');
+        icon.classList.add('fa-caret-up');
+      } else {
+        icon.classList.remove('fa-caret-up');
+        icon.classList.add('fa-caret-down');
+      }
+    });
+  });
+
+  // Close the dropdown when clicking outside of it
+  document.addEventListener('click', function (e) {
+    if (!e.target.closest('.navbar')) {
+      document.querySelectorAll('.dropdown-content').forEach(function (dropdown) {
+        dropdown.style.display = 'none';
+      });
+
+      document.querySelectorAll('.dropdown-toggle i').forEach(function (icon) {
+        icon.classList.remove('fa-caret-up');
+        icon.classList.add('fa-caret-down');
+      });
+    }
+  });
+  const searchRoomItems = [
+    { title: 'ห้องนอน', items: ['เตียงนอน', 'ตู้เสื้อผ้า', 'โต๊ะเครื่องแป้ง', 'โต๊ะข้างเตียง', 'ตู้เสื้อผ้าใหญ่', 'เตียงเด็ก', 'โต๊ะทำงาน', 'เก้าอี้นั่งเล่น', 'ตู้เสื้อผ้าสี', 'โต๊ะเครื่องแป้งไม้', 'เตียงนอนเด็ก', 'ตู้เก็บของ'] },
+    { title: 'ห้องนั่งเล่น', items: ['โซฟา', 'โต๊ะกลาง', 'ตู้วางทีวี', 'เก้าอี้นั่งเล่น', 'โต๊ะข้างโซฟา', 'พรม', 'ตู้โชว์', 'เก้าอี้ทานอาหาร', 'โต๊ะทำงาน', 'โต๊ะรับประทานอาหาร', 'เก้าอี้บาร์', 'โต๊ะกาแฟ'] },
+    { title: 'ห้องครัว', items: ['ตู้เย็น', 'เตาอบ', 'ไมโครเวฟ', 'เตาแก๊ส', 'ตู้เก็บของ', 'เตาแม่เหล็กไฟฟ้า', 'อ่างล้างจาน', 'ตู้วางจาน', 'เครื่องล้างจาน', 'โต๊ะเตรียมอาหาร', 'ตู้กับข้าว', 'เก้าอี้บาร์'] }
+  ];
+
+  // ข้อมูลหมวดหมู่ยอดฮิต
+  const popularItems = [
+    'หมวดสินค้ายอดฮิต 1', 'หมวดสินค้ายอดฮิต 2', 'หมวดสินค้ายอดฮิต 3', 'หมวดสินค้ายอดฮิต 4', 'หมวดสินค้ายอดฮิต 5', 'หมวดสินค้ายอดฮิต 6', 'หมวดสินค้ายอดฮิต 7', 'หมวดสินค้ายอดฮิต 8', 'หมวดสินค้ายอดฮิต 9', 'หมวดสินค้ายอดฮิต 10', 'หมวดสินค้ายอดฮิต 11', 'หมวดสินค้ายอดฮิต 12', 'หมวดสินค้ายอดฮิต 13', 'หมวดสินค้ายอดฮิต 14'
+  ];
+
+  // ข้อมูลโปรโมชั่น
+  const promotionItems = [
+    'ส่วนลด 50%', 'ซื้อ 1 แถม 1', 'ส่งฟรี', 'ลดราคาเพิ่ม 20%', 'โปรโมชั่นพิเศษ', 'ลดราคา 10%', 'ซื้อสินค้าครบ 1000 บาท ลด 100 บาท', 'โปรแกรมสะสมคะแนน', 'ลด 5% สำหรับสมาชิก', 'รับบัตรกำนัล 200 บาท', 'ลด 30% สินค้าคุณภาพสูง', 'ซื้อ 2 แถม 1', 'คูปองส่วนลด 100 บาท', 'ลดราคา 15% สำหรับสมาชิกใหม่'
+  ];
+
+  const maxItemsPerColumn = 11;
+
+  // ฟังก์ชันสร้างคอลัมน์ใหม่
+  function createColumn() {
+    const column = document.createElement('div');
+    column.classList.add('column');
+    return column;
+  }
+
+  // ฟังก์ชันสร้างหมวดหมู่และรายการสินค้า
+  function createItems(containerId, items, isCategory = false) {
+    const row = document.getElementById(containerId);
+    let currentColumn = createColumn();
+    let itemCount = 0;
+
+    items.forEach((item, index) => {
+      if (itemCount >= maxItemsPerColumn) {
+
+        row.appendChild(currentColumn);
+        currentColumn = createColumn();
+        itemCount = 0;
+      }
+
+      const itemLink = document.createElement('a');
+      itemLink.href = '#';
+      itemLink.innerText = item;
+      if (isCategory && itemCount === 0) {
+        const h3 = document.createElement('h3');
+        const titleLink = document.createElement('a');
+        titleLink.href = '#';
+        titleLink.innerText = item;
+        h3.appendChild(titleLink);
+        currentColumn.appendChild(h3);
+      } else {
+        currentColumn.appendChild(itemLink);
+      }
+      itemCount++;
+    });
+
+
+    row.appendChild(currentColumn);
+  }
+
+  // เรียกใช้ฟังก์ชันเพื่อสร้างหมวดหมู่ทั้งหมด
+  searchRoomItems.forEach(category => {
+    createItems('search-room-row', [category.title, ...category.items], true);
+  });
+
+  createItems('popular-category-row', popularItems);
+  createItems('promotion-row', promotionItems);
+
+</script>
+
+</html>

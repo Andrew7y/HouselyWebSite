@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IKEA Order Page</title>
+    <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Aboreto&family=Anuphan:wght@100..700&display=swap"
+        rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="nav_styles.css" />
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Anuphan', sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            height: 100vh
+        }
+
+        .head{
+            padding: 20px;
+        }
+
+        .logo {
+            position: absolute;
+            margin-top: 15px;
+            margin-left: 70px;
+            font-size: 20px;
+        }
+
+        .icon-container {
+            display: flex;
+            margin-left: 200px;
+            width: 60%;
+            justify-content: center;
+        }
+
+        .icon-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin: 0 15px;
+        }
+
+        .icon {
+            font-size: 15px;
+            color: #b5babf;;
+            background-color: white;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .icon-text {
+            font-size: 12px;
+            color: #333;
+        }
+
+        .separator {
+            color: #ccc;
+            margin: 0 10px;
+            margin-top: 20px;
+           
+        }
+
+        .main-content {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .left-section {
+            padding: 20px;
+            background-color: #fff;
+            width: 60%;
+            height:fit-content;
+            margin-bottom: 20px;
+        }
+
+        .right-section {
+            width: 35%;
+            height:fit-content;
+            background-color: #fff;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+
+        .address-section {
+            background-color: #fff;
+            padding: 150px; 
+            margin-top: -50px;
+        }
+
+        .address-section h2 {
+            font-size: 25px;
+            margin-bottom: 25px;
+        }
+
+        .address-section p.detail{
+            font-size: 14px;
+        }
+
+        .address-section p{
+            font-size: 14px;
+            margin-bottom: 0px;
+        }
+
+        .edit-btn {
+            float: right;
+            background-color: #fff;
+            color: #0066cc;
+            border: 2px solid #0066cc;
+            padding: 6px 15px;
+            border-radius: 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+
+        .edit-btn .text{
+            font-weight: bold;
+            font-family: 'Anuphan', sans-serif;
+        }
+        .edit-btn i {
+            margin-right: 5px;
+        }
+
+
+        .other-add-btn{
+            float: left;
+            background-color: #fff;
+            color: #0066cc;
+            border: 2px solid #0066cc;
+            padding: 6px 15px;
+            border-radius: 15px;
+            cursor: pointer;
+        }
+
+        .other-add-btn .text{
+            font-weight: bold;
+            font-family: 'Anuphan', sans-serif;
+        }
+
+        .email-section {
+            background-color: #fff;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .continue-btn {
+            width: 100%;
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            padding: 15px;
+            font-size: 14px;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+
+        .continue-btn .text{
+            font-weight: bold;
+            font-family: 'Anuphan', sans-serif;
+        }
+
+        .back-link {
+            color: #0066cc;
+            font-size: 14px;
+            font-weight: bold;
+            font-family: 'Anuphan', sans-serif;
+            text-align: center;
+            display: block;
+        }
+
+        .order-summary h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        
+        .order-summary p{
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .order-summary img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            margin-right: 10px;
+        }
+
+        .product-container {
+            display: flex; /* Use flexbox for layout */
+            align-items: center; /* Vertically center the items */
+            gap: 20px; /* Space between the image and text */
+        }
+
+        .product-details h2 {
+            margin: 0; /* Remove default margin */
+            font-size: 14px; /* Adjust the font size if needed */
+        }
+
+        .product-details p {
+            margin: 5px 0; /* Add spacing between paragraphs */
+        }
+
+        .product-details span {
+            display: block; /* Make the price appear on a new line */
+            font-weight: bold; /* Bold the price */
+            font-size: 14px; /* Adjust the font size if needed */
+        }
+
+        .option {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+        .option:hover{
+            color:#0066cc;
+            background-color: transparent;
+
+        }
+        .option.selected {
+            border-color: #0058a3;
+            background-color: #e6f2ff;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="main-content">
+            <div class="left-section">
+                <div class = "head">
+                    <a href="#" class="logo">HOUSELY</a>
+                    <div class="icon-container">
+                        <div class="icon-item">
+                            <div class="icon" style="color: #0066cc;">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <span class="icon-text">ข้อมูลของคุณ</span>
+                        </div>
+                        <span class="separator">-</span>
+                        <div class="icon-item">
+                            <div class="icon" style="color: #fff; background-color: #0066cc;">
+                                <i class="fas fa-truck"></i>
+                            </div>
+                            <span class="icon-text">บริการ</span>
+                        </div>
+                        <span class="separator">-</span>
+                        <div class="icon-item">
+                            <div class="icon">
+                                <i class="far fa-credit-card"></i>
+                            </div>
+                            <span class="icon-text">การชำระเงิน</span>
+                        </div>
+                </div>
+            </div>
+            <div class="address-section">
+                <h2>คุณต้องการรับคำสั่งซื้อของคุณด้วยวิธีใด?</h2>
+                
+
+                <div class="option">
+                    <div>
+                        <p style="font-weight: bold;">จัดส่งแบบพัสดุ</p>
+                        <p>จัดส่งภายใน 7-10 วัน</p>
+                    </div>
+                    <p>99 บาท</p>
+                </div>
+                
+                <div class="option">
+                    <div>
+                        <p style="font-weight: bold;">จัดส่งโดยรถบรรทุก</p>
+                        <p>จัดส่งภายใน 7-10 วัน</p>
+                    </div>
+                    <p>99 บาท</p>
+                </div>
+                
+                <button class="continue-btn"><span class="text">ดำเนินการชำระเงินต่อ ></button>
+                <a href="#" class="back-link">< กลับไปที่รายละเอียด</a>
+            </div>
+        </div>
+
+            <div class="right-section">
+                <div class="order-summary">
+                    <p style="font-weight: bold;">รายละเอียดการจัดส่ง</p>
+                    <p>นางสาวภรณ์ทิพย์ แก้วกลม</p>
+                    <p>1/45 ม.6 ต.วังเหนือ อ.บางซ้าย จ.พระนครศรีอยุธยา</p>
+                    <p>33140</p>
+                    <p>+66 88 603 4580</p>
+                    <hr width="100%" style="margin-top: 30px; margin-bottom: 30px;"/>
+                    
+                    <p style="font-weight: bold;">วิธีการจัดส่ง</p>
+                    <p>จัดส่งแบบพัสดุ</p>
+                    <p>ระยะเวลาการจัดส่งโดยประมาณ</p>
+                    <hr width="100%" style="margin-top: 30px; margin-bottom: 30px;"/>
+
+                    <p style="font-weight: bold;">สินค้า</p>
+                    <div class="product-container">
+                        <img src="https://www.ikea.com/th/th/images/products/hildegun-tea-towel-blue__0956028_pe804439_s3.jpg" alt="HILDEGUN Tea Towel" class="product-image">
+                        <div class="product-details">
+                            <h2>HILDEGUN ฮิลเดกุน</h2>
+                            <p>ผ้าเช็ดจาน, น้ำเงิน, 45x60 ซม.</p>
+                            <p>จำนวน: 1 รายการ</p>
+                            <span>19 บาท</span>
+                        </div>
+                    </div>
+                    <hr width="100%" style="margin-top: 30px; margin-bottom: 30px;"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

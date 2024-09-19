@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ตะกร้าสินค้า - Housely</title>
+    <link rel="stylesheet" href="nav_styles.css" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Aboreto&family=Anuphan:wght@100..700&display=swap" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <!-- footer -->
+    <link rel="stylesheet" href="footer.css" />
+    <style>
+        body {
+            user-select: none;
+        }
+
+        .cart {
+            max-width: 1150px;
+            background-color: #fff;
+            margin: auto;
+            margin-top: 30px;
+            margin-bottom: 30px;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .cart h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .cart p {
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .cart-item {
+            display: flex;
+            width: 90%;
+            height: 255px;
+            justify-content: space-between;
+            padding: 15px 10px 10px 15px;
+            margin-right: 350px;
+            margin-left: 20px;
+            border-bottom: 1px solid #eee;
+            position: relative;
+            align-items: flex-start;
+        }
+
+        .cart-item img {
+            width: 100px;
+            height: auto;
+            margin-right: 20px;
+        }
+
+        .cart-item-info {
+            padding: 10px 0px 10px 0px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+        }
+
+        .cart-item-info h3 {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .cart-item-info h4 {
+            display: flex;
+            font-size: 16px;
+            margin: 80px 0px 10px 0px;
+        }
+
+        .cart-item-info p {
+            font-size: 12px;
+            margin: 0px 0px 15px 0px;
+        }
+
+        .cart-item-price {
+            text-align: right;
+            font-size: 16px;
+            margin-left: 80px;
+            width: 90%;
+        }
+
+        .cart-item-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            /* ระยะห่างระหว่างปุ่มและช่องกรอกข้อมูล */
+            margin: 5px 0;
+            /* ระยะห่างบนและล่างของกล่องควบคุม */
+        }
+
+        .cart-item-controls input {
+            width: 35px;
+            /* กำหนดความกว้างของช่องกรอกข้อมูล */
+            text-align: center;
+            /* จัดข้อความให้อยู่ตรงกลางช่องกรอกข้อมูล */
+            padding: 5px;
+            /* เพิ่มพื้นที่ภายในช่องกรอกข้อมูล */
+            border: 1px solid #ccc;
+            /* เพิ่มขอบของช่องกรอกข้อมูล */
+            border-radius: 4px;
+            /* ทำมุมของขอบเป็นโค้ง */
+            font-size: 14px;
+            /* ขนาดของข้อความในช่องกรอกข้อมูล */
+        }
+
+        .cart-item-controls button {
+            padding: 4px 8px;
+            /* เพิ่มพื้นที่ภายในปุ่ม (top-bottom และ left-right) */
+            background-color: #e7f3eb;
+            /* สีพื้นหลังปุ่ม */
+            border: 1px solid #c1d7c7;
+            /* ขอบของปุ่ม */
+            cursor: pointer;
+            /* แสดงเคอร์เซอร์เป็นรูปมือเมื่อวางเมาส์เหนือปุ่ม */
+            border-radius: 4px;
+            /* ทำมุมของขอบปุ่มเป็นโค้ง */
+            font-size: 16px;
+            /* ขนาดของข้อความในปุ่ม */
+            transition: background-color 0.3s ease;
+            /* เพิ่มการเปลี่ยนสีพื้นหลังเมื่อเมาส์ชี้ไปที่ปุ่ม */
+        }
+
+        .cart-item-controls button:hover {
+            background-color: #d0e3d3;
+            /* เปลี่ยนสีพื้นหลังของปุ่มเมื่อเมาส์ชี้ไปที่ปุ่ม */
+        }
+
+        .cart-summary {
+            background-color: #e7f3eb;
+            padding: 20px;
+            border-radius: 10px;
+            width: 380px;
+            height: 400px;
+            margin-left: auto;
+        }
+
+        .cart-summary h2 {
+            font-size: 18px;
+            margin: 0;
+        }
+
+        .cart-summary span {
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .cart-summary p {
+            font-size: 18px;
+            display: flex;
+            justify-content: space-between;
+            margin: 25px 0;
+        }
+
+        .cart-summary p span {
+            font-size: 18px;
+        }
+
+        .cart-summary-total {
+            font-size: 18px;
+            display: flex;
+            justify-content: space-between;
+            margin: 25px 0;
+        }
+
+        .cart-summary-total span {
+            font-size: 18px;
+            display: block;
+            text-align: right;
+        }
+
+        .cart-summary button {
+            padding: 10px;
+            background-color: #d4efe0;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            width: 100%;
+            font-size: 16px;
+        }
+
+        .cart-summary button:hover {
+            background-color: #c3e6d6;
+        }
+
+        .remove-item {
+            display: flex;
+            position: absolute;
+            bottom: 0px;
+            right: 0;
+            margin-right: 10px;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 18px;
+            color: #333;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+        }
+
+        .remove-item:hover {
+            color: red;
+        }
+
+        .cart-content {
+            display: flex;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="navbar">
+            <a href="#" class="logo">HOUSELY</a>
+            <nav>
+                <ul>
+                    <li>
+                        <a href="#" class="dropdown-toggle">ค้นหาจากห้อง <i class="fas fa-caret-down"></i></a>
+                        <div class="dropdown-content">
+                            <div class="row" id="search-room-row">
+                                <!-- คอลัมน์จะถูกสร้างและแสดงที่นี่โดย JavaScript -->
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="#" class="dropdown-toggle">หมวดสินค้ายอดฮิต <i class="fas fa-caret-down"></i></a>
+                        <div class="dropdown-content">
+                            <div class="row" id="popular-category-row">
+                                <!-- คอลัมน์จะถูกสร้างและแสดงที่นี่โดย JavaScript -->
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="#" class="dropdown-toggle">โปรโมชั่น <i class="fas fa-caret-down"></i></a>
+                        <div class="dropdown-content">
+                            <div class="row" id="promotion-row">
+                                <!-- คอลัมน์จะถูกสร้างและแสดงที่นี่โดย JavaScript -->
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+            <div class="search-bar">
+                <input type="text" placeholder="ค้นหาสินค้าที่คุณต้องการ..." />
+                <button type="submit"><i class="fas fa-search"></i></button>
+            </div>
+            <div class="icons">
+                <a href="#"><i class="fas fa-heart"></i></a>
+                <a href="#"><i class="fas fa-shopping-cart"></i></a>
+                <a href="#"><i class="fas fa-user"></i></a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="cart">
+            <h1>ตะกร้าสินค้าของคุณ</h1>
+            <p>สินค้าทั้งหมดในตะกร้าของคุณคือ 3 ชิ้น</p>
+
+            <div class="cart-content">
+                <div>
+                    <div class="cart-item">
+                        <div class="cart-item-info">
+                            <img src="placeholder.jpg" alt="สินค้า">
+                            <div>
+                                <h3>ชื่อสินค้า</h3>
+                                <p>179x112 ซม.</p>
+                                <p>สีอะลูมิเนียม</p>
+                                <h4>จำนวน</h4>
+                                <div class="cart-item-controls">
+                                    <button class="decrement">-</button>
+                                    <input type="text" class="quantity" value="0">
+                                    <button class="increment">+</button>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="cart-item-price">20,000 ฿</div>
+                        <button class="remove-item"><i class="fas fa-trash-alt"></i></button>
+                    </div>
+
+                    <div class="cart-item">
+                        <div class="cart-item-info">
+                            <img src="placeholder.jpg" alt="สินค้า">
+                            <div>
+                                <h3>ชื่อสินค้า</h3>
+                                <p>179x112 ซม.</p>
+                                <p>สีอะลูมิเนียม</p>
+                                <h4>จำนวน</h4>
+                                <div class="cart-item-controls">
+                                    <button class="decrement">-</button>
+                                    <input type="text" class="quantity" value="0">
+                                    <button class="increment">+</button>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="cart-item-price">20,000 ฿</div>
+                        <button class="remove-item"><i class="fas fa-trash-alt"></i></button>
+                    </div>
+
+                    <div class="cart-item">
+                        <div class="cart-item-info">
+                            <img src="placeholder.jpg" alt="สินค้า">
+                            <div>
+                                <h3>ชื่อสินค้า</h3>
+                                <p>179x112 ซม.</p>
+                                <p>สีอะลูมิเนียม</p>
+                                <h4>จำนวน</h4>
+                                <div class="cart-item-controls">
+                                    <button class="decrement">-</button>
+                                    <input type="text" class="quantity" value="0">
+                                    <button class="increment">+</button>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="cart-item-price">20,000 ฿</div>
+                        <button class="remove-item"><i class="fas fa-trash-alt"></i></button>
+                    </div>
+                </div>
+
+                <div class="cart-summary">
+                    <h2>จัดส่งไปที่ </h2>
+                    <span>อ.เมืองขอนแก่น จ.ขอนแก่น 40000</span>
+                    <p>สินค้า (3) <span>60,000 ฿</span></p>
+                    <p>ราคาค่าจัดส่ง <span>99 ฿</span></p>
+                    <div class="cart-summary-total">ยอดรวม <span>60,099 ฿</span></div>
+                    <button type="button">ชำระเงิน</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>ติดต่อเรา</p>
+        <p>Line: @housely</p>
+        <p>Customer Contact Center: 1112</p>
+        <div class="social-icons">
+            <a href="#"><i class="fab fa-line"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Get all cart item controls
+            const cartItems = document.querySelectorAll('.cart-item-controls');
+
+            cartItems.forEach(function (controls) {
+                const decrementButton = controls.querySelector('.decrement');
+                const incrementButton = controls.querySelector('.increment');
+                const quantityInput = controls.querySelector('.quantity');
+
+                decrementButton.addEventListener('click', function () {
+                    let value = parseInt(quantityInput.value, 10);
+                    if (value > 0) {
+                        quantityInput.value = value - 1;
+                    }
+                });
+
+                incrementButton.addEventListener('click', function () {
+                    let value = parseInt(quantityInput.value, 10);
+                    quantityInput.value = value + 1;
+                });
+            });
+        });
+
+        document.querySelectorAll('.dropdown-toggle').forEach(function (toggle) {
+            toggle.addEventListener('click', function (e) {
+
+
+                const dropdownContent = this.nextElementSibling;
+                dropdownContent.style.display = dropdownContent.style.display === 'block' ? 'none' : 'block';
+
+                const icon = this.querySelector('i');
+                if (dropdownContent.style.display === 'block') {
+                    icon.classList.remove('fa-caret-down');
+                    icon.classList.add('fa-caret-up');
+                } else {
+                    icon.classList.remove('fa-caret-up');
+                    icon.classList.add('fa-caret-down');
+                }
+            });
+        });
+
+        // Close the dropdown when clicking outside of it
+        document.addEventListener('click', function (e) {
+            if (!e.target.closest('.navbar')) {
+                document.querySelectorAll('.dropdown-content').forEach(function (dropdown) {
+                    dropdown.style.display = 'none';
+                });
+
+                document.querySelectorAll('.dropdown-toggle i').forEach(function (icon) {
+                    icon.classList.remove('fa-caret-up');
+                    icon.classList.add('fa-caret-down');
+                });
+            }
+        });
+        const searchRoomItems = [
+            { title: 'ห้องนอน', items: ['เตียงนอน', 'ตู้เสื้อผ้า', 'โต๊ะเครื่องแป้ง', 'โต๊ะข้างเตียง', 'ตู้เสื้อผ้าใหญ่', 'เตียงเด็ก', 'โต๊ะทำงาน', 'เก้าอี้นั่งเล่น', 'ตู้เสื้อผ้าสี', 'โต๊ะเครื่องแป้งไม้', 'เตียงนอนเด็ก', 'ตู้เก็บของ'] },
+            { title: 'ห้องนั่งเล่น', items: ['โซฟา', 'โต๊ะกลาง', 'ตู้วางทีวี', 'เก้าอี้นั่งเล่น', 'โต๊ะข้างโซฟา', 'พรม', 'ตู้โชว์', 'เก้าอี้ทานอาหาร', 'โต๊ะทำงาน', 'โต๊ะรับประทานอาหาร', 'เก้าอี้บาร์', 'โต๊ะกาแฟ'] },
+            { title: 'ห้องครัว', items: ['ตู้เย็น', 'เตาอบ', 'ไมโครเวฟ', 'เตาแก๊ส', 'ตู้เก็บของ', 'เตาแม่เหล็กไฟฟ้า', 'อ่างล้างจาน', 'ตู้วางจาน', 'เครื่องล้างจาน', 'โต๊ะเตรียมอาหาร', 'ตู้กับข้าว', 'เก้าอี้บาร์'] }
+        ];
+
+        // ข้อมูลหมวดหมู่ยอดฮิต
+        const popularItems = [
+            'หมวดสินค้ายอดฮิต 1', 'หมวดสินค้ายอดฮิต 2', 'หมวดสินค้ายอดฮิต 3', 'หมวดสินค้ายอดฮิต 4', 'หมวดสินค้ายอดฮิต 5', 'หมวดสินค้ายอดฮิต 6', 'หมวดสินค้ายอดฮิต 7', 'หมวดสินค้ายอดฮิต 8', 'หมวดสินค้ายอดฮิต 9', 'หมวดสินค้ายอดฮิต 10', 'หมวดสินค้ายอดฮิต 11', 'หมวดสินค้ายอดฮิต 12', 'หมวดสินค้ายอดฮิต 13', 'หมวดสินค้ายอดฮิต 14'
+        ];
+
+        // ข้อมูลโปรโมชั่น
+        const promotionItems = [
+            'ส่วนลด 50%', 'ซื้อ 1 แถม 1', 'ส่งฟรี', 'ลดราคาเพิ่ม 20%', 'โปรโมชั่นพิเศษ', 'ลดราคา 10%', 'ซื้อสินค้าครบ 1000 บาท ลด 100 บาท', 'โปรแกรมสะสมคะแนน', 'ลด 5% สำหรับสมาชิก', 'รับบัตรกำนัล 200 บาท', 'ลด 30% สินค้าคุณภาพสูง', 'ซื้อ 2 แถม 1', 'คูปองส่วนลด 100 บาท', 'ลดราคา 15% สำหรับสมาชิกใหม่'
+        ];
+
+        const maxItemsPerColumn = 11;
+
+        // ฟังก์ชันสร้างคอลัมน์ใหม่
+        function createColumn() {
+            const column = document.createElement('div');
+            column.classList.add('column');
+            return column;
+        }
+
+        // ฟังก์ชันสร้างหมวดหมู่และรายการสินค้า
+        function createItems(containerId, items, isCategory = false) {
+            const row = document.getElementById(containerId);
+            let currentColumn = createColumn();
+            let itemCount = 0;
+
+            items.forEach((item, index) => {
+                if (itemCount >= maxItemsPerColumn) {
+
+                    row.appendChild(currentColumn);
+                    currentColumn = createColumn();
+                    itemCount = 0;
+                }
+
+                const itemLink = document.createElement('a');
+                itemLink.href = '#';
+                itemLink.innerText = item;
+                if (isCategory && itemCount === 0) {
+                    const h3 = document.createElement('h3');
+                    const titleLink = document.createElement('a');
+                    titleLink.href = '#';
+                    titleLink.innerText = item;
+                    h3.appendChild(titleLink);
+                    currentColumn.appendChild(h3);
+                } else {
+                    currentColumn.appendChild(itemLink);
+                }
+                itemCount++;
+            });
+
+
+            row.appendChild(currentColumn);
+        }
+
+        // เรียกใช้ฟังก์ชันเพื่อสร้างหมวดหมู่ทั้งหมด
+        searchRoomItems.forEach(category => {
+            createItems('search-room-row', [category.title, ...category.items], true);
+        });
+
+        createItems('popular-category-row', popularItems);
+        createItems('promotion-row', promotionItems);
+
+    </script>
+
+</body>
+
+</html>
+<!DOCTYPE html>

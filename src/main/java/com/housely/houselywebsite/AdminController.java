@@ -36,5 +36,11 @@ public class AdminController {
         return "Admin/dashboard";
     }
 
+    @GetMapping("/")
+    public String Homepage() {
+        return new String();
+    }
+    
+
     
 }

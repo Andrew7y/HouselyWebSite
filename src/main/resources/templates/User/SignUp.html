@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Housely - Sign Up</title>
+    <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link
+    href="https://fonts.googleapis.com/css2?family=Aboreto&family=Anuphan:wght@100..700&display=swap"
+    rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="home_styles.css"/>
+    <link rel="stylesheet" href="nav_styles.css" />
+    <style>
+        body {
+            user-select: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0faf9;
+        }
+
+        .container {
+            display: flex;
+            width: 80%;
+            max-width: 1200px;
+            height: 600px;
+            background-color: #edf7f4;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .container a.logo{
+            display: flex;
+            position:absolute;
+            max-width: 1200px;
+            height: 600px;
+            left : 175px;
+            margin-top: 20px;
+            font-size: 20px;
+        }
+
+        .right {
+            background-color: #d7efe9;
+            padding: 40px;
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .right h2 {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 32px;
+            margin-bottom: 10px;
+            color: #000;
+            text-align: center;
+        }
+
+        .right p {
+            font-family: 'Anuphan', sans-serif;
+            margin-bottom: 20px;
+            color: #333;
+            font-size: 14px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+
+        .input-group {
+            position: relative;
+            margin-bottom: 15px;
+            width: 80%; /* Adjust to fit inside container */
+        }
+
+        .input-group input {
+            font-family: 'Anuphan', sans-serif;
+            width: 100%;
+            padding: 12px 12px 12px 40px; /* Add padding-left to make space for the icon */
+            border-radius: 20px;
+            border: 1px solid #ddd;
+            margin-top: 5px;
+            font-size: 14px;
+        }
+
+        .input-group i {
+            position: absolute;
+            top: 50%;
+            left: 10px;
+            transform: translateY(-50%);
+            color: #999;
+        }
+
+        .btn-signup {
+            font-family: 'Archivo Black', sans-serif;
+            background-color: #000;
+            color: #fff;
+            padding: 12px 25px;
+            border: none;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .btn-signup:hover {
+            background-color: #333;
+        }
+
+
+        .left {
+            width: 50%;
+            background: url('https://img.freepik.com/free-photo/view-room-interior-with-furniture-copy-space_23-2150680540.jpg?w=826&t=st=1726318791~exp=1726319391~hmac=d2277e75fe36eee270cbfa7fddf84f7ee280c18e18c917e70046d8ed6e3fe4d0') no-repeat center center;
+            background-size: cover;
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+        }
+
+        .container-left {
+            padding: 75px 100px;
+            background-color: rgba(0, 0, 0, 0.2); 
+        }
+
+        
+        .left h2 {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 36px;
+            margin-bottom: 50px;
+            font-weight: 600;
+            opacity: 100%;
+            
+        }
+
+        .left p {
+            font-family: 'Anuphan', sans-serif;
+            font-size: 14px;   
+            margin-bottom: 0px;
+            opacity: 100%;
+            color: #000;
+        }
+
+        .left p.discover {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 18px;
+            margin-bottom: 20px;
+            font-weight: 600;
+            opacity: 100%;
+            color: #000;
+        }
+
+        .btn-signup {
+            font-family: 'Archivo Black', sans-serif;
+            background-color: #000;
+            color: #fff;
+            padding: 15px 30px;
+            border: none;
+            font-size: 18px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <a href="#" class="logo">HOUSELY</a>
+    <div class="left">
+        <div class="container-left">
+            <p>Already Have an Account?</p>
+            <h2>WELCOME<br>BACK!</h2>
+            <p class = "discover">Your<br>Dream<br>Home<br>Awaits</p>
+            <button class="btn-signup">SIGN IN</button>
+        </div>
+    </div>
+
+    <div class="right">
+        <h2>CREATE ACCOUNT</h2>
+        <p>Join Us and Start Designing Your Dream Home</p>
+        
+        <div class="input-group">
+            <i class="fa fa-user"></i>
+            <input type="text" id="name" placeholder="Name">
+        </div>
+        
+        <div class="input-group">
+            <i class="fa fa-envelope"></i>
+            <input type="email" id="email" placeholder="Email">
+        </div>
+        
+        <div class="input-group">
+            <i class="fa fa-phone"></i>
+            <input type="tel" id="phone" placeholder="Phone Number">
+        </div>
+        
+        <div class="input-group">
+            <i class="fa fa-home"></i>
+            <input type="text" id="address" placeholder="Address">
+        </div>
+        
+        <div class="input-group">
+            <i class="fa fa-lock"></i>
+            <input type="password" id="password" placeholder="Password">
+        </div>
+        
+        <div class="input-group">
+            <i class="fa fa-lock"></i>
+            <input type="password" id="confirm-password" placeholder="Confirm Password">
+        </div>
+        
+        <button class="btn-signup">SIGN UP</button>
+    </div>
+</div>
+
+</body>
+</html>

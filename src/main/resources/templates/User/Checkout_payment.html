@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="th" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IKEA Order Page</title>
+    <title>Payment Page</title>
     <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
@@ -12,7 +12,7 @@
         rel="stylesheet" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="nav_styles.css" />
+    <link rel="stylesheet" href="@{/nav_styles.css}" />
     <style>
         * {
             box-sizing: border-box;
@@ -298,7 +298,7 @@
     <div class="container">
         <div class="main-content">
             <div class="left-section">
-                <div class = "head">
+                <div class="head">
                     <a href="#" class="logo">HOUSELY</a>
                     <div class="icon-container">
                         <div class="icon-item">
@@ -321,57 +321,41 @@
                             </div>
                             <span class="icon-text">การชำระเงิน</span>
                         </div>
+                    </div>
+                </div>
+
+                <div id="credit-card-form" class="credit-card-form" th:if="${showCreditCardForm}">
+                    <h3>กรอกรายละเอียดบัตรเครดิต</h3>
+                    <form action="#" method="post">
+                        <label for="card-name">ชื่อบนบัตร</label>
+                        <input type="text" id="card-name" name="card-name">
+
+                        <label for="card-number">หมายเลขบัตร</label>
+                        <input type="text" id="card-number" name="card-number">
+
+                        <label for="card-expiry">วันหมดอายุ</label>
+                        <input type="text" id="card-expiry" name="card-expiry">
+
+                        <label for="card-cvc">CVC</label>
+                        <input type="text" id="card-cvc" name="card-cvc">
+
+                        <button type="submit">ยืนยันการชำระเงิน</button>
+                    </form>
+                </div>
+
+                <div class="address-section">
+                    <h2>คุณต้องการชำระเงินด้วยวิธีใด?</h2>
+                    
+                    <div class="option" th:each="paymentOption : ${paymentOptions}" th:data-option="${paymentOption.type}">
+                        <div>
+                            <p th:text="${paymentOption.label}" style="font-weight: bold;"></p>
+                        </div>
+                    </div>
+                    
+                    <button class="continue-btn"><span class="text">ดำเนินการชำระเงินต่อ ></button>
+                    <a href="#" class="back-link">< กลับไปที่รายละเอียด</a>
                 </div>
             </div>
-
-            <div id="credit-card-form" class="credit-card-form">
-                <h3>กรอกรายละเอียดบัตรเครดิต</h3>
-                <form>
-                    <label for="card-name">ชื่อบนบัตร</label>
-                    <input type="text" id="card-name" name="card-name">
-
-                    <label for="card-number">หมายเลขบัตร</label>
-                    <input type="text" id="card-number" name="card-number">
-
-                    <label for="card-expiry">วันหมดอายุ</label>
-                    <input type="text" id="card-expiry" name="card-expiry">
-
-                    <label for="card-cvc">CVC</label>
-                    <input type="text" id="card-cvc" name="card-cvc">
-
-                    <button type="submit">ยืนยันการชำระเงิน</button>
-                </form>
-            </div>
-
-            <div class="address-section">
-                <h2>คุณต้องการชำระเงินด้วยวิธีใด?</h2>
-                
-                <div class="option" data-option="credit-card">
-                    <div>
-                        <p style="font-weight: bold;">บัตรเครดิต</p>
-                    </div>
-                </div>
-                <div class="option" data-option="parcel">
-                    <div>
-                        <p style="font-weight: bold;">เก็บเงินปลายทาง</p>
-                    </div>
-                </div>
-                <div class="option" data-option="qr">
-                    <div>
-                        <p style="font-weight: bold;">QR พร้อมเพย์</p>
-                    </div>
-                </div>
-                <div class="option" data-option="wallet">
-                    <div>
-                        <p style="font-weight: bold;">ทรูมันนี่ วอลเล็ท</p>
-                    </div>
-                </div>
-                
-                
-                <button class="continue-btn"><span class="text">ดำเนินการชำระเงินต่อ ></button>
-                <a href="#" class="back-link">< กลับไปที่รายละเอียด</a>
-            </div>
-        </div>
 
             <div class="right-section">
                 <div class="order-summary">
@@ -380,25 +364,25 @@
                     <hr width="100%" style="margin-top: 30px; margin-bottom: 30px;"/>
 
                     <p style="font-weight: bold;">รายละเอียดการจัดส่ง</p>
-                    <p>นางสาวภรณ์ทิพย์ แก้วกลม</p>
-                    <p>1/45 ม.6 ต.วังเหนือ อ.บางซ้าย จ.พระนครศรีอยุธยา</p>
-                    <p>33140</p>
-                    <p>+66 88 603 4580</p>
+                    <p th:text="${deliveryDetails.name}"></p>
+                    <p th:text="${deliveryDetails.address}"></p>
+                    <p th:text="${deliveryDetails.postalCode}"></p>
+                    <p th:text="${deliveryDetails.phone}"></p>
                     <hr width="100%" style="margin-top: 30px; margin-bottom: 30px;"/>
                     
                     <p style="font-weight: bold;">วิธีการจัดส่ง</p>
-                    <p>จัดส่งแบบพัสดุ</p>
+                    <p th:text="${deliveryMethod}"></p>
                     <p>ระยะเวลาการจัดส่งโดยประมาณ</p>
                     <hr width="100%" style="margin-top: 30px; margin-bottom: 30px;"/>
 
                     <p style="font-weight: bold;">สินค้า</p>
                     <div class="product-container">
-                        <img src="https://www.ikea.com/th/th/images/products/hildegun-tea-towel-blue__0956028_pe804439_s3.jpg" alt="HILDEGUN Tea Towel" class="product-image">
+                        <img th:src="@{${product.imageUrl}}" alt="Product Image" class="product-image">
                         <div class="product-details">
-                            <h2>HILDEGUN ฮิลเดกุน</h2>
-                            <p>ผ้าเช็ดจาน, น้ำเงิน, 45x60 ซม.</p>
-                            <p>จำนวน: 1 รายการ</p>
-                            <span>19 บาท</span>
+                            <h2 th:text="${product.name}"></h2>
+                            <p th:text="${product.description}"></p>
+                            <p th:text="'จำนวน: ' + ${product.quantity} + ' รายการ'"></p>
+                            <span th:text="${product.price}"></span>
                         </div>
                     </div>
                     <hr width="100%" style="margin-top: 30px; margin-bottom: 30px;"/>
@@ -406,7 +390,6 @@
             </div>
         </div>
     </div>
-
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const creditCardFormHTML = `

@@ -1,16 +1,14 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="th" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ตะกร้าสินค้า - Housely</title>
-    <link rel="stylesheet" href="nav_styles.css" />
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Aboreto&family=Anuphan:wght@100..700&display=swap" />
+    <link rel="stylesheet" th:href="@{/nav_styles.css}" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Aboreto&family=Anuphan:wght@100..700&display=swap" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-    <!-- footer -->
-    <link rel="stylesheet" href="footer.css" />
+    <link rel="stylesheet" th:href="@{/footer.css}" />
     <style>
         body {
             user-select: none;
@@ -226,7 +224,7 @@
                         <a href="#" class="dropdown-toggle">ค้นหาจากห้อง <i class="fas fa-caret-down"></i></a>
                         <div class="dropdown-content">
                             <div class="row" id="search-room-row">
-                                <!-- คอลัมน์จะถูกสร้างและแสดงที่นี่โดย JavaScript -->
+                                <!-- JavaScript will populate rooms -->
                             </div>
                         </div>
                     </li>
@@ -234,7 +232,7 @@
                         <a href="#" class="dropdown-toggle">หมวดสินค้ายอดฮิต <i class="fas fa-caret-down"></i></a>
                         <div class="dropdown-content">
                             <div class="row" id="popular-category-row">
-                                <!-- คอลัมน์จะถูกสร้างและแสดงที่นี่โดย JavaScript -->
+                                <!-- JavaScript will populate popular categories -->
                             </div>
                         </div>
                     </li>
@@ -242,7 +240,7 @@
                         <a href="#" class="dropdown-toggle">โปรโมชั่น <i class="fas fa-caret-down"></i></a>
                         <div class="dropdown-content">
                             <div class="row" id="promotion-row">
-                                <!-- คอลัมน์จะถูกสร้างและแสดงที่นี่โดย JavaScript -->
+                                <!-- JavaScript will populate promotions -->
                             </div>
                         </div>
                     </li>
@@ -260,70 +258,31 @@
         </div>
     </header>
 
+
     <main>
         <section class="cart">
             <h1>ตะกร้าสินค้าของคุณ</h1>
-            <p>สินค้าทั้งหมดในตะกร้าของคุณคือ 3 ชิ้น</p>
+            <p th:text="'สินค้าทั้งหมดในตะกร้าของคุณคือ ' + ${cartSize} + ' ชิ้น'"></p>
 
             <div class="cart-content">
                 <div>
-                    <div class="cart-item">
+                    <!-- Loop through cart items -->
+                    <div class="cart-item" th:each="item : ${cartItems}">
                         <div class="cart-item-info">
-                            <img src="placeholder.jpg" alt="สินค้า">
+                            <img th:src="@{/images/placeholder.jpg}" alt="สินค้า">
                             <div>
-                                <h3>ชื่อสินค้า</h3>
-                                <p>179x112 ซม.</p>
-                                <p>สีอะลูมิเนียม</p>
+                                <h3 th:text="${item.name}">ชื่อสินค้า</h3>
+                                <p th:text="${item.dimensions}">179x112 ซม.</p>
+                                <p th:text="${item.color}">สีอะลูมิเนียม</p>
                                 <h4>จำนวน</h4>
                                 <div class="cart-item-controls">
                                     <button class="decrement">-</button>
-                                    <input type="text" class="quantity" value="0">
+                                    <input type="text" class="quantity" th:value="${item.quantity}" />
                                     <button class="increment">+</button>
                                 </div>
-
                             </div>
                         </div>
-                        <div class="cart-item-price">20,000 ฿</div>
-                        <button class="remove-item"><i class="fas fa-trash-alt"></i></button>
-                    </div>
-
-                    <div class="cart-item">
-                        <div class="cart-item-info">
-                            <img src="placeholder.jpg" alt="สินค้า">
-                            <div>
-                                <h3>ชื่อสินค้า</h3>
-                                <p>179x112 ซม.</p>
-                                <p>สีอะลูมิเนียม</p>
-                                <h4>จำนวน</h4>
-                                <div class="cart-item-controls">
-                                    <button class="decrement">-</button>
-                                    <input type="text" class="quantity" value="0">
-                                    <button class="increment">+</button>
-                                </div>
-
-                            </div>
-                        </div>
-                        <div class="cart-item-price">20,000 ฿</div>
-                        <button class="remove-item"><i class="fas fa-trash-alt"></i></button>
-                    </div>
-
-                    <div class="cart-item">
-                        <div class="cart-item-info">
-                            <img src="placeholder.jpg" alt="สินค้า">
-                            <div>
-                                <h3>ชื่อสินค้า</h3>
-                                <p>179x112 ซม.</p>
-                                <p>สีอะลูมิเนียม</p>
-                                <h4>จำนวน</h4>
-                                <div class="cart-item-controls">
-                                    <button class="decrement">-</button>
-                                    <input type="text" class="quantity" value="0">
-                                    <button class="increment">+</button>
-                                </div>
-
-                            </div>
-                        </div>
-                        <div class="cart-item-price">20,000 ฿</div>
+                        <div class="cart-item-price" th:text="${item.price} + ' ฿'">20,000 ฿</div>
                         <button class="remove-item"><i class="fas fa-trash-alt"></i></button>
                     </div>
                 </div>
@@ -331,9 +290,9 @@
                 <div class="cart-summary">
                     <h2>จัดส่งไปที่ </h2>
                     <span>อ.เมืองขอนแก่น จ.ขอนแก่น 40000</span>
-                    <p>สินค้า (3) <span>60,000 ฿</span></p>
+                    <p>สินค้า (3) <span th:text="${cartTotalPrice} + ' ฿'">60,000 ฿</span></p>
                     <p>ราคาค่าจัดส่ง <span>99 ฿</span></p>
-                    <div class="cart-summary-total">ยอดรวม <span>60,099 ฿</span></div>
+                    <div class="cart-summary-total">ยอดรวม <span th:text="${cartTotalPriceWithShipping} + ' ฿'">60,099 ฿</span></div>
                     <button type="button">ชำระเงิน</button>
                 </div>
             </div>
@@ -478,4 +437,3 @@
 </body>
 
 </html>
-<!DOCTYPE html>

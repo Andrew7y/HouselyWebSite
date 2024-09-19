@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="th" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
@@ -13,9 +13,8 @@
         rel="stylesheet" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="nav_styles.css" />
-    <!-- footer -->
-    <link rel="stylesheet" href="footer.css" />
+    <link rel="stylesheet" href="@{/nav_styles.css}" />
+    <link rel="stylesheet" th:href="@{/footer.css}" />
     <style>
         body {
             background-color: white;
@@ -403,7 +402,7 @@
     <div class="container">
         <div class="left-column">
             <div class="conLeftImg">
-                <img src="https://www.ikea.com/th/th/images/products/smasporre-duvet-light-warm__0776666_pe758188_s5.jpg?f=xl"
+                <img th:src="@{https://www.ikea.com/th/th/images/products/smasporre-duvet-light-warm__0776666_pe758188_s5.jpg?f=xl}"
                     alt="furnitureImg">
             </div>
             <div class="conLeftdetail">
@@ -429,116 +428,65 @@
             </div>
         </div>
         <div class="condetail">
-            <h1 class="bold-text">BJORKSTA บเยิร์กสตา
-                <span class="heart-btn" style="position: relative; left: 100px;"><i class="fas fa-heart"></i></span>
+            <h1 class="bold-text">
+                <span th:text="${product.name}">BJORKSTA บเยิร์กสตา</span>
+                <span class="heart-btn" style="position: relative; left: 100px;">
+                    <i class="fas fa-heart"></i>
+                </span>
             </h1>
-            <p>ภาพใส่กรอบ</p>
-            <h1>1,890บาท</h1>
+            <p th:text="${product.type}">ภาพใส่กรอบ</p>
+            <h1 th:text="${#numbers.formatDecimal(product.price, 0, 'THB')}">1,890บาท</h1>
             <hr width="100%" />
             <p class="bold-text">ขนาด</p>
-            <p>179x112 ซม.</p>
+            <p th:text="${product.size}">179x112 ซม.</p>
             <p class="bold-text">จำนวน</p>
             <div class="item-controls">
-                <button>-</button>
-                <input type="text" value="0">
-                <button>+</button>
+                <button th:onclick="'decreaseQuantity()'">-</button>
+                <input type="text" th:value="${product.quantity}" />
+                <button th:onclick="'increaseQuantity()'">+</button>
             </div>
             <div class="btn-container">
-                <button class="add">เพิ่มสินค้าลงตะกร้า</button>
-                <button class="buy">ซื้อเลย</button>
+                <button class="add" th:onclick="'addToCart(product.id)'">เพิ่มสินค้าลงตะกร้า</button>
+                <button class="buy" th:onclick="'buyNow(product.id)'">ซื้อเลย</button>
             </div>
         </div>
     </div>
+    
 
     <div class="hotproduct-box">
-        <p class="condetail" style="font-weight: bold; margin-left: 100px; margin-bottom: 30px;">เพิ่มเติมจาก ซีรีย์
-            BJÖRKSTA/บเยิร์กสตา</p>
-        <button class="pre-btn"><img src="image/arrow.png" alt=""></button>
-        <button class="nxt-btn"><img src="image/arrow.png" alt=""></button>
+        <p class="condetail" style="font-weight: bold; margin-left: 100px; margin-bottom: 30px;">
+            เพิ่มเติมจาก ซีรีย์ BJÖRKSTA/บเยิร์กสตา
+        </p>
+        <button class="pre-btn">
+            <img src="image/arrow.png" alt="Previous">
+        </button>
+        <button class="nxt-btn">
+            <img src="image/arrow.png" alt="Next">
+        </button>
         <div class="hotpd-gallery">
-            <!-- สินค้าตัวอย่าง -->
-            <div class="product-card">
+            <!-- Repeat this block for each product -->
+            <div class="product-card" th:each="product : ${hotProducts}">
                 <div class="hotpd-img">
                     <span class="HOT-tag">HOT</span>
-                    <img src="https://www.ikea.com/th/th/images/products/linnmon-adils-table-white__0737165_pe740925_s5.jpg?f=xl"
-                        alt="hot-image1" class="hot-pdimage">
+                    <img th:src="@{${product.imageUrl}}" alt="hot-image" class="hot-pdimage">
                     <button class="next-btn">
                         <i class="fas fa-chevron-right"></i>
                     </button>
                 </div>
                 <div class="hotpd-info">
-                    <h2 class="pd-name">Name</h2>
-                    <button class="heart-btn"><i class="fas fa-heart"></i></button>
-                    <p class="product-category">category</p>
-                    <span class="price-old">$20</span><span class="price-new">$10</span>
-                </div>
-            </div>
-            <div class="product-card">
-                <div class="hotpd-img">
-                    <span class="HOT-tag">HOT</span>
-                    <img src="https://www.ikea.com/th/th/images/products/linnmon-adils-table-white__0737165_pe740925_s5.jpg?f=xl"
-                        alt="hot-image1" class="hot-pdimage">
-                    <button class="next-btn">
-                        <i class="fas fa-chevron-right"></i>
+                    <h2 class="pd-name" th:text="${product.name}">Name</h2>
+                    <button class="heart-btn">
+                        <i class="fas fa-heart"></i>
                     </button>
-                </div>
-                <div class="hotpd-info">
-                    <h2 class="pd-name">Name</h2>
-                    <button class="heart-btn"><i class="fas fa-heart"></i></button>
-                    <p class="product-category">category</p>
-                    <span class="price-old">$20</span><span class="price-new">$10</span>
+                    <p class="product-category" th:text="${product.category}">category</p>
+                    <span class="price-old" th:text="${product.oldPrice}">$20</span>
+                    <span class="price-new" th:text="${product.newPrice}">$10</span>
                 </div>
             </div>
-            <div class="product-card">
-                <div class="hotpd-img">
-                    <span class="HOT-tag">HOT</span>
-                    <img src="https://www.ikea.com/th/th/images/products/linnmon-adils-table-white__0737165_pe740925_s5.jpg?f=xl"
-                        alt="hot-image1" class="hot-pdimage">
-                    <button class="next-btn">
-                        <i class="fas fa-chevron-right"></i>
-                    </button>
-                </div>
-                <div class="hotpd-info">
-                    <h2 class="pd-name">Name</h2>
-                    <button class="heart-btn"><i class="fas fa-heart"></i></button>
-                    <p class="product-category">category</p>
-                    <span class="price-old">$20</span><span class="price-new">$10</span>
-                </div>
-            </div>
-            <div class="product-card">
-                <div class="hotpd-img">
-                    <span class="HOT-tag">HOT</span>
-                    <img src="https://www.ikea.com/th/th/images/products/linnmon-adils-table-white__0737165_pe740925_s5.jpg?f=xl"
-                        alt="hot-image1" class="hot-pdimage">
-                    <button class="next-btn">
-                        <i class="fas fa-chevron-right"></i>
-                    </button>
-                </div>
-                <div class="hotpd-info">
-                    <h2 class="pd-name">Name</h2>
-                    <button class="heart-btn"><i class="fas fa-heart"></i></button>
-                    <p class="product-category">category</p>
-                    <span class="price-old">$20</span><span class="price-new">$10</span>
-                </div>
-            </div>
-            <div class="product-card">
-                <div class="hotpd-img">
-                    <span class="HOT-tag">HOT</span>
-                    <img src="https://www.ikea.com/th/th/images/products/linnmon-adils-table-white__0737165_pe740925_s5.jpg?f=xl"
-                        alt="hot-image1" class="hot-pdimage">
-                    <button class="next-btn">
-                        <i class="fas fa-chevron-right"></i>
-                    </button>
-                </div>
-                <div class="hotpd-info">
-                    <h2 class="pd-name">Name</h2>
-                    <button class="heart-btn"><i class="fas fa-heart"></i></button>
-                    <p class="product-category">category</p>
-                    <span class="price-old">$20</span><span class="price-new">$10</span>
-                </div>
-            </div>
+            <!-- Repeat ends -->
         </div>
     </div>
+    
 
     <script>
         const productContainers = [...document.querySelectorAll('.hotpd-gallery')];

@@ -1,8 +1,4 @@
-<<<<<<<< HEAD:src/main/java/com/housely/houselywebsite/model/CartItemKey.java
 package com.housely.houselywebsite.model;
-========
-package com.housely.model.User;
->>>>>>>> 69d31dd441447ddb10b53b118de8f22cc4b1ff60:src/main/java/com/housely/model/User/CartItemKey.java
 
 import java.io.Serializable;
 import java.util.Objects;

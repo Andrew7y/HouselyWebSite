@@ -11,8 +11,6 @@ import org.springframework.web.client.RestTemplate;
 
 
 
-
-
 @Service
 public class CustomerService {
     
@@ -77,4 +75,5 @@ public class CustomerService {
         );
         return response.getBody();
     }
+
 }

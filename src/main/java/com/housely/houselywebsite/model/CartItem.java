@@ -12,7 +12,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class CartItem {
-   
+
     private CartItemKey id;
     private Product product;
     private Cart cart;

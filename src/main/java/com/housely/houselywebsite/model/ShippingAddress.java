@@ -1,4 +1,4 @@
-package com.housely.model;
+package com.housely.houselywebsite.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,20 +9,16 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PaymentAddress {
+public class ShippingAddress {
 
-    private Long paymentAddressId;
-    private String firstName;
-    private String lastName;
-    private String streetAlleyVillage;
+    private Long shippingAddressId;
     private String country;
-    private String city;
+    private String province;
+    private String district;
+    private String streetAlleyVillage;
     private String houseNumber;
-    private String state;
     private String zip;
     private String phone;
-    private String district;
-    private Order order;
     private Customer customer;
     
 }

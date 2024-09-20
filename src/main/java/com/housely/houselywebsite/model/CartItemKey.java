@@ -1,12 +1,12 @@
-package com.housely.model;
+package com.housely.houselywebsite.model;
 
 import java.io.Serializable;
 import java.util.Objects;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 
 
 @Getter

@@ -1,24 +1,22 @@
-package com.housely.model;
+package com.housely.houselywebsite.model;
 
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Category {
+public class Room {
 
-
-    private Long categoryId;
-    private String categoryName;
+    private Long id;
     private String description;
     private String imageBase64;
-    private List<Product> productInCategories;
-
+    private String roomName;
+    private List<Product> productInRooms;
+    
 }
-

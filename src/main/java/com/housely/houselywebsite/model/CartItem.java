@@ -1,5 +1,4 @@
-package com.housely.model;
-import java.util.List;
+package com.housely.houselywebsite.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,10 +11,17 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class Cart {
-    private Long cartId;
-    private Customer customer;
-    private List<CartItem> cartItems;
+public class CartItem {
+   
+    private CartItemKey id;
+    private Product product;
+    private Cart cart;
+    private Long quantity;
+
+
+
+
+
+
 
 }
-

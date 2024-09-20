@@ -1,6 +1,6 @@
 package com.housely.houselywebsite.service;
 
-import com.housely.model.Customer;
+import com.housely.houselywebsite.model.Customer;
 import java.util.List;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -8,6 +8,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+
 
 
 

@@ -1,14 +1,14 @@
-package com.housely.model;
+package com.housely.houselywebsite.model;
 
 
 
+import java.io.Serializable;
+import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.io.Serializable;
-import java.util.Objects;
 
 
 @Getter
@@ -20,6 +20,7 @@ public class OrderItemKey implements Serializable {
     private Long orderId;
     private Long productId;
     
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof OrderItemKey that)) return false;

@@ -1,27 +1,21 @@
-package com.housely.model;
-
+package com.housely.houselywebsite.model;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class CartItem {
-   
-    private CartItemKey id;
-    private Product product;
-    private Cart cart;
-    private Long quantity;
-
-
-
-
-
-
+public class Cart {
+    private Long cartId;
+    private Customer customer;
+    private List<CartItem> cartItems;
 
 }
+

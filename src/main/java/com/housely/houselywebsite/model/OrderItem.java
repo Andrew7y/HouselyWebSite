@@ -1,4 +1,4 @@
-package com.housely.model;
+package com.housely.houselywebsite.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

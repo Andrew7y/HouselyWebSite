@@ -1,4 +1,4 @@
-package com.housely.model;
+package com.housely.model.User;
 
 
 

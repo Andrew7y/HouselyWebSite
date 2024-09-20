@@ -1,4 +1,4 @@
-package com.housely.model;
+package com.housely.model.User;
 
 import java.time.LocalDate;
 import lombok.AllArgsConstructor;

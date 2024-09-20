@@ -1,4 +1,4 @@
-package com.housely.model;
+package com.housely.model.User;
 
 import java.io.Serializable;
 import java.util.Objects;

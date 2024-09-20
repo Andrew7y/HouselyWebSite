@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="th" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IKEA Order Page</title>
+    <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Aboreto&family=Anuphan:wght@100..700&display=swap"
+        rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="@{/nav_styles.css}" />
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Anuphan', sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            height: 100vh;
+            display: flex; /* Add this */
+            justify-content: center;
+        }
+
+        .head{
+            padding: 20px;
+        }
+
+        .logo {
+            position: absolute;
+            margin-top: 15px;
+            margin-left: 70px;
+            font-size: 20px;
+        }
+
+        .icon-container {
+            display: flex;
+            margin-left: 200px;
+            width: 60%;
+            justify-content: center;
+        }
+
+        .icon-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin: 0 15px;
+        }
+
+        .icon {
+            font-size: 15px;
+            color: #b5babf;;
+            background-color: white;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .icon-text {
+            font-size: 12px;
+            color: #333;
+        }
+
+        .separator {
+            color: #ccc;
+            margin: 0 10px;
+            margin-top: 20px;
+           
+        }
+
+        .main-content {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .right-section {
+            width: 50%;
+            height:fit-content;
+            background-color: #fff;
+            padding: 20px;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+
+
+        .address-section {
+            background-color: #fff;
+            padding: 150px; 
+            margin-top: -50px;
+        }
+
+        .address-section h2 {
+            font-size: 25px;
+            margin-bottom: 25px;
+        }
+
+        .address-section p.detail{
+            font-size: 14px;
+        }
+
+        .address-section p{
+            font-size: 14px;
+            margin-bottom: 0px;
+        }
+
+        .edit-btn {
+            float: right;
+            background-color: #fff;
+            color: #0066cc;
+            border: 2px solid #0066cc;
+            padding: 6px 15px;
+            border-radius: 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+
+        .edit-btn .text{
+            font-weight: bold;
+            font-family: 'Anuphan', sans-serif;
+        }
+        .edit-btn i {
+            margin-right: 5px;
+        }
+
+
+        .other-add-btn{
+            float: left;
+            background-color: #fff;
+            color: #0066cc;
+            border: 2px solid #0066cc;
+            padding: 6px 15px;
+            border-radius: 15px;
+            cursor: pointer;
+        }
+
+        .other-add-btn .text{
+            font-weight: bold;
+            font-family: 'Anuphan', sans-serif;
+        }
+
+        .email-section {
+            background-color: #fff;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .continue-btn {
+            width: 100%;
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            padding: 15px;
+            font-size: 14px;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+
+        .continue-btn .text{
+            font-weight: bold;
+            font-family: 'Anuphan', sans-serif;
+        }
+
+        .back-link {
+            color: #0066cc;
+            font-size: 14px;
+            font-weight: bold;
+            font-family: 'Anuphan', sans-serif;
+            text-align: center;
+            display: block;
+        }
+
+        .order-summary h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        
+        .order-summary p{
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .order-summary img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            margin-right: 10px;
+        }
+
+        .product-container {
+            display: flex; /* Use flexbox for layout */
+            align-items: center; /* Vertically center the items */
+            gap: 20px; /* Space between the image and text */
+        }
+
+        .product-details h2 {
+            margin: 0; /* Remove default margin */
+            font-size: 14px; /* Adjust the font size if needed */
+        }
+
+        .product-details p {
+            margin: 5px 0; /* Add spacing between paragraphs */
+        }
+
+        .product-details span {
+            display: block; /* Make the price appear on a new line */
+            font-weight: bold; /* Bold the price */
+            font-size: 14px; /* Adjust the font size if needed */
+        }
+
+        .option {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+        .option:hover{
+            color:#0066cc;
+            background-color: transparent;
+
+        }
+        .option.selected {
+            border-color: #0058a3;
+            background-color: #e6f2ff;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+            <div class="right-section">
+                <div class="order-summary">
+                    <h1 style="margin-bottom: 20px;">คำสั่งซื้อของคุณสำเร็จ</h1>
+                    <p style="font-weight: bold;">รายละเอียดการจัดส่ง</p>
+                    <p th:text="${order.shippingName}">นางสาวภรณ์ทิพย์ แก้วกลม</p>
+                    <p th:text="${order.shippingAddress}">1/45 ม.6 ต.วังเหนือ อ.บางซ้าย จ.พระนครศรีอยุธยา</p>
+                    <p th:text="${order.shippingZipCode}">33140</p>
+                    <p th:text="${order.shippingPhone}">+66 88 603 4580</p>
+                    <hr width="100%" style="margin-top: 30px; margin-bottom: 30px;"/>
+                    
+                    <p style="font-weight: bold;">วิธีการจัดส่ง</p>
+                    <p th:text="${order.deliveryMethod}">จัดส่งแบบพัสดุ</p>
+                    <p th:text="${order.deliveryTime}">ระยะเวลาการจัดส่งโดยประมาณ</p>
+                    <hr width="100%" style="margin-top: 30px; margin-bottom: 30px;"/>
+
+                    <p style="font-weight: bold;">สินค้า</p>
+                    <div class="product-container">
+                        <img th:src="@{${order.productImage}}" alt="Product Image" class="product-image">
+                        <div class="product-details">
+                            <h2 th:text="${order.productName}">HILDEGUN ฮิลเดกุน</h2>
+                            <p th:text="${order.productDescription}">ผ้าเช็ดจาน, น้ำเงิน, 45x60 ซม.</p>
+                            <p th:text="'จำนวน: ' + ${order.productQuantity} + ' รายการ'">จำนวน: 1 รายการ</p>
+                            <span th:text="${order.productPrice}">19 บาท</span>
+                        </div>
+                    </div>
+                    <hr width="100%" style="margin-top: 30px; margin-bottom: 30px;"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

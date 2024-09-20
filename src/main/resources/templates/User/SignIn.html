@@ -6,6 +6,7 @@
     <title>Housely - Sign Up</title>
     <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Aboreto&family=Anuphan:wght@100..700&display=swap"/>
     <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" rel="stylesheet" >
     <link
       rel="stylesheet"
@@ -17,7 +18,7 @@
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="@{/nav_styles.css}" />
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/nav_styles.css}" />
     <style>
         body {
             user-select: none;
@@ -40,6 +41,7 @@
         }
 
         .container a.logo{
+            font-family: 'Aboreto', sans-serif;
             display: flex;
             position:absolute;
             max-width: 1200px;
@@ -47,7 +49,9 @@
             left : 175px;
             margin-top: 20px;
             font-size: 20px;
-        
+            font-weight:400;
+            color: #000;
+            text-decoration: none;
         }
 
         /* Left side (Sign In) */

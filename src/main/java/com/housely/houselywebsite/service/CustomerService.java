@@ -1,6 +1,5 @@
 package com.housely.houselywebsite.service;
 
-import com.housely.model.Customer;
 import java.util.List;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;

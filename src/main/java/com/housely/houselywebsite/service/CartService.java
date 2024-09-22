@@ -15,8 +15,8 @@ public class CartService {
     private final WebClient webClient;
 
     @Autowired
-    public CartService(WebClient.Builder webClientBuilder) {
-        this.webClient = webClientBuilder.baseUrl("http://localhost:8085/api/carts").build();
+    public CartService(WebClient webClient) {
+        this.webClient = webClient;
     }
 
     public Flux<Cart> findAllCart(Long id) {
@@ -26,12 +26,12 @@ public class CartService {
             .bodyToFlux(Cart.class);
     }
 
-    public Mono<Cart> findCartById(Long id,Long cartId) {
-        return webClient.get()
-            .uri("/customer/{id}/cart/{cartId}", id,cartId)
-            .retrieve()
-            .bodyToMono(Cart.class);
-    }
+    // public Mono<Cart> findCartById(Long id,Long cartId) {
+    //     return webClient.get()
+    //         .uri("/customer/{id}/cart/{cartId}", id,cartId)
+    //         .retrieve()
+    //         .bodyToMono(Cart.class);
+    // }
 
     public Mono<Cart> createCart(Cart cart, Long id) {
         return webClient.post()

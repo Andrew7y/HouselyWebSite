@@ -1,80 +1,80 @@
 package com.housely.houselywebsite.service;
 
-import java.util.List;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import com.housely.houselywebsite.model.Customer;
+
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 
 
 @Service
 public class CustomerService {
     
-    private final RestTemplate restTemplate;
-    private String baseUrl = "http://localhost:8085/api";
+  
+    private final WebClient webClient;
 
-    public CustomerService(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
+    @Autowired
+    public CustomerService(WebClient webClient) {
+        this.webClient = webClient;
     }
 
-    // Method to get customer by ID
-    public Customer getCustomerById(Long id) {
-        ResponseEntity<Customer> response = restTemplate.exchange(
-                baseUrl + "/" + id,
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<Customer>() {}
-        );
-        return response.getBody();
+    public Flux<Customer> getAllCustomer(){
+        return webClient.get()
+        .uri("/customers")
+        .retrieve()
+        .bodyToFlux(Customer.class);
     }
 
-    // Method to create a new customer
-    public Customer createCustomer(Customer customer) {
-        ResponseEntity<Customer> response = restTemplate.exchange(
-                baseUrl,
-                HttpMethod.POST,
-                new HttpEntity<>(customer),
-                new ParameterizedTypeReference<Customer>() {}
-        );
-        return response.getBody();
+    public Mono<Customer> getCustomerById(Long id){
+        return webClient.get()
+        .uri("/customers/{id}",id)
+        .retrieve()
+        .bodyToMono(Customer.class);
     }
 
-    // Method to update an existing customer
-    public Customer updateCustomer(Long id, Customer customer) {
-        ResponseEntity<Customer> response = restTemplate.exchange(
-                baseUrl + "/" + id,
-                HttpMethod.PUT,
-                new HttpEntity<>(customer),
-                new ParameterizedTypeReference<Customer>() {}
-        );
-        return response.getBody();
+    public Mono<Customer> addCustomer(Customer customer){
+        return webClient.post()
+        .uri("/customers")
+        .bodyValue(customer)
+        .retrieve()
+        .onStatus(
+            httpStatus -> httpStatus.is4xxClientError() || httpStatus.is5xxServerError(),
+            clientResponse -> clientResponse.bodyToMono(String.class)
+                .flatMap(
+                        errorBody -> Mono
+                        .error(new RuntimeException("Error: "+ errorBody))
+                        )
+                
+        )
+        .bodyToMono(Customer.class);
     }
 
-    // Method to delete a customer by ID
-    public void deleteCustomer(Long id) {
-        restTemplate.exchange(
-                baseUrl + "/" + id,
-                HttpMethod.DELETE,
-                null,
-                new ParameterizedTypeReference<Void>() {}
-        );
+    public Mono<Customer> updateCustomer(Long id,Customer customer){
+        return webClient.put()
+        .uri("/customers/{id}",id)
+        .bodyValue(customer)
+        .retrieve()
+        .onStatus(
+            httpStatus -> httpStatus.is4xxClientError() || httpStatus.is5xxServerError(),
+            clientResponse -> clientResponse.bodyToMono(String.class)
+                .flatMap(
+                        errorBody -> Mono
+                        .error(new RuntimeException("Error: "+ errorBody))
+                        )
+                
+        )
+        .bodyToMono(Customer.class);
     }
 
-    // Method to search customers by name or email
-    public List<Customer> searchCustomers(String keyword) {
-        String searchUrl = baseUrl + "/search?keyword=" + keyword;
-        ResponseEntity<List<Customer>> response = restTemplate.exchange(
-                searchUrl,
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<List<Customer>>() {}
-        );
-        return response.getBody();
+    public Mono<Void> deleteCustomer(Long id){
+        return webClient.delete()
+        .uri("/customers/{id}",id)
+        .retrieve()
+        .bodyToMono(Void.class);
     }
 
 }

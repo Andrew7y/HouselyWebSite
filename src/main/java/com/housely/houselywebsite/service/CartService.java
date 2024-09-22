@@ -1,56 +1,68 @@
 package com.housely.houselywebsite.service;
 
-import com.housely.houselywebsite.model.Cart;
-import com.housely.houselywebsite.model.CartItem;
-import java.util.List;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
+import com.housely.houselywebsite.model.Cart;
 
-
-
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Service
 public class CartService {
 
-    private final RestTemplate restTemplate;
-    private final String baseUrl = "http://localhost:8085/api/carts";
+    private final WebClient webClient;
 
-    public CartService(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
+    @Autowired
+    public CartService(WebClient.Builder webClientBuilder) {
+        this.webClient = webClientBuilder.baseUrl("http://localhost:8085/api/carts").build();
     }
 
-    public Cart createCart(Cart cart) {
-        ResponseEntity<Cart> response = restTemplate.exchange(
-            baseUrl, HttpMethod.POST, new HttpEntity<>(cart),
-            new ParameterizedTypeReference<Cart>() {});
-        return response.getBody();
+    public Flux<Cart> findAllCart() {
+        return webClient.get()
+            .uri("/cart")
+            .retrieve()
+            .bodyToFlux(Cart.class);
     }
 
-    public Cart getCartById(Long id) {
-        ResponseEntity<Cart> response = restTemplate.exchange(
-            baseUrl + "/" + id, HttpMethod.GET, null,
-            new ParameterizedTypeReference<Cart>() {});
-        return response.getBody();
+    public Mono<Cart> findCartById(Long cartId) {
+        return webClient.get()
+            .uri("/cart/{cartId}", cartId)
+            .retrieve()
+            .bodyToMono(Cart.class);
     }
 
-    public void deleteCart(Long id) {
-        restTemplate.exchange(baseUrl + "/" + id, HttpMethod.DELETE, null, 
-            new ParameterizedTypeReference<Void>() {});
+    public Mono<Cart> createCart(Cart cart, Long id) {
+        return webClient.post()
+            .uri("/customer/{id}/cart", id)
+            .bodyValue(cart)
+            .retrieve()
+            .onStatus(
+                httpStatus -> httpStatus.is4xxClientError() || httpStatus.is5xxServerError(),
+                clientResponse -> clientResponse.bodyToMono(String.class)
+                    .flatMap(errorBody -> Mono.error(new RuntimeException("Error: " + errorBody)))
+            )
+            .bodyToMono(Cart.class);
     }
 
-    // ดึงรายการสินค้าที่อยู่ในตะกร้าโดยใช้ cartId
-    public List<CartItem> getCartItemsByCartId(Long cartId) {
-        ResponseEntity<List<CartItem>> response = restTemplate.exchange(
-            baseUrl + "/cart/" + cartId,
-            HttpMethod.GET,
-            null,
-            new ParameterizedTypeReference<List<CartItem>>() {}
-        );
-        return response.getBody();
+    public Mono<Void> deleteCart(Long id, Long cartId) {
+        return webClient.delete()
+            .uri("/customer/{id}/cart/{cartId}", id, cartId)
+            .retrieve()
+            .bodyToMono(Void.class);
+    }
+
+    public Mono<Cart> updateCart(Cart cart, Long id, Long cartId) {
+        return webClient.put()
+            .uri("/customer/{id}/cart/{cartId}", id, cartId)
+            .bodyValue(cart)
+            .retrieve()
+            .onStatus(
+                httpStatus -> httpStatus.is4xxClientError() || httpStatus.is5xxServerError(),
+                clientResponse -> clientResponse.bodyToMono(String.class)
+                    .flatMap(errorBody -> Mono.error(new RuntimeException("Error: " + errorBody)))
+            )
+            .bodyToMono(Cart.class);
     }
 }

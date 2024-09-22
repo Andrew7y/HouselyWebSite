@@ -1,41 +1,79 @@
 package com.housely.houselywebsite.service;
 
 import com.housely.houselywebsite.model.CreditCard;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
+import java.io.Flushable;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
+
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Service
 public class CreditCardService {
 
-    private final RestTemplate restTemplate;
-    private final String baseUrl = "http://localhost:8085/api/creditcards";
+    private final WebClient webClient;
 
-    public CreditCardService(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
+    @Autowired
+    public CreditCardService(WebClient webClient) {
+        this.webClient = webClient;
     }
 
-    public CreditCard createCreditCard(CreditCard creditCard) {
-        ResponseEntity<CreditCard> response = restTemplate.exchange(
-            baseUrl, HttpMethod.POST, new HttpEntity<>(creditCard),
-            new ParameterizedTypeReference<CreditCard>() {});
-        return response.getBody();
+    public Flux<CreditCard> getAllCreditCard(){
+        return webClient.get()
+        .uri("/credit-card/all")
+        .retrieve()
+        .bodyToFlux(CreditCard.class);
     }
 
-    public CreditCard getCreditCardById(Long id) {
-        ResponseEntity<CreditCard> response = restTemplate.exchange(
-            baseUrl + "/" + id, HttpMethod.GET, null,
-            new ParameterizedTypeReference<CreditCard>() {});
-        return response.getBody();
+    public Mono<CreditCard> addCreditCard(CreditCard creditCard) {
+        return webClient.post()
+            .uri("/credit-card")
+            .bodyValue(creditCard)
+            .retrieve()
+            .onStatus(
+                httpStatus -> httpStatus.is4xxClientError() || httpStatus.is5xxServerError(),
+                clientResponse -> clientResponse.bodyToMono(String.class)
+                    .flatMap(
+                            errorBody -> Mono
+                            .error(new RuntimeException("Error: "+ errorBody))
+                            )
+                    
+            )
+            .bodyToMono(CreditCard.class);
     }
 
-    public void deleteCreditCard(Long id) {
-        restTemplate.exchange(baseUrl + "/" + id, HttpMethod.DELETE, null, 
-            new ParameterizedTypeReference<Void>() {});
+    public Mono<CreditCard> getCreditCardById(String id) {
+        return webClient.get()
+            .uri("/credit-card/{id}", id)
+            .retrieve()
+            .bodyToMono(CreditCard.class);
+    }
+
+    public Mono<Void> deleteCreditCardById(Long id) {
+        return webClient.delete()
+            .uri("/credit-card/{id}", id)
+            .retrieve()
+            .bodyToMono(Void.class);
+    }
+
+    public Mono<CreditCard> updateCreditCard(String id,CreditCard creditCard){
+        return webClient.put()
+        .uri("/credit-card/{id}",id)
+        .bodyValue(creditCard)
+        .retrieve()
+        .onStatus(
+            httpStatus -> httpStatus.is4xxClientError() || httpStatus.is5xxServerError(),
+            clientResponse -> clientResponse.bodyToMono(String.class)
+                .flatMap(
+                        errorBody -> Mono
+                        .error(new RuntimeException("Error: "+ errorBody))
+                        )
+                
+        )
+        .bodyToMono(CreditCard.class);
+
     }
 }
-

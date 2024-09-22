@@ -1,69 +1,91 @@
 package com.housely.houselywebsite.service;
 
 import com.housely.houselywebsite.model.CartItem;
+import com.housely.houselywebsite.model.CartItemKey;
 
+import org.apache.tomcat.util.http.parser.MediaType;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Service
 public class CartItemService {
 
+    private final WebClient webClient;
+    private final CartService cartService;
+
     @Autowired
-    private RestTemplate resttemplate;
-
-    private final String baseUrl = "http://localhost:8085/api/";
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    private final RestTemplate restTemplate;
-    private final String baseUrl = "http://localhost:8085/api/cart-items";
-
-    public CartItemService(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
+    public CartItemService(WebClient webClient,CartService cartService) {
+        this.webClient = webClient;
+        this.cartService = cartService;
     }
 
-    // เพิ่มสินค้าลงในตะกร้า
-    public CartItem addCartItem(Long cartId, Long productId, CartItem cartItem) {
-        ResponseEntity<CartItem> response = restTemplate.exchange(
-            baseUrl + "/cart/" + cartId + "/product/" + productId,
-            HttpMethod.POST,
-            new HttpEntity<>(cartItem),
-            new ParameterizedTypeReference<CartItem>() {}
-        );
-        return response.getBody();
+    public Flux<CartItem> getAllCartItem(Long id,Long cartId){
+        return webClient.get()
+            .uri("/customer/{id}/cart/{cartId}/cart-item",id,cartId)
+            .retrieve()
+            .bodyToFlux(CartItem.class);
     }
 
-    // ลบสินค้าจากตะกร้า
-    public void deleteCartItem(Long cartId, Long productId) {
-        restTemplate.exchange(
-            baseUrl + "/cart/" + cartId + "/product/" + productId,
-            HttpMethod.DELETE,
-            null,
-            new ParameterizedTypeReference<Void>() {}
+    public Mono<CartItem> getCartItemById(Long id,Long cartId,CartItemKey cartItemId){
+        return webClient.get()
+        .uri("/customer/{id}/cart/{cartId}/cart-item/{cartItemId}",id,cartId,cartItemId)
+        .retrieve()
+        .bodyToMono(
+            CartItem.class
         );
     }
 
-
+    public Mono<CartItem> addCartItem(CartItem cartItem, Long id, Long cartId) {
+        return cartService.findCartById(cartId) // ตรวจสอบว่าตะกร้ามีอยู่จริง
+            .flatMap(cart -> {
+                if (cart.getCustomer().getId().equals(id)) { // ตรวจสอบว่าตะกร้าเป็นของลูกค้าที่ถูกต้อง
+                    cartItem.setCart(cart);
+                    return webClient.post()
+                        .uri("/customer/{customerId}/cart/{cartId}/cart-item", id, cartId)
+                        .bodyValue(cartItem)
+                        .retrieve()
+                        .bodyToMono(CartItem.class);
+                } else {
+                    return Mono.error(new RuntimeException("Cart does not belong to the customer"));
+                }
+            });
+    }
+    
+    public Mono<CartItem> updateCartItem(CartItem cartItem, Long id, Long cartId, CartItemKey cartItemId) {
+        return cartService.findCartById(cartId) // ตรวจสอบว่าตะกร้ามีอยู่จริง
+            .flatMap(cart -> {
+                if (cart.getCustomer().getId().equals(id)) { 
+                    cartItem.setCart(cart);
+                    cartItem.setId(cartItemId);
+                    return webClient.put()
+                        .uri("/customer/{customerId}/cart/{cartId}/cart-item/{cartItemId}", id, cartId, cartItemId)
+                        .bodyValue(cartItem)
+                        .retrieve()
+                        .bodyToMono(CartItem.class);
+                } else {
+                    return Mono.error(new RuntimeException("Cart does not belong to the customer"));
+                }
+            });
+    }
+    
+    
+    public Mono<Void> deleteCartItem(Long id, Long cartId, CartItemKey cartItemId) {
+        return cartService.findCartById(cartId)
+            .flatMap(cart -> {
+                if (cart.getCustomer().getId().equals(id)) { 
+                    return webClient.delete()
+                        .uri("/customer/{customerId}/cart/{cartId}/cart-item/{cartItemId}", id, cartId, cartItemId)
+                        .retrieve()
+                        .bodyToMono(Void.class);
+                } else {
+                    return Mono.error(new RuntimeException("Cart does not belong to the customer"));
+                }
+            });
+    }
+    
+    
 }

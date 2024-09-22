@@ -1,71 +1,76 @@
 package com.housely.houselywebsite.service;
 
-import com.housely.houselywebsite.model.Category;
-import java.util.List;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
+import com.housely.houselywebsite.model.Category;
+
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Service
 public class CategoryService {
 
-    private final RestTemplate restTemplate;
-    private final String baseUrl = "http://localhost:8085/api/categories";
+    private final WebClient webClient;
 
-    public CategoryService(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
+    @Autowired
+    public CategoryService(WebClient webClient) {
+        this.webClient = webClient;
     }
 
-    public Category getCategoryById(Long id) {
-        ResponseEntity<Category> response = restTemplate.exchange(
-            baseUrl + "/" + id,
-            HttpMethod.GET,
-            null,
-            new ParameterizedTypeReference<Category>() {}
-        );
-        return response.getBody();
+    public Mono<Category> findCategoryById(Long id) {
+        return webClient.get()
+            .uri("/category/{id}", id)
+            .retrieve()
+            .bodyToMono(Category.class);
     }
 
-    public Category createCategory(Category category) {
-        ResponseEntity<Category> response = restTemplate.exchange(
-            baseUrl,
-            HttpMethod.POST,
-            new HttpEntity<>(category),
-            new ParameterizedTypeReference<Category>() {}
-        );
-        return response.getBody();
+    public Mono<Category> addCategory(Category category) {
+        return webClient.post()
+            .uri("/category")
+            .bodyValue(category)
+            .retrieve()
+            .onStatus(
+                httpStatus -> httpStatus.is4xxClientError() || httpStatus.is5xxServerError(),
+                clientResponse -> clientResponse.bodyToMono(String.class)
+                    .flatMap(
+                            errorBody -> Mono
+                            .error(new RuntimeException("Error: "+ errorBody))
+                            )
+                    
+            )
+            .bodyToMono(Category.class);
     }
 
-    public Category updateCategory(Long id, Category category) {
-        ResponseEntity<Category> response = restTemplate.exchange(
-            baseUrl + "/" + id,
-            HttpMethod.PUT,
-            new HttpEntity<>(category),
-            new ParameterizedTypeReference<Category>() {}
-        );
-        return response.getBody();
+    public Mono<Category> updateCategory(Long id, Category category) {
+        return webClient.put()
+            .uri("/category/{id}", id)
+            .bodyValue(category)
+            .retrieve()
+            .onStatus(
+                httpStatus -> httpStatus.is4xxClientError() || httpStatus.is5xxServerError(),
+                clientResponse -> clientResponse.bodyToMono(String.class)
+                    .flatMap(
+                            errorBody -> Mono
+                            .error(new RuntimeException("Error: "+ errorBody))
+                            )
+                    
+            )
+            .bodyToMono(Category.class);
     }
 
-    public void deleteCategory(Long id) {
-        restTemplate.exchange(
-            baseUrl + "/" + id,
-            HttpMethod.DELETE,
-            null,
-            new ParameterizedTypeReference<Void>() {}
-        );
+    public Mono<Void> deleteCategory(Long id) {
+        return webClient.delete()
+            .uri("/category/{id}", id)
+            .retrieve()
+            .bodyToMono(Void.class);
     }
 
-    public List<Category> getAllCategories() {
-        ResponseEntity<List<Category>> response = restTemplate.exchange(
-            baseUrl,
-            HttpMethod.GET,
-            null,
-            new ParameterizedTypeReference<List<Category>>() {}
-        );
-        return response.getBody();
+    public Flux<Category> findAllCategories() {
+        return webClient.get()
+            .uri("/category")
+            .retrieve()
+            .bodyToFlux(Category.class);
     }
 }

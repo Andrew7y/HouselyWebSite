@@ -1,5 +1,6 @@
 package com.housely.houselywebsite.service;
 
+import com.housely.houselywebsite.model.Category;
 import com.housely.houselywebsite.model.Product;
 
 import reactor.core.publisher.Flux;
@@ -35,12 +36,21 @@ public class ProductService {
     }
 
     // Save a new product via POST request
-    public Mono<Product> save(Product product) {
-        return webClient.post()
-            .uri("/products")
-            .bodyValue(product) // Send product object as body
-            .retrieve()
-            .bodyToMono(Product.class); // Expect one Product object in response
+    public Mono<Product> save(Product product, String proId) {
+        if (proId == null) {
+            return webClient.post()
+                .uri("/products/add")
+                .bodyValue(product) // Send product object as body
+                .retrieve()
+                .bodyToMono(Product.class); // Expect one Product object in response
+        } else {
+            return webClient.put()
+                .uri("/products/update/{productId}", proId)
+                .bodyValue(product) 
+                .retrieve()
+                .bodyToMono(Product.class); // สำหรับการอัปเดต
+        }
+
     }
 
     // Find product by ID via GET request
@@ -52,71 +62,37 @@ public class ProductService {
             .switchIfEmpty(Mono.error(new RuntimeException("Product not found")));
     }
 
-    // Delete product by ID via DELETE request
     public Mono<Void> deleteById(String id) {
         return webClient.delete()
-            .uri("/products/{id}", id)
+            .uri("/products/delete/{productId}", id)
             .retrieve()
             .bodyToMono(Void.class); // No body in response for DELETE
     }
 
 
-    // public ProductService(RestTemplate restTemplate) {
-    //     this.restTemplate = restTemplate;
-    // }
+    public Mono<Product> findById(Product product,String id) {
+        return webClient.put()
+            .uri("/products/update/{productId}", id)
+            .bodyValue(product) 
+            .retrieve()
+            .bodyToMono(Product.class); // สำหรับการอัปเดต
+    }
 
-    // // Method to get product by ID
-    // public Product getProductById(Long id) {
-    //     ResponseEntity<Product> response = restTemplate.exchange(
-    //             baseUrl + "/" + id,
-    //             HttpMethod.GET,
-    //             null,
-    //             new ParameterizedTypeReference<Product>() {}
-    //     );
-    //     return response.getBody();
-    // }
+    public Flux<Category> findCategoriesByProductCode(String productId) {
+        return webClient.delete()
+            .uri("/products/delete/{productId}", productId) // Adjust the URI to your API endpoint
+            .retrieve()
+            .bodyToFlux(Category.class); // Expect multiple Category objects in response
+    }
 
-    // // Method to create a new product
-    // public Product createProduct(Product product) {
-    //     ResponseEntity<Product> response = restTemplate.exchange(
-    //             baseUrl,
-    //             HttpMethod.POST,
-    //             new HttpEntity<>(product),
-    //             new ParameterizedTypeReference<Product>() {}
-    //     );
-    //     return response.getBody();
-    // }
+    // ใน ProductService
+    public Flux<Product> findByCategoryName(String categoryName) {
+        return webClient.get()
+            .uri("/categories/{categoryName}/products", categoryName)
+            .retrieve()
+            .bodyToFlux(Product.class) // Expect multiple Product objects in response
+            .switchIfEmpty(Flux.error(new RuntimeException("Products not found for category: " + categoryName)));
+    }
 
-    // // Method to update an existing product
-    // public Product updateProduct(Long id, Product product) {
-    //     ResponseEntity<Product> response = restTemplate.exchange(
-    //             baseUrl + "/" + id,
-    //             HttpMethod.PUT,
-    //             new HttpEntity<>(product),
-    //             new ParameterizedTypeReference<Product>() {}
-    //     );
-    //     return response.getBody();
-    // }
 
-    // // Method to delete a product by ID
-    // public void deleteProduct(Long id) {
-    //     restTemplate.exchange(
-    //             baseUrl + "/" + id,
-    //             HttpMethod.DELETE,
-    //             null,
-    //             new ParameterizedTypeReference<Void>() {}
-    //     );
-    // }
-
-    // // Method to search products by name or category
-    // public List<Product> searchProducts(String keyword) {
-    //     String searchUrl = baseUrl + "/search?keyword=" + keyword;
-    //     ResponseEntity<List<Product>> response = restTemplate.exchange(
-    //             searchUrl,
-    //             HttpMethod.GET,
-    //             null,
-    //             new ParameterizedTypeReference<List<Product>>() {}
-    //     );
-    //     return response.getBody();
-    // }
 }

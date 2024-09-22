@@ -19,16 +19,16 @@ public class CategoryService {
         this.webClient = webClient;
     }
 
-    public Mono<Category> findCategoryById(Long id) {
+    public Mono<Category> findCategoryById(Long categoryId) {
         return webClient.get()
-            .uri("/category/{id}", id)
+            .uri("/category/{categoryId}", categoryId)
             .retrieve()
             .bodyToMono(Category.class);
     }
 
     public Mono<Category> addCategory(Category category) {
         return webClient.post()
-            .uri("/category")
+            .uri("/category/add")
             .bodyValue(category)
             .retrieve()
             .onStatus(
@@ -43,9 +43,9 @@ public class CategoryService {
             .bodyToMono(Category.class);
     }
 
-    public Mono<Category> updateCategory(Long id, Category category) {
+    public Mono<Category> updateCategory(Category category,Long categoryId) {
         return webClient.put()
-            .uri("/category/{id}", id)
+            .uri("/update/{categoryId}", categoryId)
             .bodyValue(category)
             .retrieve()
             .onStatus(
@@ -60,9 +60,9 @@ public class CategoryService {
             .bodyToMono(Category.class);
     }
 
-    public Mono<Void> deleteCategory(Long id) {
+    public Mono<Void> deleteCategory(Long categoryId) {
         return webClient.delete()
-            .uri("/category/{id}", id)
+            .uri("/delete/{categoryId}", categoryId)
             .retrieve()
             .bodyToMono(Void.class);
     }
@@ -70,6 +70,15 @@ public class CategoryService {
     public Flux<Category> findAllCategories() {
         return webClient.get()
             .uri("/category")
+            .retrieve()
+            .bodyToFlux(Category.class);
+    }
+
+    public Flux<Category> search(String categoryName) {
+        return webClient.get()
+            .uri(uriBuilder -> uriBuilder.path("/category/search")
+                .queryParam("name", categoryName)
+                .build())
             .retrieve()
             .bodyToFlux(Category.class);
     }

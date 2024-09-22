@@ -19,16 +19,16 @@ public class CartService {
         this.webClient = webClientBuilder.baseUrl("http://localhost:8085/api/carts").build();
     }
 
-    public Flux<Cart> findAllCart() {
+    public Flux<Cart> findAllCart(Long id) {
         return webClient.get()
-            .uri("/cart")
+            .uri("/customer/{id}/cart/",id)
             .retrieve()
             .bodyToFlux(Cart.class);
     }
 
-    public Mono<Cart> findCartById(Long cartId) {
+    public Mono<Cart> findCartById(Long id,Long cartId) {
         return webClient.get()
-            .uri("/cart/{cartId}", cartId)
+            .uri("/customer/{id}/cart/{cartId}", id,cartId)
             .retrieve()
             .bodyToMono(Cart.class);
     }

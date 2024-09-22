@@ -45,7 +45,7 @@ public class CartItemService {
                 if (cart.getCustomer().getId().equals(id)) { // ตรวจสอบว่าตะกร้าเป็นของลูกค้าที่ถูกต้อง
                     cartItem.setCart(cart);
                     return webClient.post()
-                        .uri("/customer/{customerId}/cart/{cartId}/cart-item", id, cartId)
+                        .uri("/customer/{id}/cart/{cartId}/cart-item", id, cartId)
                         .bodyValue(cartItem)
                         .retrieve()
                         .bodyToMono(CartItem.class);
@@ -62,7 +62,7 @@ public class CartItemService {
                     cartItem.setCart(cart);
                     cartItem.setId(cartItemId);
                     return webClient.put()
-                        .uri("/customer/{customerId}/cart/{cartId}/cart-item/{cartItemId}", id, cartId, cartItemId)
+                        .uri("/customer/{id}/cart/{cartId}/cart-item/{cartItemId}", id, cartId, cartItemId)
                         .bodyValue(cartItem)
                         .retrieve()
                         .bodyToMono(CartItem.class);
@@ -78,7 +78,7 @@ public class CartItemService {
             .flatMap(cart -> {
                 if (cart.getCustomer().getId().equals(id)) { 
                     return webClient.delete()
-                        .uri("/customer/{customerId}/cart/{cartId}/cart-item/{cartItemId}", id, cartId, cartItemId)
+                        .uri("/customer/{id}/cart/{cartId}/cart-item/{cartItemId}", id, cartId, cartItemId)
                         .retrieve()
                         .bodyToMono(Void.class);
                 } else {

@@ -1,19 +1,14 @@
 package com.housely.houselywebsite.service;
 
 import com.housely.houselywebsite.model.Room;
-
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.reactive.function.client.WebClient;
+
 
 
 @Service
@@ -26,68 +21,50 @@ public class RoomService {
         this.webClient = webClient;
     }
 
-    // Fetch all rooms (assuming API call)
-    public Mono<List<Room>> findAll() {
-        return webClient.get()
-            .uri("/rooms")
-            .retrieve()
-            .bodyToFlux(Room.class)  // Expect multiple Room objects
-            .collectList();          // Convert Flux to List
-    }
-
-    // Save a new room via POST request
+    // สร้างห้องใหม่ (POST)
     public Mono<Room> save(Room room) {
         return webClient.post()
             .uri("/rooms")
-            .bodyValue(room)          // Send room object as body
+            .bodyValue(room)
             .retrieve()
-            .bodyToMono(Room.class);  // Expect one Room object in response
+            .bodyToMono(Room.class);
     }
 
-    // Find room by ID via GET request
-    public Mono<Room> findById(Long id) {
+    // ดึงห้องพักทั้งหมด (GET)
+    public List<Room> findAll() {
+        return webClient.get()
+            .uri("/rooms")
+            .retrieve()
+            .bodyToFlux(Room.class)
+            .collectList()
+            .block();  // เนื่องจาก Controller เป็นแบบ synchronous, จึงใช้ block() เพื่อดึงค่ากลับมาเป็น List
+    }
+
+    // ดึงห้องพักตาม ID (GET)
+    public Room findById(Long id) {
         return webClient.get()
             .uri("/rooms/{id}", id)
             .retrieve()
-            .bodyToMono(Room.class)   // Expect one Room object in response
-            .switchIfEmpty(Mono.error(new RuntimeException("Room not found")));
+            .bodyToMono(Room.class)
+            .block();  // ใช้ block() สำหรับ synchronous call
     }
 
-    // Delete room by ID via DELETE request
-    public Mono<Void> deleteById(Long id) {
-        return webClient.delete()
+    // อัปเดตห้องพักตาม ID (PUT)
+    public Mono<Room> updateRoom(Long id, Room updatedRoom) {
+        return webClient.put()
+            .uri("/rooms/{id}", id)
+            .bodyValue(updatedRoom)
+            .retrieve()
+            .bodyToMono(Room.class);
+    }
+
+    // ลบห้องพักตาม ID (DELETE)
+    public void deleteById(Long id) {
+        webClient.delete()
             .uri("/rooms/{id}", id)
             .retrieve()
-            .bodyToMono(Void.class);  // No body in response for DELETE
+            .toBodilessEntity()  // ไม่มีการตอบกลับเป็น Body
+            .block();  // ใช้ block() เพื่อทำการลบแบบ synchronous
     }
-
-    // private final RestTemplate restTemplate;
-    // private final String baseUrl = "http://localhost:8085/api/rooms";
-
-    // public RoomService(RestTemplate restTemplate) {
-    //     this.restTemplate = restTemplate;
-    // }
-
-    // // สร้างข้อมูลห้องใหม่
-    // public Room createRoom(Room room) {
-    //     ResponseEntity<Room> response = restTemplate.exchange(
-    //         baseUrl, HttpMethod.POST, new HttpEntity<>(room),
-    //         new ParameterizedTypeReference<Room>() {});
-    //     return response.getBody();
-    // }
-
-    // // ดึงข้อมูลห้องตาม ID
-    // public Room getRoomById(Long id) {
-    //     ResponseEntity<Room> response = restTemplate.exchange(
-    //         baseUrl + "/" + id, HttpMethod.GET, null,
-    //         new ParameterizedTypeReference<Room>() {});
-    //     return response.getBody();
-    // }
-
-    // // ลบข้อมูลห้องตาม ID
-    // public void deleteRoom(Long id) {
-    //     restTemplate.exchange(baseUrl + "/" + id, HttpMethod.DELETE, null, 
-    //         new ParameterizedTypeReference<Void>() {});
-    // }
 }
 

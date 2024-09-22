@@ -30,7 +30,7 @@ public class OrderItemService {
     }
 
     
-    public Flux<OrderItem> findAllCustomerOrders() {
+    public Flux<OrderItem> findAll() {
         return webClient.get()
             .uri("/customer-orders/all")
             .retrieve()
@@ -38,23 +38,32 @@ public class OrderItemService {
     }
 
     // Save a new order item via POST request
-    public Mono<OrderItem> save(OrderItem orderItem, Long cusId) {
-        return webClient.post()
-            .uri("/customer/{cusId}/customer-orders", cusId)
-            .bodyValue(orderItem) 
-            .retrieve()
-            .bodyToMono(OrderItem.class); // Expect one OrderItem object in response
+    public Mono<OrderItem> save(OrderItem orderItem, Long cusId, Long orderId, OrderItemKey itemId) {
+        // ตรวจสอบว่า itemId เป็น null หรือไม่ เพื่อแยกระหว่างการสร้างและอัปเดต
+        if (itemId == null) {
+            return webClient.post()
+                .uri("/customer/{cusId}/customer-orders/{orderId}/order-items", cusId, orderId)
+                .bodyValue(orderItem)
+                .retrieve()
+                .bodyToMono(OrderItem.class); // สำหรับการสร้าง
+        } else {
+            return webClient.put()
+                .uri("/customer/{cusId}/customer-orders/{orderId}/order-items/{itemId}", cusId, orderId, itemId)
+                .bodyValue(orderItem) 
+                .retrieve()
+                .bodyToMono(OrderItem.class); // สำหรับการอัปเดต
+        }
     }
-    
 
     // Find order item by ID via GET request
-    public Mono<OrderItem> findById(OrderItemKey id) {
+    public Mono<OrderItem> findById(OrderItemKey itemId, Long orderId) {
         return webClient.get()
-            .uri("/customer-orders/{orderId}", id) // Adjust URI according to your API
+            .uri("/customer-orders/{orderId}/order-items/{itemId}", orderId, itemId)
             .retrieve()
             .bodyToMono(OrderItem.class) // Expect one OrderItem object in response
             .switchIfEmpty(Mono.error(new RuntimeException("OrderItem not found")));
     }
+    
 
     // Find order item by customer and order via GET request
     public Mono<OrderItem> findByCustomerAndOrder(Long cusId, Long orderId, OrderItemKey itemId) {
@@ -64,6 +73,14 @@ public class OrderItemService {
             .bodyToMono(OrderItem.class)
             .switchIfEmpty(Mono.error(new RuntimeException("OrderItem not found")));
     }
+
+    public Flux<OrderItem> findByCustomerAndOrder(Long cusId, Long orderId) {
+        return webClient.get()
+            .uri("/customer/{cusId}/customer-orders/{orderId}/order-items", cusId, orderId)
+            .retrieve()
+            .bodyToFlux(OrderItem.class);
+    }
+
 
     // Find order items by customer and order via GET request
     public Flux<OrderItem> findByOrderItem(Long cusId, Long orderId) {
@@ -76,18 +93,20 @@ public class OrderItemService {
     // Find order items by order ID via GET request
     public Flux<OrderItem> findByOrderId(Long orderId) {
         return webClient.get()
-            .uri("/customer-orders/{orderId}", orderId)
+            .uri("/customer-orders/{orderId}/order-items", orderId)
             .retrieve()
             .bodyToFlux(OrderItem.class); // Expect multiple OrderItem objects
     }
+   
 
     // Delete order item by ID via DELETE request
-    public Mono<Void> deleteById(OrderItemKey id) {
+    public Mono<Void> deleteById(Long cusId, Long orderId, OrderItemKey id) {
         return webClient.delete()
-            .uri("/order-items/{id}", id) // Adjust URI according to your API
+            .uri("/customer/{cusId}/customer-orders/{orderId}/order-items/{itemId}", cusId, orderId, id) // เพิ่ม cusId และ orderId ใน URI
             .retrieve()
-            .bodyToMono(Void.class); // No body in response for DELETE
+            .bodyToMono(Void.class); // ไม่มี body ในการตอบกลับสำหรับ DELETE
     }
+    
 
    
 }

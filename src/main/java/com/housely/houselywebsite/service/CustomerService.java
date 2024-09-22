@@ -16,7 +16,7 @@ import com.housely.houselywebsite.model.Customer;
 public class CustomerService {
     
     private final RestTemplate restTemplate;
-    private String baseUrl = "http://localhost:8085/api/authors";
+    private String baseUrl = "http://localhost:8085/api";
 
     public CustomerService(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;

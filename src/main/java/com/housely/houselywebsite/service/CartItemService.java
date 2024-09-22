@@ -1,6 +1,8 @@
 package com.housely.houselywebsite.service;
 
 import com.housely.houselywebsite.model.CartItem;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -12,6 +14,29 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class CartItemService {
 
+    @Autowired
+    private RestTemplate resttemplate;
+
+    private final String baseUrl = "http://localhost:8085/api/";
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     private final RestTemplate restTemplate;
     private final String baseUrl = "http://localhost:8085/api/cart-items";
 

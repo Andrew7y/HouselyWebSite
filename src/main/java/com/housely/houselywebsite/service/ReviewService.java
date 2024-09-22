@@ -1,6 +1,10 @@
 package com.housely.houselywebsite.service;
 
 import com.housely.houselywebsite.model.Review;
+
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +28,41 @@ public class ReviewService {
         this.webClient = webClient;
     }
 
-    
+    // Fetch all reviews (assuming API call)
+    public Flux<Review> findAll() {
+        return webClient.get()
+            .uri("/reviews")
+            .retrieve()
+            .bodyToFlux(Review.class); // Expect multiple Review objects
+    }
+
+    // Save a new review via POST request
+    public Mono<Review> save(Review review) {
+        return webClient.post()
+            .uri("/reviews")
+            .bodyValue(review) // Send review object as body
+            .retrieve()
+            .bodyToMono(Review.class); // Expect one Review object in response
+    }
+
+    // Find review by ID via GET request
+    public Mono<Review> findById(Long id) {
+        return webClient.get()
+            .uri("/reviews/{id}", id)
+            .retrieve()
+            .bodyToMono(Review.class) // Expect one Review object in response
+            .switchIfEmpty(Mono.error(new RuntimeException("Review not found")));
+    }
+
+    // Delete review by ID via DELETE request
+    public Mono<Void> deleteById(Long id) {
+        return webClient.delete()
+            .uri("/reviews/{id}", id)
+            .retrieve()
+            .bodyToMono(Void.class); // No body in response for DELETE
+    }
+
+
 
     // // สร้างรีวิวใหม่
     // public Review createReview(Review review) {

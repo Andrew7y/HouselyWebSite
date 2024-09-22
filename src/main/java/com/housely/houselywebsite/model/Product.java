@@ -14,12 +14,13 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Product {
 
-    private Long id;
     private String productCode ;
     private String brandName ;
     private String productName ;
-    private double price;
-    private int quantity ;
+    private String price;
+    private String color;
+    private String size;
+    private int quantity;
     private String imageBase64;
     private String description;
     private List<Review> reviews;

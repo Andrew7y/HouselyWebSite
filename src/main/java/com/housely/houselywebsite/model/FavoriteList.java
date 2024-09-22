@@ -20,8 +20,5 @@ public class FavoriteList {
     private String favoriteListName;
     private Customer customer;
     private List<Product> productInFavoriteList;
-    public void addProduct(Product product) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addProduct'");
-    }
+
 }

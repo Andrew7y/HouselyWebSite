@@ -16,7 +16,7 @@ import lombok.Setter;
 public class CartItemKey implements Serializable {
 
     private Long cartId;
-    private Long productId;
+    private String productCode;
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

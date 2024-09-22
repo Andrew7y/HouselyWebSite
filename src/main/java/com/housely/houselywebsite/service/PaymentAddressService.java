@@ -37,14 +37,14 @@ public class PaymentAddressService {
     public Mono<PaymentAddress> save(Long id, PaymentAddress paymentAddress) {
         if (id == null) {
             return webClient.post()
-            .uri("/payment")
+            .uri("/payment/add")
             .bodyValue(paymentAddress) // Send paymentAddress object as body
             .retrieve()
             .bodyToMono(PaymentAddress.class); // Expect one PaymentAddress object in response
     
         } else {
             return webClient.put()
-                .uri("/payment/{id}", id)
+                .uri("/payment/edit/{id}", id)
                 .bodyValue(paymentAddress) 
                 .retrieve()
                 .bodyToMono(PaymentAddress.class); // สำหรับการอัปเดต

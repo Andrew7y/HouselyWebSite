@@ -40,7 +40,7 @@ public class CartItemService {
     }
 
     public Mono<CartItem> addCartItem(CartItem cartItem, Long id, Long cartId) {
-        return cartService.findCartById(cartId) // ตรวจสอบว่าตะกร้ามีอยู่จริง
+        return cartService.findCartById(id,cartId) // ตรวจสอบว่าตะกร้ามีอยู่จริง
             .flatMap(cart -> {
                 if (cart.getCustomer().getId().equals(id)) { // ตรวจสอบว่าตะกร้าเป็นของลูกค้าที่ถูกต้อง
                     cartItem.setCart(cart);
@@ -56,7 +56,7 @@ public class CartItemService {
     }
     
     public Mono<CartItem> updateCartItem(CartItem cartItem, Long id, Long cartId, CartItemKey cartItemId) {
-        return cartService.findCartById(cartId) // ตรวจสอบว่าตะกร้ามีอยู่จริง
+        return cartService.findCartById(id,cartId) // ตรวจสอบว่าตะกร้ามีอยู่จริง
             .flatMap(cart -> {
                 if (cart.getCustomer().getId().equals(id)) { 
                     cartItem.setCart(cart);
@@ -74,7 +74,7 @@ public class CartItemService {
     
     
     public Mono<Void> deleteCartItem(Long id, Long cartId, CartItemKey cartItemId) {
-        return cartService.findCartById(cartId)
+        return cartService.findCartById(id,cartId)
             .flatMap(cart -> {
                 if (cart.getCustomer().getId().equals(id)) { 
                     return webClient.delete()

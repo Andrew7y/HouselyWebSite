@@ -16,6 +16,7 @@ public class OrderItem {
     private int quantity;
     private Order order;
     private Product product;
+    private CustomerOrder customerOrder;
 
 }
 

@@ -12,5 +12,6 @@ import lombok.Setter;
 public class SublmagelnRoom {
 
     private String subImageId;
+    private String subImageBase64;
 
 }

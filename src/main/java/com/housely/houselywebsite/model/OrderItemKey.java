@@ -18,7 +18,7 @@ import lombok.Setter;
 public class OrderItemKey implements Serializable {
    
     private Long orderId;
-    private Long productId;
+    private String productCode;
     
     @Override
     public boolean equals(Object o) {

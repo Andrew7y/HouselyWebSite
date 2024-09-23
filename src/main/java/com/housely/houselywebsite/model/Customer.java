@@ -24,7 +24,7 @@ public class Customer {
     private List<Review> reviews;
     private List<FavoriteList> favorites;
     private List<CreditCard> creditCards;
-    private List<Order> orders;
+    private List<CustomerOrder> customerOrders;
     private PaymentAddress paymentAddress;
     private List<ShippingAddress> shippingAddresses;
     private Cart cart;
